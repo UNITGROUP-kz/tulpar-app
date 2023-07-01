@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "777456395129",
+    "project_id": "tulpar-store",
+    "storage_bucket": "tulpar-store.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777456395129:android:49a9562806ea2f9c9805a8",
+        "android_client_info": {
+          "package_name": "com.sanja.garage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777456395129-o9df95l5pfmojjphmetoo76sfik958f0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBiH8tEy09U3-4_RM-J49bOc6Ojx5A-Ys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777456395129-0cqij731qgev16dscba00srrrn4qfdhl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "777456395129-efjjmnj7fd9jdbhmmj7sud6j48d3err4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sanja.garage"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
