@@ -17,7 +17,11 @@ class ApiService {
 
   static Dio get I => _dio;
 
-  static addInterceptors(Interceptor interceptor) {
+  static addInterceptor(Interceptor interceptor) {
     _dio.interceptors.add(interceptor);
+  }
+
+  static removerInterceptor(Interceptor interceptor) {
+    _dio.interceptors.remove(interceptor);
   }
 }

@@ -1,84 +1,62 @@
 import 'package:garage/core/services/api/api_service.dart';
+import 'package:garage/core/services/api/interceptors/auth_interceptor.dart';
+import 'package:garage/core/services/isar_service.dart';
+import 'package:garage/data/models/auth/auth_model.dart';
+import 'package:garage/data/models/auth/user_model.dart';
+import 'package:garage/data/params/auth/auth_user_params.dart';
+import 'package:isar/isar.dart';
 
-enum AuthorizationRequestType {
-  email, phone
-}
-
-class RegisterUserParams {
-  final AuthorizationRequestType type;
-  final String? email;
-  final String? phone;
-  final String password;
-  final String passwordConfirmation;
-
-  RegisterUserParams({
-    required this.type,
-    this.email,
-    this.phone,
-    required this.password,
-    required this.passwordConfirmation
-  });
-
-  toData() {
-    return {
-      'type': type.name,
-      'email': email,
-      'phone': phone,
-      'password': password,
-      'password_confirmation': passwordConfirmation
-    };
-  }
-
-}
-
-class LoginUserParams {
-  final String? email;
-  final String? phone;
-  final String password;
-
-  LoginUserParams({
-    this.email,
-    this.phone,
-    required this.password,
-  });
-
-  toData() {
-    return {
-      'email': email,
-      'phone': phone,
-      'password': password,
-    };
-  }
-
-}
-
-class ConfirmUserParams {
-  final String? email;
-  final String? phone;
-  final String code;
-
-  ConfirmUserParams({
-    this.email,
-    this.phone,
-    required this.code,
-  });
-
-  toData() {
-    return {
-      'email': email,
-      'phone': phone,
-      'code': code,
-    };
-  }
-}
 
 class AuthUserRepository {
-    Future register(RegisterUserParams params) =>
+    static AuthInterceptor? interceptor;
+    static AuthModel? auth;
+
+    static Future register(RegisterUserParams params) =>
         ApiService.I.post('/register', data: params.toData());
 
-    Future login(LoginUserParams params) =>
-        ApiService.I.post('/login', data: params.toData());
+    static Future<AuthModel> login(LoginUserParams params) =>
+        ApiService.I.post('/login', data: params.toData()).then((value) async {
+            final token = value.data['token'];
+            final user = UserModel.fromMap(value.data['user']);
+            auth = AuthModel()..user.value = user
+              ..token = token;
+            await write(auth!);
+            _addInterceptor(auth!);
 
-    Future code(ConfirmUserParams params) =>
+            return auth!;
+        });
+
+    static Future code(ConfirmUserParams params) =>
         ApiService.I.post('/confirmCode', data: params.toData());
+
+    static Future write(AuthModel auth) async {
+        await IsarService.I.writeTxn(() async {
+            await IsarService.I.authModels.put(auth);
+            await IsarService.I.userModels.put(auth.user.value!);
+            await auth.user.save();
+        });
+    }
+
+    static Future clear() async {
+        await IsarService.I.authModels.clear();
+    }
+
+    static Future<AuthModel?> read() async {
+      List<AuthModel> auths = await IsarService.I.authModels.where().findAll();
+      if(auths.isNotEmpty) {
+        auth = auths[0];
+        _addInterceptor(auth!);
+        return auth;
+      } else {
+        return null;
+      }
+    }
+
+    static _addInterceptor(AuthModel auth) {
+      if(interceptor != null) {
+        ApiService.removerInterceptor(interceptor!);
+      }
+      interceptor = AuthInterceptor(auth.token);
+      ApiService.addInterceptor(interceptor!);
+    }
 }
