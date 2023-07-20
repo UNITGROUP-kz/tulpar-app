@@ -1,4 +1,3 @@
-
 class LoginStoreParams {
   final String phone;
   final String password;

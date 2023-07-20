@@ -26,8 +26,17 @@ class AuthUserRepository {
             return auth!;
         });
 
-    static Future code(ConfirmUserParams params) =>
-        ApiService.I.post('/confirmCode', data: params.toData());
+    static Future<AuthModel> code(ConfirmUserParams params) =>
+        ApiService.I.post('/confirmCode', data: params.toData()).then((value) async {
+          final token = value.data['token'];
+          final user = UserModel.fromMap(value.data['user']);
+          auth = AuthModel()..user.value = user
+            ..token = token;
+          await write(auth!);
+          _addInterceptor(auth!);
+
+          return auth!;
+        });
 
     static Future write(AuthModel auth) async {
         await IsarService.I.writeTxn(() async {

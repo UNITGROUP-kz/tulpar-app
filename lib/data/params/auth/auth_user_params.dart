@@ -4,6 +4,7 @@ enum AuthorizationRequestType {
 
 class RegisterUserParams {
   final AuthorizationRequestType type;
+  final String name;
   final String? email;
   final String? phone;
   final String password;
@@ -11,6 +12,7 @@ class RegisterUserParams {
 
   RegisterUserParams({
     required this.type,
+    required this.name,
     this.email,
     this.phone,
     required this.password,
@@ -18,13 +20,20 @@ class RegisterUserParams {
   });
 
   toData() {
-    return {
+    final data = {
+      'name': name,
       'type': type.name,
-      'email': email,
-      'phone': phone,
       'password': password,
       'password_confirmation': passwordConfirmation
     };
+
+    if(type == AuthorizationRequestType.phone) {
+      data.addAll({'phone': phone ?? ''});
+    } else if(type == AuthorizationRequestType.email) {
+      data.addAll({'email': email ?? ''});
+    }
+    
+    return data;
   }
 
 }

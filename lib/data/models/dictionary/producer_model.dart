@@ -9,6 +9,12 @@ class ProducerModel {
     );
   }
 
+  static List<ProducerModel> fromListMap(data) {
+    return data.map<ProducerModel>((producer) {
+      return ProducerModel.fromMap(producer);
+    }).toList();
+  }
+
   ProducerModel({
     required this.id,
     required this.name

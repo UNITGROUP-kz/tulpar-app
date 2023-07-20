@@ -7,7 +7,10 @@ import 'package:garage/core/services/api/api_service.dart';
 import 'package:garage/core/services/fb_auth_service.dart';
 import 'package:garage/core/services/fb_service.dart';
 import 'package:garage/firebase_options.dart';
+import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
+import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
+import 'package:garage/logic/bloc/user/register/register_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 
 import 'core/services/isar_service.dart';
@@ -30,21 +33,44 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+
   MyApp({super.key});
 
-  final _appRouter = AppRouter();
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late AuthCubit authCubit;
+  late AppRouter _appRouter;
+
+  @override
+  void initState() {
+    authCubit = AuthCubit()..initial();
+    _appRouter = AppRouter(authCubit);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => AuthCubit()..initial(),
+          create: (context) => authCubit,
         ),
         BlocProvider(
           create: (context) => MyCarCubit(),
-        )
+        ),
+        BlocProvider(
+          create: (context) => RegisterCubit(authCubit),
+        ),
+        BlocProvider(
+          create: (context) => ProducerCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CarModelCubit(),
+        ),
       ],
       child: MaterialApp.router(
         routerConfig: _appRouter.config(),

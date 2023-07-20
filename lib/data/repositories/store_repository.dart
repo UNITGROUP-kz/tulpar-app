@@ -1,6 +1,7 @@
 import 'package:garage/core/services/api/api_service.dart';
-import 'package:garage/data/models/store_model.dart';
 import 'package:garage/data/params/store/edit_store_params.dart';
+
+import '../models/dictionary/store_model.dart';
 
 class StoreRepository {
   static Future edit(StoreModel store, EditStoreParams params) => ApiService.I

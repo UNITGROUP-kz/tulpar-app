@@ -1,6 +1,7 @@
-import 'package:garage/data/models/car_model.dart';
-import 'package:garage/data/models/part_model.dart';
-import 'package:garage/data/models/store_model.dart';
+import 'package:garage/data/models/dictionary/car_model.dart';
+import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/store_model.dart';
+
 
 enum OrderStatus {
   moderation;

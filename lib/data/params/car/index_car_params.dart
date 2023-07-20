@@ -20,4 +20,18 @@ class IndexMyCarParams extends IndexParams {
       'sortBy': sortBy.name,
     }..addAll(super.toData());
   }
+
+  IndexMyCarParams copyWith({
+      int? rowsPerPage,
+      int? startRow,
+      bool? descending,
+      IndexMyCarSortBy? sortBy
+  }) {
+    return IndexMyCarParams(
+        rowsPerPage: rowsPerPage ?? this.rowsPerPage,
+        startRow:  startRow ?? this.startRow,
+        descending: descending ?? this.descending,
+        sortBy: sortBy ?? this.sortBy
+    );
+  }
 }

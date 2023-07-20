@@ -53,6 +53,7 @@ dependencies:
   easy_localization: ^3.0.2
   fform: ^0.0.1
   cached_network_image: ^3.2.3
+  pin_code_fields: ^8.0.1
 
 dev_dependencies:
   flutter_test:

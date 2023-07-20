@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/guards/auth_guard.dart';
 import 'package:garage/presentation/screens/auth/login_screen.dart';
 import 'package:garage/presentation/screens/shop/store_splash_screen.dart';
@@ -11,11 +12,21 @@ import 'package:garage/presentation/screens/user/order/details_order_screen.dart
 import 'package:garage/presentation/screens/user/order/orders_screen.dart';
 import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
+import '../../data/models/dictionary/car_model_model.dart';
+import '../../data/models/dictionary/producer_model.dart';
+import '../screens/auth/register_screen.dart';
+import '../screens/picker/car_model_picker_screen.dart';
+import '../screens/picker/producer_picker_screen.dart';
+
 
 part 'router.gr.dart';
 
 @AutoRouterConfig()
 class AppRouter extends _$AppRouter {
+  final AuthCubit authCubit;
+
+  AppRouter(this.authCubit);
+
 
   @override
   List<AutoRoute> get routes => [
@@ -52,7 +63,7 @@ class AppRouter extends _$AppRouter {
                 ]
               )
             ],
-            guards: [AuthGuard(), UserGuard()]
+            guards: [AuthGuard(authCubit), UserGuard()]
         ),
         AutoRoute(
           page: UserFormRouter.page,
@@ -65,8 +76,15 @@ class AppRouter extends _$AppRouter {
               page: CreateOrderRoute.page,
             ),
           ],
-          guards: [AuthGuard(), UserGuard()]
+          guards: [AuthGuard(authCubit), UserGuard()]
         ),
+        AutoRoute(
+            page: PickerRouter.page,
+            children: [
+              AutoRoute(page: ProducerPickerRoute.page),
+              AutoRoute(page: CarModelPickerRoute.page),
+            ]
+        )
         // AutoRoute(
         //     path: 'store',
         //     page: StoreRouter.page,
@@ -76,7 +94,10 @@ class AppRouter extends _$AppRouter {
         // )
       ]
     ),
-    AutoRoute(page: LoginRoute.page)
+    AutoRoute(page: LoginRoute.page),
+    AutoRoute(page: RegisterRoute.page),
+
+
   ];
 }
 
@@ -98,6 +119,14 @@ class UserCarScreen extends StatelessWidget {
 
 @RoutePage(name: 'UserFormRouter')
 class UserFormScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AutoRouter();
+  }
+}
+
+@RoutePage(name: 'PickerRouter')
+class PickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoRouter();

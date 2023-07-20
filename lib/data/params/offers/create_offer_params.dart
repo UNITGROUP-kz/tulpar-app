@@ -1,4 +1,5 @@
-import 'package:garage/data/models/order_model.dart';
+
+import '../../models/dictionary/order_model.dart';
 
 enum ConditionOffer {
   used, new1;

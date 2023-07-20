@@ -3,41 +3,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ScreenDefaultTemplate extends StatefulWidget {
-
+  final EdgeInsets padding;
   final Future<void> Function()? onRefresh;
   final List<Widget>? children;
+  final ScrollController? scrollController;
 
-  const ScreenDefaultTemplate({super.key, this.children, this.onRefresh});
+  const ScreenDefaultTemplate({
+    super.key,
+    this.children,
+    this.onRefresh,
+    this.padding = const EdgeInsets.all(20),
+    this.scrollController
+  });
 
   @override
   State<ScreenDefaultTemplate> createState() => _ScreenDefaultTemplateState();
 }
 
 class _ScreenDefaultTemplateState extends State<ScreenDefaultTemplate> {
-  late ScrollController _scrollController;
-
-  @override
-  void initState() {
-    _scrollController = ScrollController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  Future _refresh() {
-    return Future(() => null);
-  }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoScrollbar(
-      controller: _scrollController,
+      controller: widget.scrollController,
       child: CustomScrollView(
-        controller: _scrollController,
+        controller: widget.scrollController,
         slivers: [
           if(widget.onRefresh != null) CupertinoSliverRefreshControl(
             onRefresh: widget.onRefresh,
@@ -58,14 +48,13 @@ class _ScreenDefaultTemplateState extends State<ScreenDefaultTemplate> {
               constraints: BoxConstraints(
                 minHeight: MediaQuery.of(context).size.height,
               ),
-              padding: EdgeInsets.all(20),
+              padding: widget.padding,
               child: Column(
                   children: widget.children ?? []
               ),
             ),
           )
         ]
-
       ),
     );
   }

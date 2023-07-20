@@ -15,6 +15,12 @@ class CarModelModel {
     );
   }
 
+  static List<CarModelModel> fromListMap(data) {
+    return data.map<CarModelModel>((producer) {
+      return CarModelModel.fromMap(producer);
+    }).toList();
+  }
+
   CarModelModel({
     required this.id,
     required this.name,

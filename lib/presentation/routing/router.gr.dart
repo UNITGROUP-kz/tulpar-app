@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    RegisterRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RegisterScreen(),
+      );
+    },
     LoginRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -87,7 +93,43 @@ abstract class _$AppRouter extends RootStackRouter {
         child: UserFormScreen(),
       );
     },
+    PickerRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PickerScreen(),
+      );
+    },
+    CarModelPickerRoute.name: (routeData) {
+      final args = routeData.argsAs<CarModelPickerRouteArgs>();
+      return AutoRoutePage<CarModelModel>(
+        routeData: routeData,
+        child: CarModelPickerScreen(
+          key: args.key,
+          producer: args.producer,
+        ),
+      );
+    },
+    ProducerPickerRoute.name: (routeData) {
+      return AutoRoutePage<ProducerModel>(
+        routeData: routeData,
+        child: ProducerPickerScreen(),
+      );
+    },
   };
+}
+
+/// generated route for
+/// [RegisterScreen]
+class RegisterRoute extends PageRouteInfo<void> {
+  const RegisterRoute({List<PageRouteInfo>? children})
+      : super(
+          RegisterRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RegisterRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -254,6 +296,72 @@ class UserFormRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'UserFormRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PickerScreen]
+class PickerRouter extends PageRouteInfo<void> {
+  const PickerRouter({List<PageRouteInfo>? children})
+      : super(
+          PickerRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PickerRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CarModelPickerScreen]
+class CarModelPickerRoute extends PageRouteInfo<CarModelPickerRouteArgs> {
+  CarModelPickerRoute({
+    Key? key,
+    required ProducerModel producer,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CarModelPickerRoute.name,
+          args: CarModelPickerRouteArgs(
+            key: key,
+            producer: producer,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CarModelPickerRoute';
+
+  static const PageInfo<CarModelPickerRouteArgs> page =
+      PageInfo<CarModelPickerRouteArgs>(name);
+}
+
+class CarModelPickerRouteArgs {
+  const CarModelPickerRouteArgs({
+    this.key,
+    required this.producer,
+  });
+
+  final Key? key;
+
+  final ProducerModel producer;
+
+  @override
+  String toString() {
+    return 'CarModelPickerRouteArgs{key: $key, producer: $producer}';
+  }
+}
+
+/// generated route for
+/// [ProducerPickerScreen]
+class ProducerPickerRoute extends PageRouteInfo<void> {
+  const ProducerPickerRoute({List<PageRouteInfo>? children})
+      : super(
+          ProducerPickerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProducerPickerRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

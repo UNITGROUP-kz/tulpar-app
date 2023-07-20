@@ -1,5 +1,6 @@
-import 'package:garage/data/models/car_model_model.dart';
-import 'package:garage/data/models/producer_model.dart';
+
+import '../../models/dictionary/car_model_model.dart';
+import '../../models/dictionary/producer_model.dart';
 
 class CreateCarParams {
   final CarModelModel model;

@@ -70,6 +70,7 @@ AuthModel _authModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = AuthModel();
+  object.id = id;
   object.token = reader.readString(offsets[0]);
   return object;
 }
@@ -97,6 +98,7 @@ List<IsarLinkBase<dynamic>> _authModelGetLinks(AuthModel object) {
 }
 
 void _authModelAttach(IsarCollection<dynamic> col, Id id, AuthModel object) {
+  object.id = id;
   object.user.attach(col, col.isar.collection<UserModel>(), r'user', id);
 }
 

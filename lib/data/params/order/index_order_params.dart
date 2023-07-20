@@ -1,8 +1,9 @@
-import 'package:garage/data/models/car_model_model.dart';
-import 'package:garage/data/models/order_model.dart';
-import 'package:garage/data/models/part_model.dart';
-import 'package:garage/data/models/producer_model.dart';
+import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/index.dart';
+
+import '../../models/dictionary/car_model_model.dart';
+import '../../models/dictionary/order_model.dart';
+import '../../models/dictionary/producer_model.dart';
 
 enum IndexOrderSortBy {
   id;

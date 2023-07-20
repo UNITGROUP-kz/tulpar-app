@@ -1,5 +1,5 @@
 import 'package:garage/core/services/api/api_service.dart';
-import 'package:garage/data/models/car_model.dart';
+import 'package:garage/data/models/dictionary/car_model.dart';
 import 'package:garage/data/params/car/create_car_params.dart';
 import 'package:garage/data/params/car/index_car_params.dart';
 

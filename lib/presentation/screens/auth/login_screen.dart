@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/button_list.dart';
@@ -25,9 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _passwordController;
 
 
-  _submit() {
+  _submit() async {
     if (_check()) {
-      context.read<AuthCubit>().login(
+      await context.read<AuthCubit>().login(
           _emailPhoneController.value.text,
           _passwordController.value.text
       );
@@ -50,9 +51,9 @@ class _LoginScreenState extends State<LoginScreen> {
     if (form.isInvalid) {
       print(form.exceptions);
 
-      form.exceptions.map((e) {
+      for (var e in form.exceptions) {
         showErrorSnackBar(context, e.toString());
-      });
+      }
       return false;
     }
 
@@ -67,7 +68,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _listener(BuildContext context, AuthState state) {
-    if(state.auth != null) {
+    if (state.error != null) {
+      showErrorSnackBar(
+          context, state.error?.messages[0] ?? 'Неизвестная ошибка');
+    }
+    else if(state.auth != null) {
       context.router.navigate(
         SplashRouter(
           children: [
@@ -80,6 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
         )
       );
     }
+  }
+
+  _toRegister() {
+    context.router.navigate(RegisterRoute());
   }
 
 
@@ -100,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
               BlocConsumer<AuthCubit, AuthState>(
                 listener: _listener,
                 builder: (context, state) {
-                  if(state.isLoading) ElevatedButton(
+                  if(state.isLoading) return ElevatedButton(
                       onPressed: () {},
                       child: CupertinoActivityIndicator()
                   );
@@ -110,40 +119,51 @@ class _LoginScreenState extends State<LoginScreen> {
                   );
                 },
               ),
+              Text.rich(TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'У вас нет аккаунта? ',
+                  ),
+                  TextSpan(
+                    text: 'Зарегистрироваться',
+                    recognizer: TapGestureRecognizer()..onTap = _toRegister
+                  )
+                ]
+              ))
 
-              SignInButton(
-                Buttons.Google,
-                onPressed: () async {
-                  try {
-                    await FirebaseAuthRepository.withGoogle();
-                    // Успешная авторизация
-                  } catch (e) {
-                    // Обработка ошибок
-                  }
-                },
-              ),
-              SignInButton(
-                Buttons.Facebook,
-                onPressed: () async {
-                  try {
-                    await FirebaseAuthRepository.withFacebook();
-                    // Успешная авторизация
-                  } catch (e) {
-                    // Обработка ошибок
-                  }
-                },
-              ),
-              SignInButton(
-                Buttons.AppleDark,
-                onPressed: () async {
-                  try {
-                    await FirebaseAuthRepository.withApple();
-                    // Успешная авторизация
-                  } catch (e) {
-                    // Обработка ошибок
-                  }
-                },
-              ),
+              // SignInButton(
+              //   Buttons.Google,
+              //   onPressed: () async {
+              //     try {
+              //       await FirebaseAuthRepository.withGoogle();
+              //       // Успешная авторизация
+              //     } catch (e) {
+              //       // Обработка ошибок
+              //     }
+              //   },
+              // ),
+              // SignInButton(
+              //   Buttons.Facebook,
+              //   onPressed: () async {
+              //     try {
+              //       await FirebaseAuthRepository.withFacebook();
+              //       // Успешная авторизация
+              //     } catch (e) {
+              //       // Обработка ошибок
+              //     }
+              //   },
+              // ),
+              // SignInButton(
+              //   Buttons.AppleDark,
+              //   onPressed: () async {
+              //     try {
+              //       await FirebaseAuthRepository.withApple();
+              //       // Успешная авторизация
+              //     } catch (e) {
+              //       // Обработка ошибок
+              //     }
+              //   },
+              // ),
             ],
           ),
         ),

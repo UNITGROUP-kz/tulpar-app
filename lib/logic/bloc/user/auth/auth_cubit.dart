@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/auth/auth_model.dart';
 import 'package:garage/data/models/auth/user_model.dart';
+import 'package:garage/data/models/error_model.dart';
 
 import '../../../../core/utils/check.dart';
 import '../../../../data/params/auth/auth_user_params.dart';
@@ -31,10 +32,10 @@ class AuthCubit extends Cubit<AuthState> {
         email: Check.isEmail(emailPhone) ? emailPhone : null,
         phone: Check.isPhone(emailPhone) ? emailPhone : null
     )).then((value) {
-      emit(AuthState(isLoading: false, auth: value));
+      set(value);
     }).catchError((error) {
       print(error);
-      emit(AuthState(isLoading: false));
+      emit(AuthState(isLoading: false, error: ErrorModel.parse(error)));
     });
   }
 
@@ -43,4 +44,10 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthState());
     });
   }
+
+  set(AuthModel auth) {
+    emit(AuthState(auth: auth, isLoading: false));
+  }
+
+  bool get isLogin => state.auth != null;
 }
