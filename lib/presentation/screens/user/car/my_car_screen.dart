@@ -41,7 +41,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
 
   _listenerState(context, MyCarState state) {
     if(state.status == FetchStatus.error) {
-      showErrorSnackBar(context, 'Ошибка');
+      showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     }
   }
 

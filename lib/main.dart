@@ -8,6 +8,7 @@ import 'package:garage/core/services/fb_auth_service.dart';
 import 'package:garage/core/services/fb_service.dart';
 import 'package:garage/firebase_options.dart';
 import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
+import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/logic/bloc/user/register/register_cubit.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          lazy: false,
           create: (context) => authCubit,
         ),
         BlocProvider(
@@ -70,6 +72,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => CarModelCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CurrentCityCubit()..initial(),
         ),
       ],
       child: MaterialApp.router(

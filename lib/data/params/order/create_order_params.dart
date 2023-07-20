@@ -7,14 +7,14 @@ class CreateOrderParams {
   final CarModel car;
   final PartModel part;
   final String comment;
-  final List<MultipartFile> photos;
+  final List<MultipartFile>? photos;
 
   CreateOrderParams({
     required this.title,
     required this.car,
     required this.part,
     required this.comment,
-    required this.photos
+    this.photos
   });
 
   FormData toData() {
@@ -23,8 +23,8 @@ class CreateOrderParams {
       'car_id': car.id,
       'part_id': part.id,
       'comment': comment
-    })..files.addAll(photos.map((e) {
+    })..files.addAll(photos?.map((e) {
       return MapEntry('photos[]', e);
-    }));
+    }) ?? []);
   }
 }

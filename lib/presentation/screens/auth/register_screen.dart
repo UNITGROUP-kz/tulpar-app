@@ -67,15 +67,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     if (form.isInvalid) {
-      print(form.exceptions);
-
       for (var e in form.exceptions) {
         showErrorSnackBar(context, e.toString());
       }
-      return false;
     }
 
-    return true;
+    return form.isValid;
   }
 
   bool _checkVerify() {
@@ -85,15 +82,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
 
     if (form.isInvalid) {
-      print(form.exceptions);
-
       for (var e in form.exceptions) {
         showErrorSnackBar(context, e.toString());
       }
-      return false;
     }
 
-    return true;
+    return form.isValid;
   }
 
   @override

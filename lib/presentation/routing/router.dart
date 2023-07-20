@@ -12,11 +12,14 @@ import 'package:garage/presentation/screens/user/order/details_order_screen.dart
 import 'package:garage/presentation/screens/user/order/orders_screen.dart';
 import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
+import '../../data/models/dictionary/car_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
+import '../../data/models/dictionary/part_model.dart';
 import '../../data/models/dictionary/producer_model.dart';
 import '../screens/auth/register_screen.dart';
 import '../screens/picker/car_model_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
+import '../screens/user/car/details_car_screen.dart';
 
 
 part 'router.gr.dart';
@@ -84,7 +87,8 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: ProducerPickerRoute.page),
               AutoRoute(page: CarModelPickerRoute.page),
             ]
-        )
+        ),
+
         // AutoRoute(
         //     path: 'store',
         //     page: StoreRouter.page,

@@ -49,15 +49,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     if (form.isInvalid) {
-      print(form.exceptions);
-
       for (var e in form.exceptions) {
         showErrorSnackBar(context, e.toString());
       }
-      return false;
     }
 
-    return true;
+    return form.isValid;
   }
 
   @override

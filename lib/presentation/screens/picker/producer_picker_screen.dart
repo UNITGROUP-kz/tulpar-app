@@ -7,6 +7,7 @@ import 'package:garage/data/models/dictionary/producer_model.dart';
 
 import '../../../logic/bloc/dictionary/producer/producer_cubit.dart';
 import '../../widgets/screen_templates/screen_default_template.dart';
+import '../../widgets/tiles/producer_tile.dart';
 
 
 @RoutePage<ProducerModel>()
@@ -74,28 +75,4 @@ class _ProducerPickerScreenState extends State<ProducerPickerScreen> {
       ],
     );
   }
-}
-
-class ProducerTile extends StatelessWidget {
-  final ProducerModel producer;
-  final VoidCallback? callback;
-
-  const ProducerTile({super.key, required this.producer, this.callback});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: callback,
-      child: Column(
-        children: [
-          Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(producer.name)
-          ),
-          Divider(thickness: 1)
-        ],
-      ),
-    );
-  }
-
 }

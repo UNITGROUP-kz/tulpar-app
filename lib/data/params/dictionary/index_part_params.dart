@@ -1,19 +1,19 @@
 import 'package:garage/data/params/index.dart';
 
-enum IndexProducerSortBy {
+enum IndexPartSortBy {
   id, name;
 }
 
-class IndexProducerParams extends IndexParams {
-  final IndexProducerSortBy sortBy;
+class IndexPartParams extends IndexParams {
+  final IndexPartSortBy sortBy;
   final String? filter;
 
-  IndexProducerParams({
+  IndexPartParams({
     super.descending,
     super.rowsPerPage,
     super.startRow,
     this.filter,
-    this.sortBy = IndexProducerSortBy.id
+    this.sortBy = IndexPartSortBy.id
   });
 
   copyWith({
@@ -21,9 +21,9 @@ class IndexProducerParams extends IndexParams {
     int? startRow,
     bool? descending,
     String? filter,
-    IndexProducerSortBy? sortBy
+    IndexPartSortBy? sortBy
   }) {
-    return IndexProducerParams(
+    return IndexPartParams(
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
       startRow: startRow ?? this.startRow,
       descending: descending ?? this.descending,

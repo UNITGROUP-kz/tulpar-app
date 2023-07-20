@@ -34,6 +34,6 @@ class RegisterForm extends FForm {
   }
 
   @override
-  List<FFormField> get fields => [emailPhone, password, confirmPassword];
+  List<FFormField> get fields => [emailPhone, password, confirmPassword, name];
 }
 

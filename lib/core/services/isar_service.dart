@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:garage/data/models/auth/auth_model.dart';
 import 'package:garage/data/models/auth/user_model.dart';
+import 'package:garage/data/models/dictionary/city_model.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -12,7 +13,8 @@ class IsarService {
     final Directory dir = await getTemporaryDirectory();
     _isar = await Isar.open([
       AuthModelSchema,
-      UserModelSchema
+      UserModelSchema,
+      CityModelSchema
     ], directory: dir.path);
   }
 

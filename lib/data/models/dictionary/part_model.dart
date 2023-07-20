@@ -9,6 +9,12 @@ class PartModel {
     );
   }
 
+  static List<PartModel> fromListMap(data) {
+    return data.map<PartModel>((producer) {
+      return PartModel.fromMap(producer);
+    }).toList();
+  }
+
   PartModel({
     required this.id,
     required this.name

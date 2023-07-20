@@ -9,6 +9,7 @@ import '../../../data/models/dictionary/car_model_model.dart';
 import '../../../data/params/dictionary/index_car_model_params.dart';
 import '../../../logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import '../../widgets/screen_templates/screen_default_template.dart';
+import '../../widgets/tiles/car_model_tile.dart';
 
 
 @RoutePage<CarModelModel>()
@@ -81,28 +82,4 @@ class _CarModelPickerScreenState extends State<CarModelPickerScreen> {
       ],
     );
   }
-}
-
-class CarModelTile extends StatelessWidget {
-  final CarModelModel carModel;
-  final VoidCallback? callback;
-
-  const CarModelTile({super.key, required this.carModel, this.callback});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: callback,
-      child: Column(
-        children: [
-          Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(carModel.name)
-          ),
-          Divider(thickness: 1)
-        ],
-      ),
-    );
-  }
-
 }
