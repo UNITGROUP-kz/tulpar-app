@@ -40,4 +40,29 @@ class IndexOrderParams extends IndexParams {
       'status': status?.name
     }..addAll(super.toData());
   }
+
+  IndexOrderParams copyWith({
+    int? rowsPerPage,
+    int? startRow,
+    bool? descending,
+    OrderStatus? status,
+    String? vin,
+    ProducerModel? producer,
+    PartModel? part,
+    CarModelModel? model,
+    IndexOrderSortBy? sortBy
+  }) {
+    return IndexOrderParams(
+      rowsPerPage: rowsPerPage ?? this.rowsPerPage,
+      startRow: startRow ?? this.startRow,
+      descending: descending ?? this.descending,
+      status: status ?? this.status,
+      vin: vin ?? this.vin,
+      producer: producer ?? this.producer,
+      part: part ?? this.part,
+      model: model ?? this.model,
+      sortBy: sortBy ?? this.sortBy,
+
+    );
+  }
 }

@@ -7,7 +7,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('Splash');
+    print('SplashRouter');
 
     return Scaffold(
       body: SafeArea(

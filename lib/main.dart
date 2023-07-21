@@ -14,6 +14,8 @@ import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
+import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
+import 'package:garage/logic/bloc/user/order_offer/order_offer_cubit.dart';
 import 'package:garage/logic/bloc/user/register/register_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 
@@ -48,12 +50,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late AuthCubit authCubit;
   late MyCarCubit myCarCubit;
+  late MyOrderCubit myOrderCubit;
   late AppRouter _appRouter;
 
   @override
   void initState() {
     authCubit = AuthCubit()..initial();
     myCarCubit = MyCarCubit();
+    myOrderCubit = MyOrderCubit();
     _appRouter = AppRouter(authCubit);
     super.initState();
   }
@@ -63,7 +67,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          // lazy: false,
+          lazy: false,
           create: (context) => authCubit,
         ),
         BlocProvider(
@@ -71,6 +75,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => myCarCubit,
+        ),
+        BlocProvider(
+          create: (context) => myOrderCubit,
+        ),
+        BlocProvider(
+          create: (context) => OrderOfferCubit(),
         ),
         BlocProvider(
           create: (context) => DetailsCarCubit(),
@@ -88,7 +98,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => CreateCarCubit(myCarCubit),
         ),
         BlocProvider(
-          create: (context) => CreateOrderCubit(),
+          create: (context) => CreateOrderCubit(myOrderCubit),
         ),
       ],
       child: MaterialApp.router(

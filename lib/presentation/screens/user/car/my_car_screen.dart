@@ -59,9 +59,9 @@ class _MyCarScreenState extends State<MyCarScreen> {
     context.router.navigate(SplashRouter(
       children: [
         UserFormRouter(
-          children: [
-            CreateCarRoute()
-          ]
+            children: [
+              CreateCarRoute()
+            ]
         )
       ]
     ));
@@ -83,6 +83,8 @@ class _MyCarScreenState extends State<MyCarScreen> {
                 ...state.cars.map((car) {
                   return CarCard(car: car);
                 }).toList(),
+                if(state.cars.isEmpty) Text('Нет Машин'),
+
                 if(state.status == FetchStatus.success) Container(
                     width: double.infinity,
                     child: ElevatedButton(

@@ -7,19 +7,24 @@ import 'package:garage/presentation/screens/shop/store_splash_screen.dart';
 import 'package:garage/presentation/screens/splash_screen.dart';
 import 'package:garage/presentation/screens/user/car/create_car_screen.dart';
 import 'package:garage/presentation/screens/user/car/my_car_screen.dart';
+import 'package:garage/presentation/screens/user/offer/details_offer_screen.dart';
 import 'package:garage/presentation/screens/user/order/create_order_screen.dart';
 import 'package:garage/presentation/screens/user/order/details_order_screen.dart';
 import 'package:garage/presentation/screens/user/order/orders_screen.dart';
+import 'package:garage/presentation/screens/user/profile/profile_screen.dart';
 import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
 import '../../data/models/dictionary/car_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
+import '../../data/models/dictionary/offer_model.dart';
+import '../../data/models/dictionary/order_model.dart';
 import '../../data/models/dictionary/part_model.dart';
 import '../../data/models/dictionary/producer_model.dart';
 import '../screens/auth/register_screen.dart';
 import '../screens/picker/car_model_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
 import '../screens/user/car/details_car_screen.dart';
+import '../screens/user/offer/offers_screen.dart';
 
 
 part 'router.gr.dart';
@@ -51,6 +56,7 @@ class AppRouter extends _$AppRouter {
                     page: MyCarRoute.page,
                   ),
                   AutoRoute(
+                    path: 'details',
                     page: DetailsCarRoute.page,
                   ),
                 ]
@@ -66,8 +72,15 @@ class AppRouter extends _$AppRouter {
                   AutoRoute(
                     page: DetailsOrderRoute.page,
                   ),
+                  AutoRoute(
+                    page: OrderOffersRoute.page,
+                  ),
+                  AutoRoute(
+                    page: DetailsOfferRoute.page,
+                  ),
                 ]
-              )
+              ),
+              AutoRoute(page: UserProfileRoute.page)
             ],
             guards: [AuthGuard(authCubit), UserGuard()]
         ),
@@ -112,6 +125,7 @@ class AppRouter extends _$AppRouter {
 class UserOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('UserOrderRouter');
     return AutoRouter();
   }
 }

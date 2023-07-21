@@ -57,9 +57,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsOrderRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOrderRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: DetailsOrderScreen(),
+        child: DetailsOrderScreen(
+          key: args.key,
+          order: args.order,
+        ),
       );
     },
     CreateCarRoute.name: (routeData) {
@@ -128,6 +132,32 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           car: args.car,
         ),
+      );
+    },
+    OrderOffersRoute.name: (routeData) {
+      final args = routeData.argsAs<OrderOffersRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: OrderOffersScreen(
+          key: args.key,
+          order: args.order,
+        ),
+      );
+    },
+    DetailsOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOfferRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsOfferScreen(
+          key: args.key,
+          offer: args.offer,
+        ),
+      );
+    },
+    UserProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const UserProfileScreen(),
       );
     },
   };
@@ -248,16 +278,40 @@ class CreateOrderRouteArgs {
 
 /// generated route for
 /// [DetailsOrderScreen]
-class DetailsOrderRoute extends PageRouteInfo<void> {
-  const DetailsOrderRoute({List<PageRouteInfo>? children})
-      : super(
+class DetailsOrderRoute extends PageRouteInfo<DetailsOrderRouteArgs> {
+  DetailsOrderRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
           DetailsOrderRoute.name,
+          args: DetailsOrderRouteArgs(
+            key: key,
+            order: order,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'DetailsOrderRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<DetailsOrderRouteArgs> page =
+      PageInfo<DetailsOrderRouteArgs>(name);
+}
+
+class DetailsOrderRouteArgs {
+  const DetailsOrderRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'DetailsOrderRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for
@@ -446,4 +500,94 @@ class DetailsCarRouteArgs {
   String toString() {
     return 'DetailsCarRouteArgs{key: $key, car: $car}';
   }
+}
+
+/// generated route for
+/// [OrderOffersScreen]
+class OrderOffersRoute extends PageRouteInfo<OrderOffersRouteArgs> {
+  OrderOffersRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
+          OrderOffersRoute.name,
+          args: OrderOffersRouteArgs(
+            key: key,
+            order: order,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'OrderOffersRoute';
+
+  static const PageInfo<OrderOffersRouteArgs> page =
+      PageInfo<OrderOffersRouteArgs>(name);
+}
+
+class OrderOffersRouteArgs {
+  const OrderOffersRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'OrderOffersRouteArgs{key: $key, order: $order}';
+  }
+}
+
+/// generated route for
+/// [DetailsOfferScreen]
+class DetailsOfferRoute extends PageRouteInfo<DetailsOfferRouteArgs> {
+  DetailsOfferRoute({
+    Key? key,
+    required OfferModel offer,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsOfferRoute.name,
+          args: DetailsOfferRouteArgs(
+            key: key,
+            offer: offer,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsOfferRoute';
+
+  static const PageInfo<DetailsOfferRouteArgs> page =
+      PageInfo<DetailsOfferRouteArgs>(name);
+}
+
+class DetailsOfferRouteArgs {
+  const DetailsOfferRouteArgs({
+    this.key,
+    required this.offer,
+  });
+
+  final Key? key;
+
+  final OfferModel offer;
+
+  @override
+  String toString() {
+    return 'DetailsOfferRouteArgs{key: $key, offer: $offer}';
+  }
+}
+
+/// generated route for
+/// [UserProfileScreen]
+class UserProfileRoute extends PageRouteInfo<void> {
+  const UserProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          UserProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UserProfileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

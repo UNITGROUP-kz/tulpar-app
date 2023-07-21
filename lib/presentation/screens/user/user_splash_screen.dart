@@ -10,12 +10,13 @@ class UserSplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('User');
+    print('UserRouter');
 
     return AutoTabsRouter(
       routes: const [
         UserCarRouter(),
         UserOrderRouter(),
+        UserProfileRoute()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
@@ -32,7 +33,9 @@ class UserSplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   BottomItem(icon: Icons.garage, index: 0),
-                  BottomItem(icon: Icons.garage, index:  1,)
+                  BottomItem(icon: Icons.garage, index:  1,),
+                  BottomItem(icon: Icons.garage, index:  2,),
+
                 ],
               ),
             )

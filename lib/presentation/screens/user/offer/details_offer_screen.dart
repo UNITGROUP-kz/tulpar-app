@@ -1,22 +1,22 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:garage/data/models/dictionary/order_model.dart';
-import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../data/models/dictionary/offer_model.dart';
+
 @RoutePage()
-class DetailsOrderScreen extends StatefulWidget {
+class DetailsOfferScreen extends StatefulWidget {
 
-  final OrderModel order;
+  final OfferModel offer;
 
-  const DetailsOrderScreen({super.key, required this.order});
+  const DetailsOfferScreen({super.key, required this.offer});
 
   @override
-  State<DetailsOrderScreen> createState() => _DetailsOrderScreenState();
+  State<DetailsOfferScreen> createState() => _DetailsOfferScreenState();
 }
 
-class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
+class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
   late ScrollController _scrollController;
 
   @override
@@ -35,22 +35,15 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     context.router.pop();
   }
 
-  _toOffers() {
-    context.router.navigate(
-      OrderOffersRoute(order: widget.order)
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    print('Details Order');
+    print('Details Offer');
     return Stack(
       children: [
         ScreenDefaultTemplate(
           scrollController: _scrollController,
           children: [
-            Text(widget.order.title),
-            ElevatedButton(onPressed: _toOffers, child: Text('Offers'))
+            Text(widget.offer.id.toString())
           ],
         ),
         Padding(

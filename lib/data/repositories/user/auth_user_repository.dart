@@ -47,7 +47,9 @@ class AuthUserRepository {
     }
 
     static Future clear() async {
+      await IsarService.I.writeTxn(() async {
         await IsarService.I.authModels.clear();
+      });
     }
 
     static Future<AuthModel?> read() async {

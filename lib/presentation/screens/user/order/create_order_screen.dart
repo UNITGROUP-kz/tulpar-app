@@ -56,7 +56,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     return form.isValid;
   }
 
-  _listenerState(context, CreateOrderState state) {
+  _listenerState(BuildContext context, CreateOrderState state) {
     if(state.status == FetchStatus.error) {
       showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     } else if(state.status == FetchStatus.success) {

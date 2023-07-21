@@ -3,16 +3,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/models/dictionary/car_model.dart';
+import '../../../data/models/dictionary/order_model.dart';
 import '../../routing/router.dart';
 
-class CarCard extends StatelessWidget {
-  final CarModel car;
+class OrderCard extends StatelessWidget {
+  final OrderModel order;
 
-  const CarCard({super.key, required this.car});
+  const OrderCard({super.key, required this.order});
 
   _toDetails(BuildContext context) => () {
-    context.router.navigate(DetailsCarRoute(car: car));
+    context.router.navigate(DetailsOrderRoute(order: order));
   };
 
   @override
@@ -28,9 +28,10 @@ class CarCard extends StatelessWidget {
         width: double.infinity,
         child: Column(
           children: [
-            Text(car.name),
-            Text(car.modelName),
-            Text(car.vinNumber)
+            Text(order.title),
+            Text(order.status.name),
+            Text(order.part?.name ?? 'Неизвестно'),
+            Text(order.store?.name ?? 'Нет магазина')
           ],
         ),
       ),
