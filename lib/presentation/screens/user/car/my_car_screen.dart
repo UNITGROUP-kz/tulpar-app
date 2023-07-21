@@ -9,6 +9,7 @@ import 'package:garage/presentation/widgets/screen_templates/screen_default_temp
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../routing/router.dart';
+import '../../../widgets/cards/car_card.dart';
 
 @RoutePage()
 class MyCarScreen extends StatefulWidget {
@@ -98,31 +99,4 @@ class _MyCarScreenState extends State<MyCarScreen> {
       ],
     );
   }
-}
-
-class CarCard extends StatelessWidget {
-  final CarModel car;
-
-  const CarCard({super.key, required this.car});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10)
-      ),
-      width: double.infinity,
-      child: Column(
-        children: [
-          Text(car.name),
-          Text(car.modelName),
-          Text(car.vinNumber)
-        ],
-      ),
-    );
-  }
-
 }

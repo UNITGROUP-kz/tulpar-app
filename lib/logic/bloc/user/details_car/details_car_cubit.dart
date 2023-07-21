@@ -18,6 +18,7 @@ class DetailsCarCubit extends Cubit<DetailsCarState> {
     return DictionaryRepository.indexParts(params ?? IndexPartParams()).then((value) {
       replace(value, params == null || params.startRow == 0);
     }).catchError((error) {
+      print(error);
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

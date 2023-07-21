@@ -2,7 +2,7 @@
 import 'package:fform/fform.dart';
 
 enum TitleError {
-  empty, symbol;
+  empty,;
 }
 
 class TitleField extends FFormField {
@@ -11,7 +11,6 @@ class TitleField extends FFormField {
   @override
   TitleError? validator(value) {
     if(value.isEmpty) return TitleError.empty;
-    if(value.length != 17) return TitleError.symbol;
 
     return null;
   }

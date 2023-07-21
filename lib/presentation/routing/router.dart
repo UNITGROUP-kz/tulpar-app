@@ -50,6 +50,9 @@ class AppRouter extends _$AppRouter {
                     path: '',
                     page: MyCarRoute.page,
                   ),
+                  AutoRoute(
+                    page: DetailsCarRoute.page,
+                  ),
                 ]
               ),
               AutoRoute(

@@ -44,11 +44,9 @@ class _MultiValueListenableBuilderState extends State<MultiValueListenableBuilde
   @override
   void didUpdateWidget(MultiValueListenableBuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.valuesListenable != widget.valuesListenable) {
-      _removeListener();
-      _getValue();
-      _addListener();
-    }
+    _removeListener();
+    _getValue();
+    _addListener();
   }
 
   @override
@@ -67,15 +65,17 @@ class _MultiValueListenableBuilderState extends State<MultiValueListenableBuilde
   }
   
   _addListener() {
-    widget.valuesListenable.map((listenable) {
+    for (var listenable in widget.valuesListenable) {
+      print(listenable);
       listenable.addListener(_valueChanged);
-    });
+    }
   }
 
   _removeListener() {
-    widget.valuesListenable.map((listenable) {
+    for (var listenable in widget.valuesListenable) {
+      print(listenable);
       listenable.removeListener(_valueChanged);
-    });
+    }
   }
 
   @override

@@ -29,7 +29,7 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
 
   @override
   void initState() {
-    context.read<DetailsCarCubit>().fetch();
+    _onRefresh();
     _textEditingController = TextEditingController();
     _scrollController = ScrollController()..addListener(_listenerScroll);
     super.initState();
@@ -73,28 +73,41 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
     ));
   };
 
+  _back() {
+    context.router.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScreenDefaultTemplate(
-        scrollController: _scrollController,
-        onRefresh: _onRefresh,
-        children: [
-          TextField(controller: _textEditingController),
-          BlocConsumer<DetailsCarCubit, DetailsCarState>(
-            listener: _listenerState,
-            builder: (context, state) {
-              return Column(
-                children: [
-                  ...state.parts.map((e) {
-                    return PartTile(part: e, callback: _toOrder(e));
-                  }).toList(),
-                  if(state.status == FetchStatus) CupertinoActivityIndicator(),
+    return Stack(
+      children: [
+        ScreenDefaultTemplate(
+            scrollController: _scrollController,
+            onRefresh: _onRefresh,
+            children: [
+              TextField(controller: _textEditingController),
+              BlocConsumer<DetailsCarCubit, DetailsCarState>(
+                listener: _listenerState,
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      ...state.parts.map((e) {
+                        return PartTile(part: e, callback: _toOrder(e));
+                      }).toList(),
+                      if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
+                      if(state.status == FetchStatus.error) Text('Ошибка'),
+                    ],
+                  );
+                },
+              )
+            ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
+        ),
 
-                ],
-              );
-            },
-          )
-        ],
+      ],
     );
   }
 }

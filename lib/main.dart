@@ -10,6 +10,9 @@ import 'package:garage/firebase_options.dart';
 import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
+import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
+import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
+import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/logic/bloc/user/register/register_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
@@ -44,11 +47,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late AuthCubit authCubit;
+  late MyCarCubit myCarCubit;
   late AppRouter _appRouter;
 
   @override
   void initState() {
     authCubit = AuthCubit()..initial();
+    myCarCubit = MyCarCubit();
     _appRouter = AppRouter(authCubit);
     super.initState();
   }
@@ -58,14 +63,17 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          lazy: false,
+          // lazy: false,
           create: (context) => authCubit,
         ),
         BlocProvider(
-          create: (context) => MyCarCubit(),
+          create: (context) => RegisterCubit(authCubit),
         ),
         BlocProvider(
-          create: (context) => RegisterCubit(authCubit),
+          create: (context) => myCarCubit,
+        ),
+        BlocProvider(
+          create: (context) => DetailsCarCubit(),
         ),
         BlocProvider(
           create: (context) => ProducerCubit(),
@@ -75,6 +83,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => CurrentCityCubit()..initial(),
+        ),
+        BlocProvider(
+          create: (context) => CreateCarCubit(myCarCubit),
+        ),
+        BlocProvider(
+          create: (context) => CreateOrderCubit(),
         ),
       ],
       child: MaterialApp.router(

@@ -6,6 +6,7 @@ import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
@@ -28,6 +29,8 @@ class CreateOrderScreen extends StatefulWidget {
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _titleController;
   late TextEditingController _commentController;
+
+
 
 
   _createOrder() {
@@ -59,14 +62,25 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     } else if(state.status == FetchStatus.success) {
       context.router.navigate(SplashRouter(
         children: [
-          UserOrderRouter(
-              children: [
-                OrdersRoute()
-              ]
+          UserRouter(
+            children: [
+              UserOrderRouter(
+                  children: [
+                    OrdersRoute()
+                  ]
+              )
+            ]
           )
         ]
       ));
     }
+  }
+
+  @override
+  void initState() {
+    _titleController = TextEditingController();
+    _commentController = TextEditingController();
+    super.initState();
   }
 
   @override
@@ -82,10 +96,19 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               return ElevatedButton(
                 onPressed: () {},
                 child: CupertinoActivityIndicator()
-            );
+              );
             }
-            return ElevatedButton(
-                onPressed: _createOrder, child: Text('Create Order'));
+            return MultiValueListenableBuilder(
+              valuesListenable: [
+                _titleController
+              ],
+              builder: (context, value, child) {
+                return ElevatedButton(
+                    onPressed: value[0].text.isNotEmpty ? _createOrder : null,
+                    child: Text('Create Order')
+                );
+              }
+            );
           },
         )
       ],

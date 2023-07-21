@@ -12,14 +12,14 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: AutoRouter(
-          placeholder: (context) {
-            return Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              child: Center(child: CupertinoActivityIndicator()),
-            );
-          },
+          // placeholder: (context) {
+          //   return Container(
+          //     color: Colors.white,
+          //     height: MediaQuery.of(context).size.height,
+          //     width: double.infinity,
+          //     child: Center(child: CupertinoActivityIndicator()),
+          //   );
+          // },
         ),
       ),
     );

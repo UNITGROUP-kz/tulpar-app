@@ -90,32 +90,33 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
               return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
             }
         ),
-        MultiValueListenableBuilder(
-            valuesListenable: [
-              _vinController,
-              _producerController,
-              _carModelController
-            ],
-            builder: (context, value, child) {
-              return BlocConsumer<CreateCarCubit, CreateCarState>(
-                listener: _listener,
-                builder: (context, state) {
-                  if(state.status == FetchStatus.loading) {
-                    return ElevatedButton(
-                      onPressed: () {},
-                      child: CupertinoActivityIndicator()
-                    );
-                  }
+        BlocConsumer<CreateCarCubit, CreateCarState>(
+          listener: _listener,
+          builder: (context, state) {
+            if(state.status == FetchStatus.loading) {
+              return ElevatedButton(
+                  onPressed: () {},
+                  child: CupertinoActivityIndicator()
+              );
+            }
+            return MultiValueListenableBuilder(
+                valuesListenable: [
+                  _vinController,
+                  _producerController,
+                  _carModelController
+                ],
+                builder: (context, value, child) {
+                  print(value);
                   return ElevatedButton(
-                      onPressed: value[0].text.isNotEmpty
-                          && value[1] != null
+                      onPressed: value[0].text.isNotEmpty && value[1] != null
                           && value[2] != null ? _create : null,
                       child: Text('create')
                   );
-                },
-              );
-            }
-        ),
+                }
+            );
+          },
+        )
+
 
       ],
     );
