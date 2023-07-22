@@ -3,13 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
-import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'package:garage/presentation/widgets/cards/offer_card.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
 import '../../../../data/models/dictionary/order_model.dart';
 import '../../../../logic/bloc/user/order_offer/order_offer_cubit.dart';
-import '../../../widgets/cards/order_card.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
@@ -69,7 +67,7 @@ class _OrderOffersScreenState extends State<OrderOffersScreen> {
                     ...state.offers.map((offer) {
                       return OfferCard(offer: offer);
                     }).toList(),
-                    if(state.offers.isEmpty) Text('Нет предложений'),
+                    if(state.offers.isEmpty && state.status == FetchStatus.success) Text('Нет предложений'),
                     if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
                     if(state.status == FetchStatus.error) Text('Ошибка')
 

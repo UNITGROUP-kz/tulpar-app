@@ -10,6 +10,7 @@ import 'package:garage/presentation/widgets/screen_templates/screen_default_temp
 
 import '../../../../data/models/dictionary/offer_model.dart';
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
+import '../../../widgets/tiles/setting_tile.dart';
 
 @RoutePage()
 class StoreProfileScreen extends StatefulWidget {
@@ -51,6 +52,10 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
     ));
   }
 
+  _notificationSwitch(bool value) {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -76,10 +81,20 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
         SizedBox(height: 20,),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
-              return Tile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'));
+              return SettingsTile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'));
             }
         ),
-        Tile(
+        SettingsTile(
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+          label: 'Уведомления',
+          child: Switch(
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            value: true,
+            onChanged: _notificationSwitch,
+          ),
+          callback: _exit,
+        ),
+        SettingsTile(
           label: 'Выйти',
           child: Icon(
             Icons.exit_to_app_rounded,
@@ -87,38 +102,8 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
           ),
           callback: _exit,
         ),
+
       ],
     );
   }
-}
-
-class Tile extends StatelessWidget {
-  final String label;
-  final Widget? child;
-  final VoidCallback? callback;
-
-  const Tile({super.key, required this.label, this.child, this.callback});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: callback,
-      child: Container(
-        padding: EdgeInsets.all(15),
-        margin: EdgeInsets.symmetric(vertical: 5),
-        decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10)
-        ),
-        child: Row(
-          children: [
-            Expanded(child: Text(label)),
-            if(child != null) child!
-          ],
-        ),
-      ),
-    );
-  }
-
-
 }

@@ -14,6 +14,7 @@ class StoreSplashScreen extends StatelessWidget {
     return AutoTabsRouter(
       routes: const [
         StoreOrderRouter(),
+        StoreOfferRouter(),
         StoreProfileRoute()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
@@ -32,6 +33,7 @@ class StoreSplashScreen extends StatelessWidget {
                 children: [
                   BottomItem(icon: Icons.garage, index: 0),
                   BottomItem(icon: Icons.garage, index: 1,),
+                  BottomItem(icon: Icons.garage, index: 2,),
                 ],
               ),
             )

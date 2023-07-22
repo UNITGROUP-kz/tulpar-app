@@ -3,21 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
-import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
+import 'package:garage/presentation/widgets/cards/offer_card.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
-import '../../../../logic/bloc/store/orders/orders_cubit.dart';
-import '../../../widgets/cards/order_card.dart';
+import '../../../../logic/bloc/store/my_offers/my_offers_cubit.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
-class StoreOrdersScreen extends StatefulWidget {
+class MyOffersScreen extends StatefulWidget {
 
   @override
-  State<StoreOrdersScreen> createState() => _StoreOrdersScreenState();
+  State<MyOffersScreen> createState() => _MyOffersScreenState();
 }
 
-class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
+class _MyOffersScreenState extends State<MyOffersScreen> {
   late ScrollController _scrollController;
 
   @override
@@ -35,10 +34,10 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
   }
 
   Future _onRefresh() async {
-    return await context.read<StoreOrdersCubit>().fetch();
+    return await context.read<MyOffersCubit>().fetch();
   }
 
-  _listenerState(context, StoreOrdersState state) {
+  _listenerState(context, MyOffersState state) {
     if(state.status == FetchStatus.error) {
       showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     }
@@ -46,12 +45,12 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
 
   _listenerScroll() async {
     if(_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 200) {
-      final state = context.read<StoreOrdersCubit>().state;
+      final state = context.read<MyOffersCubit>().state;
 
       if(state.status != FetchStatus.loading) return;
 
-      final params = context.read<StoreOrdersCubit>().state.params;
-      await context.read<StoreOrdersCubit>().fetch(params?.copyWith(
+      final params = context.read<MyOffersCubit>().state.params;
+      await context.read<MyOffersCubit>().fetch(params?.copyWith(
           startRow: params.startRow + params.rowsPerPage
       ));
     }
@@ -59,19 +58,20 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('my-offers');
     return ScreenDefaultTemplate(
       scrollController: _scrollController,
       onRefresh: _onRefresh,
       children: [
-        BlocConsumer<StoreOrdersCubit, StoreOrdersState>(
+        BlocConsumer<MyOffersCubit, MyOffersState>(
           listener: _listenerState,
           builder: (context, state) {
             return Column(
               children: [
-                ...state.orders.map((order) {
-                  return OrderCard(order: order);
+                ...state.offers.map((offer) {
+                  return OfferCard(offer: offer);
                 }).toList(),
-                if(state.orders.isEmpty && state.status == FetchStatus.success) Text('Нет Заказов'),
+                if(state.offers.isEmpty && state.status == FetchStatus.success) Text('Нет Предложений'),
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
                 if(state.status == FetchStatus.error) Text('Ошибка')
               ],

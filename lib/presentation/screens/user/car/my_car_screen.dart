@@ -89,7 +89,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
                 ...state.cars.map((car) {
                   return CarCard(car: car);
                 }).toList(),
-                if(state.cars.isEmpty) Text('Нет Машин'),
+                if(state.cars.isEmpty && state.status == FetchStatus.success) Text('Нет Машин'),
 
                 if(state.status == FetchStatus.success) Container(
                     width: double.infinity,

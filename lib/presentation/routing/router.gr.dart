@@ -108,6 +108,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: StoreOrderScreen(),
       );
     },
+    StoreOfferRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: StoreOfferScreen(),
+      );
+    },
     PickerRouter.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -200,6 +206,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const ChangeStoreScreen(),
+      );
+    },
+    MyOffersRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: MyOffersScreen(),
       );
     },
   };
@@ -450,6 +462,20 @@ class StoreOrderRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'StoreOrderRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [StoreOfferScreen]
+class StoreOfferRouter extends PageRouteInfo<void> {
+  const StoreOfferRouter({List<PageRouteInfo>? children})
+      : super(
+          StoreOfferRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'StoreOfferRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -728,6 +754,20 @@ class ChangeStoreRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ChangeStoreRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [MyOffersScreen]
+class MyOffersRoute extends PageRouteInfo<void> {
+  const MyOffersRoute({List<PageRouteInfo>? children})
+      : super(
+          MyOffersRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyOffersRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

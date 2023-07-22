@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/guards/auth_guard.dart';
 import 'package:garage/presentation/screens/splash_screen.dart';
+import 'package:garage/presentation/screens/store/offers/my_offers_screen.dart';
 import 'package:garage/presentation/screens/user/car/create_car_screen.dart';
 import 'package:garage/presentation/screens/user/car/my_car_screen.dart';
 import 'package:garage/presentation/screens/user/offer/details_offer_screen.dart';
@@ -86,9 +87,14 @@ class AppRouter extends _$AppRouter {
         AutoRoute(path: 'store', page: StoreRouter.page,
             children: [
               AutoRoute(page: StoreOrderRouter.page, path: '',
-                  children: [
-                    AutoRoute(path: '', page: StoreOrdersRoute.page),
-                  ]
+                children: [
+                  AutoRoute(path: '', page: StoreOrdersRoute.page),
+                ]
+              ),
+              AutoRoute(page: StoreOfferRouter.page,
+                children: [
+                    AutoRoute(path: '', page: MyOffersRoute.page),
+                ]
               ),
               AutoRoute(page: StoreProfileRoute.page),
             ],
@@ -154,6 +160,15 @@ class StoreOrderScreen extends StatelessWidget {
     return AutoRouter();
   }
 }
+
+@RoutePage(name: 'StoreOfferRouter')
+class StoreOfferScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AutoRouter();
+  }
+}
+
 
 
 @RoutePage(name: 'PickerRouter')

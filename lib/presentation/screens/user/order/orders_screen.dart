@@ -70,7 +70,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ...state.orders.map((order) {
                   return OrderCard(order: order);
                 }).toList(),
-                if(state.orders.isEmpty) Text('Нет Заказов'),
+                if(state.orders.isEmpty && state.status == FetchStatus.success) Text('Нет Заказов'),
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
                 if(state.status == FetchStatus.error) Text('Ошибка')
               ],

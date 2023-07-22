@@ -24,6 +24,7 @@ import 'package:garage/presentation/routing/router.dart';
 
 import 'core/services/isar_service.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
+import 'logic/bloc/store/my_offers/my_offers_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
 
 // bool shouldUseFirebaseEmulator = true;
@@ -89,6 +90,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => myOrderCubit,
+        ),
+        BlocProvider(
+          create: (context) => MyOffersCubit(),
         ),
         BlocProvider(
           create: (context) => ChangeProfileCubit(authCubit),

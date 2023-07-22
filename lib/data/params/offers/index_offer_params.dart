@@ -21,4 +21,17 @@ class IndexOfferParams extends IndexParams {
     }..addAll(super.toData());
   }
 
+  IndexOfferParams copyWith({
+    int? rowsPerPage,
+    int? startRow,
+    bool? descending,
+    IndexOfferSortBy? sortBy
+  }) {
+    return IndexOfferParams(
+      startRow: startRow ?? this.startRow,
+      rowsPerPage: rowsPerPage ?? this.rowsPerPage,
+      descending: descending ?? this.descending,
+      sortBy: sortBy ?? this.sortBy
+    );
+  }
 }
