@@ -6,17 +6,18 @@ import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../logic/bloc/store/orders/orders_cubit.dart';
 import '../../../widgets/cards/order_card.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
-class OrdersScreen extends StatefulWidget {
+class StoreOrdersScreen extends StatefulWidget {
 
   @override
-  State<OrdersScreen> createState() => _OrdersScreenState();
+  State<StoreOrdersScreen> createState() => _StoreOrdersScreenState();
 }
 
-class _OrdersScreenState extends State<OrdersScreen> {
+class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
   late ScrollController _scrollController;
 
   @override
@@ -34,10 +35,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   Future _onRefresh() async {
-    return await context.read<MyOrderCubit>().fetch();
+    return await context.read<StoreOrdersCubit>().fetch();
   }
 
-  _listenerState(context, MyOrderState state) {
+  _listenerState(context, StoreOrdersState state) {
     if(state.status == FetchStatus.error) {
       showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     }
@@ -45,12 +46,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   _listenerScroll() async {
     if(_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 200) {
-      final state = context.read<MyOrderCubit>().state;
+      final state = context.read<StoreOrdersCubit>().state;
 
       if(state.status != FetchStatus.loading) return;
 
-      final params = state.params;
-      await context.read<MyOrderCubit>().fetch(params?.copyWith(
+      final params = context.read<StoreOrdersCubit>().state.params;
+      await context.read<StoreOrdersCubit>().fetch(params?.copyWith(
           startRow: params.startRow + params.rowsPerPage
       ));
     }
@@ -62,7 +63,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
       scrollController: _scrollController,
       onRefresh: _onRefresh,
       children: [
-        BlocConsumer<MyOrderCubit, MyOrderState>(
+        BlocConsumer<StoreOrdersCubit, StoreOrdersState>(
           listener: _listenerState,
           builder: (context, state) {
             return Column(

@@ -35,6 +35,10 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
     context.router.pop();
   }
 
+  _accept() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Details Offer');
@@ -43,7 +47,8 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
         ScreenDefaultTemplate(
           scrollController: _scrollController,
           children: [
-            Text(widget.offer.id.toString())
+            Text(widget.offer.id.toString()),
+            ElevatedButton(onPressed: _accept, child: Text('Accept'))
           ],
         ),
         Padding(

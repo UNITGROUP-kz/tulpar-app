@@ -39,6 +39,8 @@ class IndexOrderParams extends IndexParams {
       'vin': vin,
       'status': status?.name
     }..addAll(super.toData());
+
+
   }
 
   IndexOrderParams copyWith({

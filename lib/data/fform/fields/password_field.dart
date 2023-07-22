@@ -5,11 +5,13 @@ enum PasswordError {
 }
 
 class PasswordField extends FFormField {
-  PasswordField.dirty(super.value) : super.dirty();
+
+  final bool isRequired;
+
+  PasswordField.dirty(super.value, [this.isRequired = true]) : super.dirty();
 
   @override
   PasswordError? validator(value) {
-    if(value.isEmpty) return PasswordError.empty;
-    return null;
+    return isRequired && value.isEmpty ? PasswordError.empty : null;
   }
 }

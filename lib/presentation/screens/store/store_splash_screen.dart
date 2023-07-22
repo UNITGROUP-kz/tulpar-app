@@ -7,18 +7,14 @@ import 'package:garage/presentation/routing/router.dart';
 import '../../widgets/navigation/bottom_item.dart';
 
 
-@RoutePage(name: 'UserRouter')
-class UserSplashScreen extends StatelessWidget {
-
+@RoutePage(name: 'StoreRouter')
+class StoreSplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print('UserRouter');
-
     return AutoTabsRouter(
       routes: const [
-        UserCarRouter(),
-        UserOrderRouter(),
-        UserProfileRoute()
+        StoreOrderRouter(),
+        StoreProfileRoute()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
         opacity: animation,
@@ -36,8 +32,6 @@ class UserSplashScreen extends StatelessWidget {
                 children: [
                   BottomItem(icon: Icons.garage, index: 0),
                   BottomItem(icon: Icons.garage, index: 1,),
-                  BottomItem(icon: Icons.garage, index: 2,),
-
                 ],
               ),
             )
@@ -47,4 +41,3 @@ class UserSplashScreen extends StatelessWidget {
     );
   }
 }
-

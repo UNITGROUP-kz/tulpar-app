@@ -66,14 +66,12 @@ class _MultiValueListenableBuilderState extends State<MultiValueListenableBuilde
   
   _addListener() {
     for (var listenable in widget.valuesListenable) {
-      print(listenable);
       listenable.addListener(_valueChanged);
     }
   }
 
   _removeListener() {
     for (var listenable in widget.valuesListenable) {
-      print(listenable);
       listenable.removeListener(_valueChanged);
     }
   }

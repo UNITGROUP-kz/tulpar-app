@@ -8,16 +8,19 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
-@RoutePage()
-class UserProfileScreen extends StatefulWidget {
+import '../../../../data/models/dictionary/offer_model.dart';
+import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
 
-  const UserProfileScreen({super.key});
+@RoutePage()
+class StoreProfileScreen extends StatefulWidget {
+
+  const StoreProfileScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<StoreProfileScreen> createState() => _StoreProfileScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _StoreProfileScreenState extends State<StoreProfileScreen> {
   late ScrollController _scrollController;
 
   @override
@@ -33,18 +36,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   _exit() {
-    context.read<AuthCubit>().logout();
+    context.read<AuthStoreCubit>().logout();
   }
 
   _change() {
     context.router.navigate(SplashRouter(
-      children: [
-        UserFormRouter(
-          children: [
-            ChangeProfileRoute()
-          ]
-        )
-      ]
+        children: [
+          StoreFormRouter(
+              children: [
+                ChangeStoreRoute()
+              ]
+          )
+        ]
     ));
   }
 
@@ -61,9 +64,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: MediaQuery.of(context).size.width * 0.35,
                 child: CachedNetworkImage(
-                    imageUrl: state.user?.image ?? '',
-                    placeholder: (context, String val) => CupertinoActivityIndicator(),
-                    errorWidget: (context, String val, err) => Icon(Icons.person),
+                  imageUrl: state.user?.image ?? '',
+                  placeholder: (context, String val) => CupertinoActivityIndicator(),
+                  errorWidget: (context, String val, err) => Icon(Icons.person),
                 ),
               ),
             );
@@ -77,12 +80,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             }
         ),
         Tile(
-            label: 'Выйти',
-            child: Icon(
-              Icons.exit_to_app_rounded,
-              color: Colors.red.shade800,
-            ),
-            callback: _exit,
+          label: 'Выйти',
+          child: Icon(
+            Icons.exit_to_app_rounded,
+            color: Colors.red.shade800,
+          ),
+          callback: _exit,
         ),
       ],
     );
@@ -104,8 +107,8 @@ class Tile extends StatelessWidget {
         padding: EdgeInsets.all(15),
         margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10)
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(10)
         ),
         child: Row(
           children: [

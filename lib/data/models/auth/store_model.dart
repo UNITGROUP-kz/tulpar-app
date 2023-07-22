@@ -1,9 +1,13 @@
 import 'package:garage/core/utils/parser.dart';
+import 'package:isar/isar.dart';
 
+part 'store_model.g.dart';
+
+@collection
 class StoreModel {
-  final int id;
+  final Id id;
   final String name;
-  final String description;
+  final String? description;
   final String phone;
   final String? image;
   final int rating;

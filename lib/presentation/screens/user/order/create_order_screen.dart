@@ -83,34 +83,46 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     super.initState();
   }
 
+  _back() {
+    context.router.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScreenDefaultTemplate(
+    return Stack(
       children: [
-        TextField(controller: _titleController),
-        TextField(controller: _commentController),
-        BlocConsumer<CreateOrderCubit, CreateOrderState>(
-          listener: _listenerState,
-          builder: (context, state) {
-            if(state.status == FetchStatus.loading) {
-              return ElevatedButton(
-                onPressed: () {},
-                child: CupertinoActivityIndicator()
-              );
-            }
-            return MultiValueListenableBuilder(
-              valuesListenable: [
-                _titleController
-              ],
-              builder: (context, value, child) {
-                return ElevatedButton(
-                    onPressed: value[0].text.isNotEmpty ? _createOrder : null,
-                    child: Text('Create Order')
+        ScreenDefaultTemplate(
+          children: [
+            TextField(controller: _titleController),
+            TextField(controller: _commentController),
+            BlocConsumer<CreateOrderCubit, CreateOrderState>(
+              listener: _listenerState,
+              builder: (context, state) {
+                if(state.status == FetchStatus.loading) {
+                  return ElevatedButton(
+                    onPressed: () {},
+                    child: CupertinoActivityIndicator()
+                  );
+                }
+                return MultiValueListenableBuilder(
+                  valuesListenable: [
+                    _titleController
+                  ],
+                  builder: (context, value, child) {
+                    return ElevatedButton(
+                        onPressed: value[0].text.isNotEmpty ? _createOrder : null,
+                        child: Text('Create Order')
+                    );
+                  }
                 );
-              }
-            );
-          },
-        )
+              },
+            )
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
+        ),
       ],
     );
   }

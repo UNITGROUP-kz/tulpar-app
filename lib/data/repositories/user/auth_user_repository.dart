@@ -4,6 +4,7 @@ import 'package:garage/core/services/isar_service.dart';
 import 'package:garage/data/models/auth/auth_model.dart';
 import 'package:garage/data/models/auth/user_model.dart';
 import 'package:garage/data/params/auth/auth_user_params.dart';
+import 'package:garage/data/params/profile/change_profile_params.dart';
 import 'package:isar/isar.dart';
 
 
@@ -37,6 +38,14 @@ class AuthUserRepository {
 
           return auth!;
         });
+    
+    static Future<AuthModel> update(ChangeProfileParams params) => ApiService.I.post('/user/update', data: params.toData())
+      .then((value) async {
+        UserModel user = UserModel.fromMap(value.data['user']);
+        auth?.user.value = user;
+        await write(auth!);
+        return auth!;
+      });
 
     static Future write(AuthModel auth) async {
         await IsarService.I.writeTxn(() async {

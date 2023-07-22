@@ -10,6 +10,9 @@ import 'package:garage/firebase_options.dart';
 import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
+import 'package:garage/logic/bloc/store/change_store/change_store_cubit.dart';
+import 'package:garage/logic/bloc/store/orders/orders_cubit.dart';
+import 'package:garage/logic/bloc/user/change_profile/change_profile_cubit.dart';
 import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
@@ -20,6 +23,7 @@ import 'package:garage/logic/bloc/user/register/register_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 
 import 'core/services/isar_service.dart';
+import 'logic/bloc/store/auth/auth_store_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
 
 // bool shouldUseFirebaseEmulator = true;
@@ -49,6 +53,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late AuthCubit authCubit;
+  late AuthStoreCubit authStoreCubit;
   late MyCarCubit myCarCubit;
   late MyOrderCubit myOrderCubit;
   late AppRouter _appRouter;
@@ -56,9 +61,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     authCubit = AuthCubit()..initial();
+    authStoreCubit = AuthStoreCubit()..initial();
+
     myCarCubit = MyCarCubit();
     myOrderCubit = MyOrderCubit();
-    _appRouter = AppRouter(authCubit);
+    _appRouter = AppRouter(authCubit, authStoreCubit);
     super.initState();
   }
 
@@ -71,6 +78,10 @@ class _MyAppState extends State<MyApp> {
           create: (context) => authCubit,
         ),
         BlocProvider(
+          lazy: false,
+          create: (context) => authStoreCubit,
+        ),
+        BlocProvider(
           create: (context) => RegisterCubit(authCubit),
         ),
         BlocProvider(
@@ -78,6 +89,12 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => myOrderCubit,
+        ),
+        BlocProvider(
+          create: (context) => ChangeProfileCubit(authCubit),
+        ),
+        BlocProvider(
+          create: (context) => ChangeStoreCubit(authStoreCubit),
         ),
         BlocProvider(
           create: (context) => OrderOfferCubit(),
@@ -100,6 +117,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => CreateOrderCubit(myOrderCubit),
         ),
+        BlocProvider(
+          create: (context) => StoreOrdersCubit(),
+        )
       ],
       child: MaterialApp.router(
         routerConfig: _appRouter.config(),

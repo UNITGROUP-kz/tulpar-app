@@ -76,48 +76,60 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
     }
   }
 
+  _back() {
+    context.router.pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ScreenDefaultTemplate(
+    return Stack(
       children: [
-        TextField(controller: _vinController),
-        ProducerPickerWidget(label: 'Producer', controller: _producerController),
-        ValueListenableBuilder(
-            valueListenable: _producerController,
-            builder: (context, value, child) {
-              if(value == null) return Container();
-
-              return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
-            }
-        ),
-        BlocConsumer<CreateCarCubit, CreateCarState>(
-          listener: _listener,
-          builder: (context, state) {
-            if(state.status == FetchStatus.loading) {
-              return ElevatedButton(
-                  onPressed: () {},
-                  child: CupertinoActivityIndicator()
-              );
-            }
-            return MultiValueListenableBuilder(
-                valuesListenable: [
-                  _vinController,
-                  _producerController,
-                  _carModelController
-                ],
+        ScreenDefaultTemplate(
+          children: [
+            TextField(controller: _vinController),
+            ProducerPickerWidget(label: 'Producer', controller: _producerController),
+            ValueListenableBuilder(
+                valueListenable: _producerController,
                 builder: (context, value, child) {
-                  print(value);
+                  if(value == null) return Container();
+
+                  return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
+                }
+            ),
+            BlocConsumer<CreateCarCubit, CreateCarState>(
+              listener: _listener,
+              builder: (context, state) {
+                if(state.status == FetchStatus.loading) {
                   return ElevatedButton(
-                      onPressed: value[0].text.isNotEmpty && value[1] != null
-                          && value[2] != null ? _create : null,
-                      child: Text('create')
+                      onPressed: () {},
+                      child: CupertinoActivityIndicator()
                   );
                 }
-            );
-          },
-        )
+                return MultiValueListenableBuilder(
+                    valuesListenable: [
+                      _vinController,
+                      _producerController,
+                      _carModelController
+                    ],
+                    builder: (context, value, child) {
+                      print(value);
+                      return ElevatedButton(
+                          onPressed: value[0].text.isNotEmpty && value[1] != null
+                              && value[2] != null ? _create : null,
+                          child: Text('create')
+                      );
+                    }
+                );
+              },
+            )
 
 
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
+        ),
       ],
     );
   }

@@ -48,6 +48,10 @@ class _MyCarScreenState extends State<MyCarScreen> {
 
   _listenerScroll() async {
     if(_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 200) {
+      final state = context.read<MyCarCubit>().state;
+
+      if(state.status != FetchStatus.loading) return;
+
       final params = context.read<MyCarCubit>().state.params;
       await context.read<MyCarCubit>().fetch(params?.copyWith(
           startRow: params.startRow + params.rowsPerPage
@@ -56,6 +60,8 @@ class _MyCarScreenState extends State<MyCarScreen> {
   }
 
   _addCar() {
+    // context.router.popUntil((route) => false);
+    print(context.router.current.name);
     context.router.navigate(SplashRouter(
       children: [
         UserFormRouter(
