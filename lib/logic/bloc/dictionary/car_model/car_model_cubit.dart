@@ -16,17 +16,17 @@ class CarModelCubit extends Cubit<CarModelState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexCarModels(params ?? IndexCarModelParams()).then((value) {
-      print('$params ${params?.startRow}');
-      replace(value, params == null || params.startRow == 0);
+      replace(value, params);
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });
   }
 
-  replace(List<CarModelModel> carModels, bool isReplace) {
+  replace(List<CarModelModel> carModels, IndexCarModelParams? params) {
     emit(state.copyWith(
         status: FetchStatus.success,
-        carModels: isReplace ? carModels : [...state.carModels, ...carModels],
+        params: params,
+        carModels: params == null || params.startRow == 0 ? carModels : [...state.carModels, ...carModels],
     ));
   }
 }

@@ -8,6 +8,7 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../data/models/dictionary/city_model.dart';
 import '../../../widgets/tiles/setting_tile.dart';
 
 @RoutePage()
@@ -54,6 +55,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   }
 
+  _changeCity() async {
+    final city = await context.router.push(SplashRouter(
+      children: [
+        PickerRouter(
+          children: [
+            CityPickerRoute()
+          ]
+        )
+      ]
+    ));
+    print(city);
+
+    if(city != null) context.read<CurrentCityCubit>().change(city as CityModel);
+  }
+
+  _toDocument() {
+    context.router.navigate(DocumentRouter(
+      children: [
+        DocumentsRoute()
+      ]
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -79,7 +103,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         SizedBox(height: 20,),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
-              return SettingsTile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'));
+              return SettingsTile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'), callback: _changeCity,);
             }
         ),
         SettingsTile(
@@ -90,8 +114,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             value: true,
             onChanged: _notificationSwitch,
           ),
-          callback: _exit,
         ),
+        SettingsTile(label: 'Документы', child: Icon(Icons.insert_drive_file_sharp, color: Colors.grey), callback: _toDocument),
         SettingsTile(
             label: 'Выйти',
             child: Icon(

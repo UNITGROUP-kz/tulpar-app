@@ -41,26 +41,33 @@ class ProducerPickerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label),
         SizedBox(height: 5),
         InkWell(
           onTap: _toProducerScreen(context),
           child: Container(
+            height: 55,
+
             width: double.infinity,
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Theme.of(context).colorScheme.primary,
-              )
+              ),
+              borderRadius: BorderRadius.circular(10)
             ),
-            child: ValueListenableBuilder(
-              valueListenable: controller ?? ProducerController(),
-              builder: (context, value, child) {
-                return Text(
-                  value?.name ?? 'Не выбрано'
-                );
-              }
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: ValueListenableBuilder(
+                valueListenable: controller ?? ProducerController(),
+                builder: (context, value, child) {
+                  return Text(
+                    value?.name ?? 'Не выбрано'
+                  );
+                }
+              ),
             ),
           ),
         ),

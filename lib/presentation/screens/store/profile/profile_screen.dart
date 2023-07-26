@@ -8,6 +8,7 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../data/models/dictionary/city_model.dart';
 import '../../../../data/models/dictionary/offer_model.dart';
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
 import '../../../widgets/tiles/setting_tile.dart';
@@ -56,6 +57,29 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
 
   }
 
+  _changeCity() async {
+    final city = await context.router.push(SplashRouter(
+        children: [
+          PickerRouter(
+              children: [
+                CityPickerRoute()
+              ]
+          )
+        ]
+    ));
+
+    if(city != null) context.read<CurrentCityCubit>().change(city as CityModel);
+  }
+
+  _toDocument() {
+    context.router.navigate(DocumentRouter(
+        children: [
+          DocumentsRoute()
+        ]
+    ));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -81,7 +105,11 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
         SizedBox(height: 20,),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
-              return SettingsTile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'));
+              return SettingsTile(
+                  label: 'Город',
+                  child: Text(state.currentCity?.name ?? 'Не выбран'),
+                  callback: _changeCity,
+              );
             }
         ),
         SettingsTile(
@@ -92,8 +120,9 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
             value: true,
             onChanged: _notificationSwitch,
           ),
-          callback: _exit,
         ),
+        SettingsTile(label: 'Документы', child: Icon(Icons.insert_drive_file_sharp, color: Colors.grey), callback: _toDocument),
+
         SettingsTile(
           label: 'Выйти',
           child: Icon(

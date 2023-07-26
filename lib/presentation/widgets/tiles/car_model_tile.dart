@@ -15,10 +15,11 @@ class CarModelTile extends StatelessWidget {
     return InkWell(
       onTap: callback,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(carModel.name)
+              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+              child: Text(carModel.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500))
           ),
           Divider(thickness: 1)
         ],

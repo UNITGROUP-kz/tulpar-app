@@ -8,6 +8,7 @@ import 'package:garage/presentation/widgets/screen_templates/screen_default_temp
 
 import '../../../../data/models/dictionary/order_model.dart';
 import '../../../../logic/bloc/user/order_offer/order_offer_cubit.dart';
+import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
@@ -47,40 +48,29 @@ class _OrderOffersScreenState extends State<OrderOffersScreen> {
     }
   }
 
-  _back() {
-    context.router.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ScreenDefaultTemplate(
+      scrollController: _scrollController,
+      onRefresh: _onRefresh,
       children: [
-        ScreenDefaultTemplate(
-          scrollController: _scrollController,
-          onRefresh: _onRefresh,
-          children: [
-            BlocConsumer<OrderOfferCubit, OrderOfferState>(
-              listener: _listenerState,
-              builder: (context, state) {
-                return Column(
-                  children: [
-                    ...state.offers.map((offer) {
-                      return OfferCard(offer: offer);
-                    }).toList(),
-                    if(state.offers.isEmpty && state.status == FetchStatus.success) Text('Нет предложений'),
-                    if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
-                    if(state.status == FetchStatus.error) Text('Ошибка')
+        Header(title: 'Предложения'),
+        BlocConsumer<OrderOfferCubit, OrderOfferState>(
+          listener: _listenerState,
+          builder: (context, state) {
+            return Column(
+              children: [
+                ...state.offers.map((offer) {
+                  return OfferCard(offer: offer);
+                }).toList(),
+                if(state.offers.isEmpty && state.status == FetchStatus.success) Text('Нет предложений'),
+                if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
+                if(state.status == FetchStatus.error) Text('Ошибка')
 
-                  ],
-                );
-              },
-            )
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
+              ],
+            );
+          },
+        )
       ],
     );
   }

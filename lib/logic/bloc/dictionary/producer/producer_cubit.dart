@@ -16,16 +16,17 @@ class ProducerCubit extends Cubit<ProducerState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexProducers(params ?? IndexProducerParams()).then((value) {
-      replace(value, params == null || params.startRow == 0);
+      replace(value, params);
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });
   }
 
-  replace(List<ProducerModel> producers, bool isReplace) {
+  replace(List<ProducerModel> producers, IndexProducerParams? params) {
     emit(state.copyWith(
         status: FetchStatus.success,
-        producers: isReplace ? producers : [...state.producers, ...producers]
+        params: params,
+        producers: params == null || params.startRow == 0 ? producers : [...state.producers, ...producers]
     ));
   }
 }

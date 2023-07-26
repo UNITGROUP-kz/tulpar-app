@@ -1,14 +1,21 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/fform/forms/register_form.dart';
 import 'package:garage/logic/bloc/user/register/register_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/widgets/navigation/header.dart';
 import 'package:garage/presentation/widgets/navigation/step_widget.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../../data/fform/fields/password_field.dart';
 import '../../../../data/fform/forms/verify_form.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/form/fields/password_field.dart';
+import '../../../widgets/form/fields/pincode_field.dart';
+import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 
@@ -16,6 +23,9 @@ import '../../../widgets/snackbars/error_snackbar.dart';
 @RoutePage()
 class RegisterScreen extends StatefulWidget {
 
+  final String? emailPhone;
+
+  const RegisterScreen({super.key, this.emailPhone});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -52,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     _nameController = TextEditingController();
-    _emailPhoneController = TextEditingController();
+    _emailPhoneController = TextEditingController(text: widget.emailPhone);
     _passwordController = TextEditingController();
     _passwordConfirmController = TextEditingController();
     _pincodeController = TextEditingController();
@@ -121,8 +131,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  _back() {
-    context.router.pop();
+  _toPrivacy() {
+    context.router.navigate(DocumentRouter(
+      children: [
+        PrivacyRoute()
+      ]
+    ));
   }
 
 
@@ -130,35 +144,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            IconButton(
-                onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-            Center(
-              child: BlocConsumer<RegisterCubit, RegisterState>(
-                listener: _listener,
-                builder: (context, state) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+        child: BlocConsumer<RegisterCubit, RegisterState>(
+          listener: _listener,
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Header(title: 'Регистрация'),
+                  StepWidget(maxStep: 2, currentStep: state.status == RegisterStatusState.register? 1 : 2),
+                  Spacer(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      StepWidget(maxStep: 2, currentStep: state.status == RegisterStatusState.register? 1 : 2),
                       if (state.status == RegisterStatusState.register) ...[
-                        TextField(
+                        TextFieldWidget(
+                          label: 'Имя',
                           controller: _nameController,
                         ),
-                        TextField(
+                        SizedBox(height: 10),
+                        TextFieldWidget(
+                          label: 'Email или Телефон',
                           controller: _emailPhoneController,
                         ),
-                        TextField(
+                        SizedBox(height: 10),
+                        PasswordFieldWidget(
+                          label: 'Пароль',
                           controller: _passwordController,
                         ),
-                        TextField(
+                        SizedBox(height: 10),
+                        PasswordFieldWidget(
+                          label: 'Повторите пароль',
                           controller: _passwordConfirmController,
                         ),
-                        if (state.isLoading) ElevatedButton(
+                        SizedBox(height: 10),
+                        if (state.isLoading) ElevatedButtonWidget(
                             onPressed: () {},
                             child: CupertinoActivityIndicator()
-                        ) else ElevatedButton(
+                        ) else ElevatedButtonWidget(
                             onPressed: _submitRegister,
                             child: Text('Регистрация')
                         )
@@ -169,20 +193,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           length: 6,
                           controller: _pincodeController,
                         ),
-                        if (state.isLoading) ElevatedButton(
+                        SizedBox(height: 10),
+                        if (state.isLoading) ElevatedButtonWidget(
                             onPressed: () {},
                             child: CupertinoActivityIndicator()
-                        ) else ElevatedButton(
+                        ) else ElevatedButtonWidget(
                             onPressed: _submitVerify,
                             child: Text('Верификация')
-                        )
+                        ),
+
                       ],
+                      SizedBox(height: 10),
+                      Text.rich(TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Регистрируясь вы соглашаетесь с ',
+                            ),
+                            TextSpan(
+                                text: 'Политикой конфиденциальности',
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor
+                                ),
+                                recognizer: TapGestureRecognizer()..onTap = _toPrivacy
+                            ),
+                            TextSpan(
+                              text: ' приложения'
+                            )
+                          ]
+                      ), textAlign: TextAlign.center,),
                     ],
-                  );
-                },
+                  ),
+                  Spacer(),
+                ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

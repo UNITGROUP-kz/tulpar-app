@@ -1,14 +1,14 @@
 class ChangeProfileParams {
   final String name;
-  final String? email;
-  final String? phone;
-  final String? password;
+  final String email;
+  final String phone;
+  final String password;
 
   ChangeProfileParams({
     required this.name,
-    this.email,
-    this.phone,
-    this.password,
+    required this.email,
+    required this.phone,
+    required this.password,
   });
 
   toData() {
@@ -16,13 +16,13 @@ class ChangeProfileParams {
       'name': name,
     };
 
-    if(phone != null) {
+    if(phone.isNotEmpty) {
       data.addAll({'phone': phone ?? ''});
     }
-    if(password != null) {
+    if(password.isNotEmpty) {
       data.addAll({'password': password ?? ''});
     }
-    if(email != null) {
+    if(email.isNotEmpty) {
       data.addAll({'email': email ?? ''});
     }
     print(data);

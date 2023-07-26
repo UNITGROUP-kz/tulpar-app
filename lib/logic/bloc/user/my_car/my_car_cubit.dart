@@ -6,10 +6,14 @@ import 'package:garage/data/models/error_model.dart';
 import 'package:garage/data/params/car/index_car_params.dart';
 import 'package:garage/data/repositories/user/car_user_repository.dart';
 
+import '../auth/auth_cubit.dart';
+
 part 'my_car_state.dart';
 
 class MyCarCubit extends Cubit<MyCarState> {
-  MyCarCubit() : super(MyCarState());
+  final AuthCubit authCubit;
+
+  MyCarCubit(this.authCubit) : super(MyCarState());
 
   Future fetch([IndexMyCarParams? params]) async {
     if(state.status == FetchStatus.loading) return;

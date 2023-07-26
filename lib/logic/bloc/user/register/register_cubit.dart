@@ -37,7 +37,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         phone: Check.isPhone(emailPhone) ? emailPhone : null,
         type: Check.isEmail(emailPhone)? AuthorizationRequestType.email: AuthorizationRequestType.phone,
     )).then((value) {
-      emit(state.copyWith(isLoading: false, status: RegisterStatusState.verify));
+      toVerify();
     }).catchError((error) {
       emit(state.copyWith(isLoading: false, error: ErrorModel.parse(error)));
     });
@@ -46,7 +46,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   verify(String emailPhone, String code) async {
     if(state.isLoading) return;
-    emit(RegisterState(isLoading: true));
+    emit(state.copyWith(isLoading: true));
 
     await AuthUserRepository.code(ConfirmUserParams(
       email: Check.isEmail(emailPhone) ? emailPhone : null,
@@ -59,5 +59,9 @@ class RegisterCubit extends Cubit<RegisterState> {
       print(error);
       emit(state.copyWith(isLoading: false, error: ErrorModel.parse(error)));
     });
+  }
+
+  toVerify() {
+    emit(state.copyWith(isLoading: false, status: RegisterStatusState.verify));
   }
 }

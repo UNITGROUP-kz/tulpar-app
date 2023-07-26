@@ -6,11 +6,13 @@ import 'package:garage/data/repositories/store/offer_store_repository.dart';
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/error_model.dart';
 import '../../../../data/params/offers/index_offer_params.dart';
+import '../../user/auth/auth_cubit.dart';
 
 part 'my_offers_state.dart';
 
 class MyOffersCubit extends Cubit<MyOffersState> {
-  MyOffersCubit() : super(MyOffersState());
+  final AuthCubit authCubit;
+  MyOffersCubit(this.authCubit) : super(MyOffersState());
 
   Future fetch([IndexOfferParams? params]) async {
     if(state.status == FetchStatus.loading) return;

@@ -1,4 +1,5 @@
 import 'package:garage/core/services/isar_service.dart';
+import 'package:garage/data/params/dictionary/index_city_params.dart';
 import 'package:isar/isar.dart';
 
 import '../../../core/services/api/api_service.dart';
@@ -9,7 +10,7 @@ class CityRepository {
   static CityInterceptor? interceptor;
   static CityModel? city;
 
-  static Future index() => ApiService.I.get('/cities')
+  static Future index(IndexCityParams params) => ApiService.I.get('/city', queryParameters: params.toData())
       .then((value) => CityModel.fromListMap(value.data['list']));
 
   static Future write(CityModel city) async {
@@ -19,7 +20,10 @@ class CityRepository {
   }
 
   static Future clear() async {
-    await IsarService.I.cityModels.clear();
+    await IsarService.I.writeTxn(() async {
+      await IsarService.I.cityModels.clear();
+    });
+
   }
 
   static Future<CityModel?> read() async {

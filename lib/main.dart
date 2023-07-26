@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:garage/core/services/api/api_service.dart';
 import 'package:garage/core/services/fb_auth_service.dart';
 import 'package:garage/core/services/fb_service.dart';
-import 'package:garage/firebase_options.dart';
 import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
@@ -16,6 +13,7 @@ import 'package:garage/logic/bloc/user/change_profile/change_profile_cubit.dart'
 import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
+import 'package:garage/logic/bloc/user/login/login_cubit.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'package:garage/logic/bloc/user/order_offer/order_offer_cubit.dart';
@@ -53,20 +51,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late AuthCubit authCubit;
-  late AuthStoreCubit authStoreCubit;
-  late MyCarCubit myCarCubit;
-  late MyOrderCubit myOrderCubit;
+  late AuthCubit _authCubit;
+  late AuthStoreCubit _authStoreCubit;
+  late RegisterCubit _registerCubit;
+  late MyCarCubit _myCarCubit;
+  late MyOrderCubit _myOrderCubit;
   late AppRouter _appRouter;
 
   @override
   void initState() {
-    authCubit = AuthCubit()..initial();
-    authStoreCubit = AuthStoreCubit()..initial();
+    _authCubit = AuthCubit()..initial();
+    _authStoreCubit = AuthStoreCubit()..initial();
+    _registerCubit = RegisterCubit(_authCubit);
 
-    myCarCubit = MyCarCubit();
-    myOrderCubit = MyOrderCubit();
-    _appRouter = AppRouter(authCubit, authStoreCubit);
+    _myCarCubit = MyCarCubit(_authCubit);
+    _myOrderCubit = MyOrderCubit(_authCubit);
+    _appRouter = AppRouter(_authCubit, _authStoreCubit);
     super.initState();
   }
 
@@ -76,36 +76,53 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(
           lazy: false,
-          create: (context) => authCubit,
+          create: (context) => _authCubit,
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => authStoreCubit,
+          create: (context) => _authStoreCubit,
         ),
         BlocProvider(
-          create: (context) => RegisterCubit(authCubit),
+          create: (context) => _registerCubit,
         ),
         BlocProvider(
-          create: (context) => myCarCubit,
+          create: (context) => LoginCubit(_authCubit, _registerCubit),
+        ),
+
+
+        //SCREEN WITH AUTH
+        BlocProvider(
+          create: (context) => _myCarCubit,
         ),
         BlocProvider(
-          create: (context) => myOrderCubit,
+          create: (context) => _myOrderCubit,
         ),
         BlocProvider(
-          create: (context) => MyOffersCubit(),
+          create: (context) => MyOffersCubit(_authCubit),
+        ),
+
+
+        //FORM
+        BlocProvider(
+          create: (context) => ChangeProfileCubit(_authCubit),
         ),
         BlocProvider(
-          create: (context) => ChangeProfileCubit(authCubit),
+          create: (context) => ChangeStoreCubit(_authStoreCubit),
         ),
         BlocProvider(
-          create: (context) => ChangeStoreCubit(authStoreCubit),
+          create: (context) => CreateCarCubit(_myCarCubit),
         ),
+        BlocProvider(
+          create: (context) => CreateOrderCubit(_myOrderCubit),
+        ),
+
         BlocProvider(
           create: (context) => OrderOfferCubit(),
         ),
         BlocProvider(
           create: (context) => DetailsCarCubit(),
         ),
+
         BlocProvider(
           create: (context) => ProducerCubit(),
         ),
@@ -113,14 +130,9 @@ class _MyAppState extends State<MyApp> {
           create: (context) => CarModelCubit(),
         ),
         BlocProvider(
-          create: (context) => CurrentCityCubit()..initial(),
+          create: (context) => CurrentCityCubit(_authCubit)..initial(),
         ),
-        BlocProvider(
-          create: (context) => CreateCarCubit(myCarCubit),
-        ),
-        BlocProvider(
-          create: (context) => CreateOrderCubit(myOrderCubit),
-        ),
+
         BlocProvider(
           create: (context) => StoreOrdersCubit(),
         )

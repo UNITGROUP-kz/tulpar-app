@@ -7,12 +7,17 @@ import 'package:garage/data/params/order/create_order_params.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
+import 'package:garage/presentation/widgets/form/fields/description_field.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/fform/forms/create_order_form.dart';
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/form/fields/text_field.dart';
+import '../../../widgets/form/pickers/city_picker.dart';
+import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
 class CreateOrderScreen extends StatefulWidget {
@@ -29,6 +34,7 @@ class CreateOrderScreen extends StatefulWidget {
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _titleController;
   late TextEditingController _commentController;
+  late CityController _cityController;
 
 
 
@@ -39,7 +45,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           title: _titleController.value.text,
           comment: _commentController.value.text,
           car: widget.car,
-          part: widget.part
+          part: widget.part,
+          city: _cityController.value!
       ));
     }
   }
@@ -48,9 +55,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     final form = CreateOrderForm.parse(title: _titleController.value.text);
 
     if (form.isInvalid) {
-      form.exceptions.forEach((element) {
+      for (var element in form.exceptions) {
         showErrorSnackBar(context, element.toString());
-      });
+      }
     }
 
     return form.isValid;
@@ -79,50 +86,66 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   @override
   void initState() {
     _titleController = TextEditingController();
+    _cityController = CityController();
     _commentController = TextEditingController();
     super.initState();
   }
 
-  _back() {
-    context.router.pop();
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _commentController.dispose();
+    _cityController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ScreenDefaultTemplate(
       children: [
-        ScreenDefaultTemplate(
-          children: [
-            TextField(controller: _titleController),
-            TextField(controller: _commentController),
-            BlocConsumer<CreateOrderCubit, CreateOrderState>(
-              listener: _listenerState,
-              builder: (context, state) {
-                if(state.status == FetchStatus.loading) {
-                  return ElevatedButton(
-                    onPressed: () {},
-                    child: CupertinoActivityIndicator()
-                  );
-                }
-                return MultiValueListenableBuilder(
-                  valuesListenable: [
-                    _titleController
-                  ],
-                  builder: (context, value, child) {
-                    return ElevatedButton(
-                        onPressed: value[0].text.isNotEmpty ? _createOrder : null,
-                        child: Text('Create Order')
-                    );
-                  }
+        Header(title: 'Создать заказ'),
+
+        TextFieldWidget(
+            isRequired: true,
+            label: 'Заголовок',
+            controller: _titleController
+        ),
+        SizedBox(height: 10),
+        DescriptionFieldWidget(
+            isRequired: true,
+            label: 'Описание',
+            controller: _commentController
+        ),
+        SizedBox(height: 10),
+        CityPickerWidget(
+          label: 'Город',
+          controller: _cityController
+        ),
+        SizedBox(height: 10),
+        BlocConsumer<CreateOrderCubit, CreateOrderState>(
+          listener: _listenerState,
+          builder: (context, state) {
+            if(state.status == FetchStatus.loading) {
+              return ElevatedButtonWidget(
+                onPressed: () {},
+                child: CupertinoActivityIndicator()
+              );
+            }
+            return MultiValueListenableBuilder(
+              valuesListenable: [
+                _titleController,
+                _commentController,
+                _cityController
+              ],
+              builder: (context, value, child) {
+                return ElevatedButtonWidget(
+                    onPressed: value[0].text.isNotEmpty && value[1].text.isNotEmpty && value[2] != null? _createOrder : null,
+                    child: Text('Создать заказ')
                 );
-              },
-            )
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
+              }
+            );
+          },
+        )
       ],
     );
   }

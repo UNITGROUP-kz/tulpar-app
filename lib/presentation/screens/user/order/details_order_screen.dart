@@ -5,6 +5,9 @@ import 'package:garage/data/models/dictionary/order_model.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/navigation/header.dart';
+
 @RoutePage()
 class DetailsOrderScreen extends StatefulWidget {
 
@@ -31,9 +34,6 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     super.dispose();
   }
 
-  _back() {
-    context.router.pop();
-  }
 
   _toOffers() {
     context.router.navigate(
@@ -44,19 +44,13 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
   @override
   Widget build(BuildContext context) {
     print('Details Order');
-    return Stack(
+    return ScreenDefaultTemplate(
+      scrollController: _scrollController,
       children: [
-        ScreenDefaultTemplate(
-          scrollController: _scrollController,
-          children: [
-            Text(widget.order.title),
-            ElevatedButton(onPressed: _toOffers, child: Text('Offers'))
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
+        Header(title: 'Заказ'),
+
+        Text(widget.order.title),
+        ElevatedButtonWidget(onPressed: _toOffers, child: Text('Offers'))
       ],
     );
   }

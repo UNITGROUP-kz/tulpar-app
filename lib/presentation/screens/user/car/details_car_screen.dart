@@ -10,6 +10,7 @@ import 'package:garage/presentation/widgets/tiles/part_model.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
@@ -73,41 +74,30 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
     ));
   };
 
-  _back() {
-    context.router.pop();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        ScreenDefaultTemplate(
-            scrollController: _scrollController,
-            onRefresh: _onRefresh,
-            children: [
-              TextField(controller: _textEditingController),
-              BlocConsumer<DetailsCarCubit, DetailsCarState>(
-                listener: _listenerState,
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      ...state.parts.map((e) {
-                        return PartTile(part: e, callback: _toOrder(e));
-                      }).toList(),
-                      if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
-                      if(state.status == FetchStatus.error) Text('Ошибка'),
-                    ],
-                  );
-                },
-              )
-            ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
-
-      ],
+    return ScreenDefaultTemplate(
+        scrollController: _scrollController,
+        onRefresh: _onRefresh,
+        children: [
+          Header(title: 'Машина'),
+          TextField(controller: _textEditingController),
+          BlocConsumer<DetailsCarCubit, DetailsCarState>(
+            listener: _listenerState,
+            builder: (context, state) {
+              return Column(
+                children: [
+                  ...state.parts.map((e) {
+                    return PartTile(part: e, callback: _toOrder(e));
+                  }).toList(),
+                  if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
+                  if(state.status == FetchStatus.error) Text('Ошибка'),
+                ],
+              );
+            },
+          )
+        ],
     );
   }
 }

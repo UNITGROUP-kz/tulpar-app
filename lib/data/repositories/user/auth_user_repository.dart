@@ -39,8 +39,7 @@ class AuthUserRepository {
           return auth!;
         });
     
-    static Future<AuthModel> update(ChangeProfileParams params) => ApiService.I.post('/user/update', data: params.toData())
-      .then((value) async {
+    static Future<AuthModel> update(ChangeProfileParams params) => ApiService.I.post('/user/update', data: params.toData()).then((value) async {
         UserModel user = UserModel.fromMap(value.data['user']);
         auth?.user.value = user;
         await write(auth!);

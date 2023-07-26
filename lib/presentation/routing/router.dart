@@ -15,12 +15,17 @@ import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
 import '../../data/models/dictionary/car_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
+import '../../data/models/dictionary/city_model.dart';
 import '../../data/models/dictionary/offer_model.dart';
 import '../../data/models/dictionary/order_model.dart';
 import '../../data/models/dictionary/part_model.dart';
 import '../../data/models/dictionary/producer_model.dart';
 import '../../logic/bloc/store/auth/auth_store_cubit.dart';
+import '../screens/documents/contract_offer_screen.dart';
+import '../screens/documents/documents_screen.dart';
+import '../screens/documents/privacy_screen.dart';
 import '../screens/picker/car_model_picker_screen.dart';
+import '../screens/picker/city_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
 import '../screens/store/auth/login_screen.dart';
 import '../screens/store/order/order_screen.dart';
@@ -81,6 +86,7 @@ class AppRouter extends _$AppRouter {
             children: [
               AutoRoute(page: ProducerPickerRoute.page),
               AutoRoute(page: CarModelPickerRoute.page),
+              AutoRoute(page: CityPickerRoute.page),
             ]
         ),
 
@@ -112,6 +118,16 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: LoginRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
     AutoRoute(page: StoreLoginRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
     AutoRoute(page: RegisterRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
+
+    AutoRoute(
+        page: DocumentRouter.page,
+        children: [
+          AutoRoute(page: DocumentsRoute.page, path: ''),
+          AutoRoute(page: PrivacyRoute.page),
+          AutoRoute(page: ContractOfferRoute.page),
+
+        ]
+    ),
 
     RedirectRoute(path: '*', redirectTo: '/'),
 

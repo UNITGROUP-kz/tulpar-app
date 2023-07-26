@@ -13,10 +13,13 @@ class CityInterceptor extends Interceptor {
       options.queryParameters.addAll({
         'city_id': city.id
       });
-    } else {
-      options.data.addAll({
-        'city_id': city.id
-      });
+    } else if(options.method == 'POST') {
+        print(options.data.runtimeType);
+      // if(options.data is FormData) {}
+      // else {
+      //   options.data.addAll({
+      //   'city_id': city.id
+      // });
     }
     
     super.onRequest(options, handler);

@@ -7,11 +7,14 @@ import 'package:garage/data/fform/forms/create_car_form.dart';
 import 'package:garage/data/params/car/create_car_params.dart';
 import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
-import 'package:garage/presentation/widgets/form/fields/car_model_picker.dart';
+import 'package:garage/presentation/widgets/form/fields/text_field.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
-import '../../../widgets/form/fields/producer_picker.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/form/pickers/producer_picker.dart';
+import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
 class CreateCarScreen extends StatefulWidget {
@@ -82,54 +85,52 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ScreenDefaultTemplate(
       children: [
-        ScreenDefaultTemplate(
-          children: [
-            TextField(controller: _vinController),
-            ProducerPickerWidget(label: 'Producer', controller: _producerController),
-            ValueListenableBuilder(
-                valueListenable: _producerController,
+        Header(title: 'Создать машину'),
+        TextFieldWidget(
+            isRequired: true,
+            label: 'VIN-code',
+            controller: _vinController
+        ),
+        SizedBox(height: 10),
+        ProducerPickerWidget(label: 'Producer', controller: _producerController),
+        SizedBox(height: 10),
+        ValueListenableBuilder(
+            valueListenable: _producerController,
+            builder: (context, value, child) {
+              if(value == null) return Container();
+              return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
+            }
+        ),
+        SizedBox(height: 10),
+        BlocConsumer<CreateCarCubit, CreateCarState>(
+          listener: _listener,
+          builder: (context, state) {
+            if(state.status == FetchStatus.loading) {
+              return ElevatedButtonWidget(
+                  onPressed: () {},
+                  child: CupertinoActivityIndicator()
+              );
+            }
+            return MultiValueListenableBuilder(
+                valuesListenable: [
+                  _vinController,
+                  _producerController,
+                  _carModelController
+                ],
                 builder: (context, value, child) {
-                  if(value == null) return Container();
-
-                  return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
-                }
-            ),
-            BlocConsumer<CreateCarCubit, CreateCarState>(
-              listener: _listener,
-              builder: (context, state) {
-                if(state.status == FetchStatus.loading) {
-                  return ElevatedButton(
-                      onPressed: () {},
-                      child: CupertinoActivityIndicator()
+                  return ElevatedButtonWidget(
+                      onPressed: value[0].text.isNotEmpty && value[1] != null
+                          && value[2] != null ? _create : null,
+                      child: Text('create')
                   );
                 }
-                return MultiValueListenableBuilder(
-                    valuesListenable: [
-                      _vinController,
-                      _producerController,
-                      _carModelController
-                    ],
-                    builder: (context, value, child) {
-                      print(value);
-                      return ElevatedButton(
-                          onPressed: value[0].text.isNotEmpty && value[1] != null
-                              && value[2] != null ? _create : null,
-                          child: Text('create')
-                      );
-                    }
-                );
-              },
-            )
+            );
+          },
+        )
 
 
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
       ],
     );
   }

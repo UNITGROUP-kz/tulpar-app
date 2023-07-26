@@ -19,26 +19,29 @@ class StepWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: List.generate(maxStep, (index) {
-        print(index);
-        return Expanded(
-          child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 5,
-                    decoration: BoxDecoration(
-                        color: index + 1 <= currentStep? focusedColor: disableColor,
-                        borderRadius: BorderRadius.circular(20)
+    return Container(
+
+      child: Row(
+        children: List.generate(maxStep, (index) {
+          print(index);
+          return Expanded(
+            child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 5,
+                      decoration: BoxDecoration(
+                          color: index + 1 <= currentStep? focusedColor: disableColor,
+                          borderRadius: BorderRadius.circular(20)
+                      ),
                     ),
                   ),
-                ),
-                if(maxStep > index + 1) SizedBox(width: 5),
-              ]
-          ),
-        );
-      })
+                  if(maxStep > index + 1) SizedBox(width: 5),
+                ]
+            ),
+          );
+        })
+      ),
     );
 
   }

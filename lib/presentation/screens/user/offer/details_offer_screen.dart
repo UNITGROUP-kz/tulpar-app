@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
 import '../../../../data/models/dictionary/offer_model.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
 class DetailsOfferScreen extends StatefulWidget {
@@ -31,10 +33,6 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
     super.dispose();
   }
 
-  _back() {
-    context.router.pop();
-  }
-
   _accept() {
 
   }
@@ -42,19 +40,12 @@ class _DetailsOfferScreenState extends State<DetailsOfferScreen> {
   @override
   Widget build(BuildContext context) {
     print('Details Offer');
-    return Stack(
+    return ScreenDefaultTemplate(
+      scrollController: _scrollController,
       children: [
-        ScreenDefaultTemplate(
-          scrollController: _scrollController,
-          children: [
-            Text(widget.offer.id.toString()),
-            ElevatedButton(onPressed: _accept, child: Text('Accept'))
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
+        Header(title: 'Предложение'),
+        Text(widget.offer.id.toString()),
+        ElevatedButtonWidget(onPressed: _accept, child: Text('Accept'))
       ],
     );
   }

@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/fform/forms/store_login_form.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/widgets/form/fields/password_field.dart';
+import 'package:garage/presentation/widgets/form/fields/phone_field.dart';
 
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
+import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 
@@ -67,6 +70,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
           context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     }
     else if(state.auth != null) {
+      print(state.auth);
       context.router.navigate(
           SplashRouter(
               children: [
@@ -90,29 +94,36 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
+              Text('Авторизация Магазина', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              PhoneFieldWidget(
+                label: 'Телефон',
                 controller: _phoneController,
               ),
-              TextField(
+              SizedBox(height: 10),
+              PasswordFieldWidget(
+                label: 'Пароль',
                 controller: _passwordController,
               ),
+              SizedBox(height: 10),
               BlocConsumer<AuthStoreCubit, AuthStoreState>(
                 listener: _listener,
                 builder: (context, state) {
-                  if(state.isLoading) return ElevatedButton(
+                  if(state.isLoading) return ElevatedButtonWidget(
                       onPressed: () {},
                       child: CupertinoActivityIndicator()
                   );
-                  return ElevatedButton(
+                  return ElevatedButtonWidget(
                       onPressed: _submit,
                       child: Text('Авторизоваться')
                   );
                 },
               ),
+              SizedBox(height: 10),
               Text.rich(TextSpan(
                   children: [
                     TextSpan(

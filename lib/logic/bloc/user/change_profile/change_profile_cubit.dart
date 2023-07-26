@@ -14,15 +14,17 @@ class ChangeProfileCubit extends Cubit<ChangeProfileState> {
   ChangeProfileCubit(this.authCubit) : super(ChangeProfileState());
 
 
-  change(ChangeProfileParams params) {
+  change(ChangeProfileParams params) async {
     if(state.status == FetchStatus.loading) return;
     emit(ChangeProfileState(status: FetchStatus.loading));
-    AuthUserRepository.update(params).then((value) {
+    await AuthUserRepository.update(params).then((value) async {
       authCubit.set(value);
       emit(ChangeProfileState(status: FetchStatus.success));
     }).catchError((error) {
-      print(error);
+      print('success $error');
       emit(ChangeProfileState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
+
+
   }
 }

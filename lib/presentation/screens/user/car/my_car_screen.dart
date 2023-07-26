@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
-import 'package:garage/data/models/dictionary/car_model.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../routing/router.dart';
+import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/cards/car_card.dart';
 
 @RoutePage()
@@ -93,7 +93,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
 
                 if(state.status == FetchStatus.success) Container(
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: ElevatedButtonWidget(
                         onPressed: _addCar,
                         child: Text('Добавить машину')
                     )

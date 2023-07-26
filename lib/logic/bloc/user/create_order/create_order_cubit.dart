@@ -17,9 +17,11 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     if(state.status == FetchStatus.loading) return;
     emit(CreateOrderState(status: FetchStatus.loading));
     OrderUserRepository.create(params).then((value) {
+      print(value);
       myOrderCubit.fetch();
       emit(CreateOrderState(status: FetchStatus.success));
     }).catchError((error) {
+      print(error);
       emit(CreateOrderState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

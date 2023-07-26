@@ -31,11 +31,14 @@ class StoreGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    _check(resolver)(auth.state);
-    auth.stream.listen(_check(resolver));
+    resolver.next();
+    //
+    // _check(resolver)(auth.state);
+    // auth.stream.listen(_check(resolver));
   }
 
   _check(NavigationResolver resolver) => (AuthStoreState state) {
+
     if(state.auth != null && !resolver.isResolved) {
       resolver.next();
     } else {
@@ -53,11 +56,13 @@ class NotAuthGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
+    resolver.next();
+    //
     // _listenAuthStore(resolver)(authStore.state);
-    authStore.stream.listen(_listenAuthStore(resolver));
-
+    // authStore.stream.listen(_listenAuthStore(resolver));
+    //
     // _listenAuth(resolver)(auth.state);
-    auth.stream.listen(_listenAuth(resolver));
+    // auth.stream.listen(_listenAuth(resolver));
 
   }
 

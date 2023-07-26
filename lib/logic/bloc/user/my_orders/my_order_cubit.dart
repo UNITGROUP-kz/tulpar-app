@@ -6,11 +6,14 @@ import 'package:garage/data/repositories/user/order_user_repository.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/error_model.dart';
+import '../auth/auth_cubit.dart';
 
 part 'my_order_state.dart';
 
 class MyOrderCubit extends Cubit<MyOrderState> {
-  MyOrderCubit() : super(MyOrderState());
+  final AuthCubit authCubit;
+
+  MyOrderCubit(this.authCubit) : super(MyOrderState());
 
   Future fetch([IndexOrderParams? params]) async {
     if(state.status == FetchStatus.loading) return;

@@ -13,6 +13,8 @@ import '../../../../data/models/auth/store_model.dart';
 import '../../../../data/params/store/change_store_params.dart';
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
 import '../../../../logic/bloc/store/change_store/change_store_cubit.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
 class ChangeStoreScreen extends StatefulWidget {
@@ -67,48 +69,37 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
     super.initState();
   }
 
-  _back() {
-    context.router.pop();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return ScreenDefaultTemplate(
       children: [
-        ScreenDefaultTemplate(
-          children: [
-            TextField(controller: _nameController),
-            TextField(controller: _descriptionController),
-            BlocConsumer<ChangeStoreCubit, ChangeStoreState>(
-              listener: _listenerState,
-              builder: (context, state) {
-                if(state.status == FetchStatus.loading) {
-                  return ElevatedButton(
-                      onPressed: () {},
-                      child: CupertinoActivityIndicator()
+        Header(title: 'Изменить магазин'),
+        TextField(controller: _nameController),
+        TextField(controller: _descriptionController),
+        BlocConsumer<ChangeStoreCubit, ChangeStoreState>(
+          listener: _listenerState,
+          builder: (context, state) {
+            if(state.status == FetchStatus.loading) {
+              return ElevatedButtonWidget(
+                  onPressed: () {},
+                  child: CupertinoActivityIndicator()
+              );
+            }
+            return MultiValueListenableBuilder(
+                valuesListenable: [
+                  _nameController,
+                  _descriptionController,
+                ],
+                builder: (context, value, child) {
+                  bool isVisible = value[0].text.isNotEmpty && value[1].text.isNotEmpty;
+                  return ElevatedButtonWidget(
+                      onPressed: isVisible ? _change : null,
+                      child: Text('Change Store')
                   );
                 }
-                return MultiValueListenableBuilder(
-                    valuesListenable: [
-                      _nameController,
-                      _descriptionController,
-                    ],
-                    builder: (context, value, child) {
-                      bool isVisible = value[0].text.isNotEmpty && value[1].text.isNotEmpty;
-                      return ElevatedButton(
-                          onPressed: isVisible ? _change : null,
-                          child: Text('Change Store')
-                      );
-                    }
-                );
-              },
-            )
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: IconButton(onPressed: _back, icon: Icon(Icons.arrow_back_ios)),
-        ),
+            );
+          },
+        )
       ],
     );
   }

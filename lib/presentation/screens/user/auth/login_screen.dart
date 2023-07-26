@@ -4,9 +4,14 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
+import 'package:garage/logic/bloc/user/login/login_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/widgets/form/fields/password_field.dart';
+import 'package:garage/presentation/widgets/navigation/header.dart';
 
 import '../../../../data/fform/forms/login_form.dart';
+import '../../../widgets/buttons/elevated_button.dart';
+import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 
@@ -21,11 +26,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailPhoneController;
   late TextEditingController _passwordController;
+  
 
 
   _submit() async {
     if (_check()) {
-      await context.read<AuthCubit>().login(
+      await context.read<LoginCubit>().login(
           _emailPhoneController.value.text,
           _passwordController.value.text
       );
@@ -61,12 +67,13 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  _listener(BuildContext context, AuthState state) {
-    if (state.error != null) {
-      showErrorSnackBar(
-          context, state.error?.messages[0] ?? 'Неизвестная ошибка');
+  _listener(BuildContext context, LoginState state) {
+    if (state.status == LoginStatus.error) {
+      showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
+    } else if(state.status == LoginStatus.validate) {
+      context.router.navigate(RegisterRoute(emailPhone: _emailPhoneController.value.text));
     }
-    else if(state.auth != null) {
+    else if(state.status == LoginStatus.success) {
       context.router.navigate(
         SplashRouter(
           children: [
@@ -94,29 +101,36 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
+        child: Padding(
+          padding: EdgeInsets.all(20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextField(
+              Text('Авторизация', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              TextFieldWidget(
+                label: 'Email или Телефон',
                 controller: _emailPhoneController,
               ),
-              TextField(
+              SizedBox(height: 10),
+              PasswordFieldWidget(
+                label: 'Пароль',
                 controller: _passwordController,
               ),
-              BlocConsumer<AuthCubit, AuthState>(
+              SizedBox(height: 10),
+              BlocConsumer<LoginCubit, LoginState>(
                 listener: _listener,
                 builder: (context, state) {
-                  if(state.isLoading) return ElevatedButton(
+                  if(state.status == LoginStatus.loading) return ElevatedButtonWidget(
                       onPressed: () {},
                       child: CupertinoActivityIndicator()
                   );
-                  return ElevatedButton(
+                  return ElevatedButtonWidget(
                       onPressed: _submit,
                       child: Text('Авторизоваться')
                   );
                 },
               ),
+              SizedBox(height: 10),
               Text.rich(TextSpan(
                 children: [
                   TextSpan(
@@ -144,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         recognizer: TapGestureRecognizer()..onTap = _toLogin
                     )
                   ]
-              ))
+              )),
 
               // SignInButton(
               //   Buttons.Google,

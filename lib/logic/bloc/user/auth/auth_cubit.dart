@@ -6,8 +6,10 @@ import 'package:garage/data/models/auth/user_model.dart';
 import 'package:garage/data/models/error_model.dart';
 
 import '../../../../core/utils/check.dart';
+import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/params/auth/auth_user_params.dart';
 import '../../../../data/repositories/user/auth_user_repository.dart';
+import '../register/register_cubit.dart';
 
 part 'auth_state.dart';
 
@@ -18,26 +20,10 @@ class AuthCubit extends Cubit<AuthState> {
   initial() async {
     AuthModel? auth = await AuthUserRepository.read();
     if(auth != null) {
-      print(auth.token);
       emit(AuthState(auth: auth));
     }
   }
 
-  login(String emailPhone, String password) async {
-    if(state.isLoading) return;
-    emit(AuthState(isLoading: true));
-
-    await AuthUserRepository.login(LoginUserParams(
-        password: password,
-        email: Check.isEmail(emailPhone) ? emailPhone : null,
-        phone: Check.isPhone(emailPhone) ? emailPhone : null
-    )).then((value) {
-      set(value);
-    }).catchError((error) {
-      print(error);
-      emit(AuthState(isLoading: false, error: ErrorModel.parse(error)));
-    });
-  }
 
   logout() async {
     await AuthUserRepository.clear().then((value) {
@@ -46,8 +32,9 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   set(AuthModel auth) {
-    emit(AuthState(auth: auth, isLoading: false));
+    emit(state.copyWith(auth: auth));
   }
+
 
   bool get isLogin => state.auth != null;
 }
