@@ -95,7 +95,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                 child: CachedNetworkImage(
                   imageUrl: state.user?.image ?? '',
                   placeholder: (context, String val) => CupertinoActivityIndicator(),
-                  errorWidget: (context, String val, err) => Icon(Icons.person),
+                  errorWidget: (context, String val, err) => Icon(Icons.person, size: MediaQuery.of(context).size.width * 0.2, color: Colors.grey),
                 ),
               ),
             );

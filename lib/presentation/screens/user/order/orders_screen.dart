@@ -7,6 +7,7 @@ import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
 import '../../../widgets/cards/order_card.dart';
+import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
@@ -62,6 +63,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
       scrollController: _scrollController,
       onRefresh: _onRefresh,
       children: [
+        Header(isBack: false, title: 'Заказы'),
+
         BlocConsumer<MyOrderCubit, MyOrderState>(
           listener: _listenerState,
           builder: (context, state) {

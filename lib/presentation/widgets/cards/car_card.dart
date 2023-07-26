@@ -17,21 +17,24 @@ class CarCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _toDetails(context),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10)
-        ),
-        width: double.infinity,
-        child: Column(
-          children: [
-            Text(car.name),
-            Text(car.modelName),
-            Text(car.vinNumber)
-          ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: InkWell(
+        onTap: _toDetails(context),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(10)
+          ),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Text(car.name),
+              Text(car.modelName),
+              Text(car.vinNumber)
+            ],
+          ),
         ),
       ),
     );

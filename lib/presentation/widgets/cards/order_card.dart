@@ -17,22 +17,25 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: _toDetails(context),
-      child: Container(
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10)
-        ),
-        width: double.infinity,
-        child: Column(
-          children: [
-            Text(order.title),
-            Text(order.status.name),
-            Text(order.part?.name ?? 'Неизвестно'),
-            Text(order.store?.name ?? 'Нет магазина')
-          ],
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: InkWell(
+        onTap: _toDetails(context),
+        child: Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.grey.shade200,
+              borderRadius: BorderRadius.circular(10)
+          ),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Text(order.title),
+              Text(order.status.name),
+              Text(order.part?.name ?? 'Неизвестно'),
+              Text(order.store?.name ?? 'Нет магазина')
+            ],
+          ),
         ),
       ),
     );

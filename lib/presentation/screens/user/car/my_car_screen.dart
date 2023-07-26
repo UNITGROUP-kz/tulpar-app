@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
+import 'package:garage/presentation/widgets/navigation/header.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
@@ -84,6 +85,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
           builder: (context, state) {
             return Column(
               children: [
+                Header(isBack: false, title: 'Гараж'),
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
                 if(state.status == FetchStatus.error) Text('Ошибка'),
                 ...state.cars.map((car) {
