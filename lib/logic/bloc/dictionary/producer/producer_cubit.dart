@@ -16,7 +16,7 @@ class ProducerCubit extends Cubit<ProducerState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexProducers(params ?? IndexProducerParams()).then((value) {
-      replace(value, params);
+      replace(value, params ?? IndexProducerParams());
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });

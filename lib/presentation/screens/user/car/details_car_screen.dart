@@ -10,6 +10,7 @@ import 'package:garage/presentation/widgets/tiles/part_model.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
@@ -74,6 +75,14 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
     ));
   };
 
+  _onSubmit(String text) async {
+    final params = context.read<DetailsCarCubit>().state.params;
+    await context.read<DetailsCarCubit>().fetch(params?.copyWith(
+        startRow: 0,
+        filter: text
+    ));
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +91,7 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
         onRefresh: _onRefresh,
         children: [
           Header(title: 'Машина'),
-          TextField(controller: _textEditingController),
+          TextFieldWidget(controller: _textEditingController, icon: Icon(Icons.search), onSubmit: _onSubmit),
           BlocConsumer<DetailsCarCubit, DetailsCarState>(
             listener: _listenerState,
             builder: (context, state) {

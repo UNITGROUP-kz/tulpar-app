@@ -10,7 +10,7 @@ class StoreModel {
   final String? description;
   final String phone;
   final String? image;
-  final int rating;
+  final double rating;
 
   factory StoreModel.fromMap(Map<String, dynamic> map) {
     return StoreModel(
@@ -19,7 +19,7 @@ class StoreModel {
         description: map['description'],
         phone: map['phone'],
         image: map['image'],
-        rating: Parser.toInt(map['rating'])
+        rating: Parser.toDouble(map['rating'])
     );
   }
 

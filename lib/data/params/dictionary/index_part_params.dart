@@ -34,9 +34,11 @@ class IndexPartParams extends IndexParams {
 
   @override
   Map<String, dynamic> toData() {
-    return {
+    Map<String, dynamic> data = {
       'sortBy': sortBy.name,
       'filter': filter
     }..addAll(super.toData());
+    print(data);
+    return data;
   }
 }

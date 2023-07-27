@@ -10,7 +10,7 @@ class BackButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(onPressed: _back(context), icon: Icon(Icons.arrow_back_ios));
+    return InkWell(onTap: _back(context), child: Icon(Icons.arrow_back_ios));
   }
 
 }

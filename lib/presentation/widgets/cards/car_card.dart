@@ -2,6 +2,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:garage/presentation/widgets/tiles/data_tile.dart';
 
 import '../../../data/models/dictionary/car_model.dart';
 import '../../routing/router.dart';
@@ -12,7 +13,19 @@ class CarCard extends StatelessWidget {
   const CarCard({super.key, required this.car});
 
   _toDetails(BuildContext context) => () {
-    context.router.navigate(DetailsCarRoute(car: car));
+    context.router.navigate(SplashRouter(
+      children: [
+        UserRouter(
+          children: [
+            UserCarRouter(
+              children: [
+                DetailsCarRoute(car: car)
+              ]
+            )
+          ]
+        )
+      ]
+    ));
   };
 
   @override
@@ -30,9 +43,8 @@ class CarCard extends StatelessWidget {
           width: double.infinity,
           child: Column(
             children: [
-              Text(car.name),
-              Text(car.modelName),
-              Text(car.vinNumber)
+              DataTile(title: 'Машина', data: car.name, isDivider: false),
+              DataTile(title: 'VIN', data: car.vinNumber, isDivider: false)
             ],
           ),
         ),

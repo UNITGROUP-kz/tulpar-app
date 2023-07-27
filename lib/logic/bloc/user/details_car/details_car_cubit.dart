@@ -15,18 +15,22 @@ class DetailsCarCubit extends Cubit<DetailsCarState> {
   Future fetch([IndexPartParams? params]) async {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
+
+    print('params: ${params?.toData()}');
     return DictionaryRepository.indexParts(params ?? IndexPartParams()).then((value) {
-      replace(value, params == null || params.startRow == 0);
+      print(value);
+      replace(value, params ?? IndexPartParams());
     }).catchError((error) {
       print(error);
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }
 
-  replace(List<PartModel> parts, bool isReplace) {
+  replace(List<PartModel> parts, IndexPartParams? params) {
     emit(state.copyWith(
         status: FetchStatus.success,
-        parts: isReplace ? parts : [...state.parts, ...parts]
+        params: params,
+        parts: params == null || params.startRow == 0 ? parts : [...state.parts, ...parts]
     ));
   }
 }

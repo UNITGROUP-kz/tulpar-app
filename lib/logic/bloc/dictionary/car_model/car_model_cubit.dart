@@ -16,7 +16,7 @@ class CarModelCubit extends Cubit<CarModelState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexCarModels(params ?? IndexCarModelParams()).then((value) {
-      replace(value, params);
+      replace(value, params ?? IndexCarModelParams());
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });

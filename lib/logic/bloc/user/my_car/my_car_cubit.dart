@@ -19,16 +19,17 @@ class MyCarCubit extends Cubit<MyCarState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return CarUserRepository.indexMy(params ?? IndexMyCarParams()).then((value) {
-      replace(value, params == null || params.startRow == 0);
+      replace(value, params ?? IndexMyCarParams());
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }
 
-  replace(List<CarModel> cars, bool isReplace) {
+  replace(List<CarModel> cars, IndexMyCarParams? params) {
     emit(state.copyWith(
       status: FetchStatus.success,
-      cars: isReplace ? cars : [...state.cars, ...cars]
+      params: params,
+      cars: params == null || params.startRow == 0 ? cars : [...state.cars, ...cars]
     ));
   }
 }

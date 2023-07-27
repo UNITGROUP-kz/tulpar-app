@@ -3,14 +3,18 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController? controller;
-  final String label;
+  final String? label;
   final bool isRequired;
+  final Widget? icon;
+  final Function(String)? onSubmit;
 
   const TextFieldWidget({
     super.key,
     this.controller,
-    required this.label,
-    this.isRequired = false
+    this.label,
+    this.isRequired = false,
+    this.icon,
+    this.onSubmit
   });
 
 
@@ -20,7 +24,7 @@ class TextFieldWidget extends StatelessWidget {
 
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text.rich(TextSpan(
+        if(label != null) Text.rich(TextSpan(
             children: [
               TextSpan(text: label),
               if(isRequired) TextSpan(text: '*', style: TextStyle(color: Colors.red))
@@ -30,8 +34,10 @@ class TextFieldWidget extends StatelessWidget {
         Container(
           height: 55,
           child: TextField(
+            onSubmitted: onSubmit,
             controller: controller,
             decoration: InputDecoration(
+              suffixIcon: icon,
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10)
               ),

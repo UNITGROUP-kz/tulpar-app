@@ -19,16 +19,17 @@ class MyOrderCubit extends Cubit<MyOrderState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return OrderUserRepository.indexMy(params ?? IndexOrderParams()).then((value) {
-      replace(value, params == null || params.startRow == 0);
+      replace(value, params ?? IndexOrderParams());
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }
 
-  replace(List<OrderModel> orders, bool isReplace) {
+  replace(List<OrderModel> orders, IndexOrderParams? params) {
     emit(state.copyWith(
         status: FetchStatus.success,
-        orders: isReplace ? orders : [...state.orders, ...orders]
+        params: params,
+        orders: params == null || params.startRow == 0 ? orders : [...state.orders, ...orders]
     ));
   }
 }

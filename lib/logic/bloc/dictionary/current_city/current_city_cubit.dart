@@ -34,7 +34,7 @@ class CurrentCityCubit extends Cubit<CurrentCityState> {
     emit(state.copyWith(status: FetchStatus.loading));
     return CityRepository.index(params ?? IndexCityParams()).then((value) {
       print(value);
-      replace(value, params);
+      replace(value, params ?? IndexCityParams());
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });

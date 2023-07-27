@@ -123,7 +123,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   return ElevatedButtonWidget(
                       onPressed: value[0].text.isNotEmpty && value[1] != null
                           && value[2] != null ? _create : null,
-                      child: Text('create')
+                      child: Text('Cоздать машину')
                   );
                 }
             );

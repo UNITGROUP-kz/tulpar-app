@@ -40,7 +40,7 @@ const StoreModelSchema = CollectionSchema(
     r'rating': PropertySchema(
       id: 4,
       name: r'rating',
-      type: IsarType.long,
+      type: IsarType.double,
     )
   },
   estimateSize: _storeModelEstimateSize,
@@ -90,7 +90,7 @@ void _storeModelSerialize(
   writer.writeString(offsets[1], object.image);
   writer.writeString(offsets[2], object.name);
   writer.writeString(offsets[3], object.phone);
-  writer.writeLong(offsets[4], object.rating);
+  writer.writeDouble(offsets[4], object.rating);
 }
 
 StoreModel _storeModelDeserialize(
@@ -105,7 +105,7 @@ StoreModel _storeModelDeserialize(
     image: reader.readStringOrNull(offsets[1]),
     name: reader.readString(offsets[2]),
     phone: reader.readString(offsets[3]),
-    rating: reader.readLong(offsets[4]),
+    rating: reader.readDouble(offsets[4]),
   );
   return object;
 }
@@ -126,7 +126,7 @@ P _storeModelDeserializeProp<P>(
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -837,46 +837,54 @@ extension StoreModelQueryFilter
   }
 
   QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> ratingEqualTo(
-      int value) {
+    double value, {
+    double epsilon = Query.epsilon,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'rating',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> ratingGreaterThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'rating',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> ratingLessThan(
-    int value, {
+    double value, {
     bool include = false,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'rating',
         value: value,
+        epsilon: epsilon,
       ));
     });
   }
 
   QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> ratingBetween(
-    int lower,
-    int upper, {
+    double lower,
+    double upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    double epsilon = Query.epsilon,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -885,6 +893,7 @@ extension StoreModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        epsilon: epsilon,
       ));
     });
   }
@@ -1103,7 +1112,7 @@ extension StoreModelQueryProperty
     });
   }
 
-  QueryBuilder<StoreModel, int, QQueryOperations> ratingProperty() {
+  QueryBuilder<StoreModel, double, QQueryOperations> ratingProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'rating');
     });
