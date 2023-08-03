@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/dictionary/offer_model.dart';
 import 'package:garage/data/models/dictionary/order_model.dart';

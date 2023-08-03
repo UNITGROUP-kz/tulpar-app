@@ -11,6 +11,14 @@ enum ConditionOffer {
       default: return news;
     }
   }
+
+  @override
+  String toString() {
+    switch(this) {
+      case ConditionOffer.news: return 'Новая';
+      case ConditionOffer.used: return 'Б/У';
+    }
+  }
 }
 
 class OfferModel {

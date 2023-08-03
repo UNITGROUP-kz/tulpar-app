@@ -31,16 +31,19 @@ class IndexOrderParams extends IndexParams {
 
   @override
   toData() {
-    return {
+    Map<String, dynamic> data = {
       'sortBy': sortBy.name,
-      'model_id': model?.id,
-      'producer_id': producer?.id,
-      'part_id': part?.id,
-      'vin': vin,
-      'status': status?.name
+
     }..addAll(super.toData());
+    //'model_id': model?.id,
+    //       'producer_id': producer?.id,
+    //       'part_id': part?.id,
+    //       'vin': vin,
+    //       'status': status?.name
 
+    print(data);
 
+    return data;
   }
 
   IndexOrderParams copyWith({

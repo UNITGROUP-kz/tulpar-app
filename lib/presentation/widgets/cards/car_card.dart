@@ -8,32 +8,17 @@ import '../../../data/models/dictionary/car_model.dart';
 import '../../routing/router.dart';
 
 class CarCard extends StatelessWidget {
+  final VoidCallback? callback;
   final CarModel car;
 
-  const CarCard({super.key, required this.car});
-
-  _toDetails(BuildContext context) => () {
-    context.router.navigate(SplashRouter(
-      children: [
-        UserRouter(
-          children: [
-            UserCarRouter(
-              children: [
-                DetailsCarRoute(car: car)
-              ]
-            )
-          ]
-        )
-      ]
-    ));
-  };
+  const CarCard({super.key, required this.car, this.callback});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
-        onTap: _toDetails(context),
+        onTap: callback,
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(

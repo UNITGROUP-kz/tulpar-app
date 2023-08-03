@@ -36,4 +36,8 @@ class DetailsOrderCubit extends Cubit<DetailsOrderState> {
       fetch();
     });
   }
+
+  Future rate(int orderId, int rate) {
+    return OrderUserRepository.rate(orderId, rate);
+  }
 }

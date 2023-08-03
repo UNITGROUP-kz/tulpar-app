@@ -8,6 +8,7 @@ import 'package:garage/presentation/widgets/navigation/header.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
+import '../../../../data/models/dictionary/car_model.dart';
 import '../../../routing/router.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/cards/car_card.dart';
@@ -61,9 +62,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
   }
 
   _addCar() {
-    // context.router.popUntil((route) => false);
-    print(context.router.current.name);
-    context.router.navigate(SplashRouter(
+    context.router.navigate(const SplashRouter(
       children: [
         UserFormRouter(
             children: [
@@ -73,6 +72,22 @@ class _MyCarScreenState extends State<MyCarScreen> {
       ]
     ));
   }
+
+  _toDetails(CarModel car) => () {
+    context.router.navigate(SplashRouter(
+        children: [
+          UserRouter(
+              children: [
+                UserCarRouter(
+                    children: [
+                      DetailsCarRoute(car: car)
+                    ]
+                )
+              ]
+          )
+        ]
+    ));
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +104,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
                 if(state.status == FetchStatus.error) Text('Ошибка'),
                 ...state.cars.map((car) {
-                  return CarCard(car: car);
+                  return CarCard(car: car, callback: _toDetails(car));
                 }).toList(),
                 if(state.cars.isEmpty && state.status == FetchStatus.success) Text('Нет Машин'),
 

@@ -15,6 +15,7 @@ import 'logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
 import 'logic/bloc/store/change_image/change_image_cubit.dart';
 import 'logic/bloc/store/change_store/change_store_cubit.dart';
+import 'logic/bloc/store/login/login_store_cubit.dart';
 import 'logic/bloc/store/my_offers/my_offers_cubit.dart';
 import 'logic/bloc/store/orders/orders_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
@@ -97,6 +98,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => LoginCubit(_authCubit, _registerCubit),
+        ),
+        BlocProvider(
+          create: (context) => LoginStoreCubit(_authStoreCubit),
         ),
 
 

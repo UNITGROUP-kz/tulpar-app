@@ -36,7 +36,7 @@ class DocumentSplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AutoRouter(),
+      body: SafeArea(child: AutoRouter()),
     );
   }
 

@@ -53,58 +53,58 @@ class NotAuthGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    // resolver.next();
-    //
-    _listenAuthStore(resolver)(authStore.state);
-    authStore.stream.listen(_listenAuthStore(resolver));
-    //
-    // _listenAuth(resolver)(auth.state);
-    // auth.stream.listen(_listenAuth(resolver));
+    print(auth.isLogin);
+    print(authStore.isLogin);
+
+    if(auth.isLogin) {
+      _toUser(resolver);
+    } else if(authStore.isLogin) {
+      _toStore(resolver);
+    } else {
+      resolver.next();
+    }
+
+    authStore.stream.listen(_listenStore(resolver));
+    auth.stream.listen(_listenUser(resolver));
 
   }
 
-  _listenAuth(NavigationResolver resolver) => (AuthState state) {
-    print('auth User: ${state.auth}');
+  _listenStore(NavigationResolver resolver) => (AuthStoreState state) {
+    if(state.isLogin) {
+      print(state.isLogin);
+      _toStore(resolver);
+    }
+  };
 
-    if(state.auth == null && resolver.isResolved) {
-      resolver.next();
-    } else {
+  _listenUser(NavigationResolver resolver) => (AuthState state) {
+    if(state.isLogin) {
+      print(state.isLogin);
+      _toUser(resolver);
+    }
+  };
 
-      resolver.redirect(SplashRouter(
+  _toUser(NavigationResolver resolver) {
+    resolver.redirect(SplashRouter(
         children: [
           UserRouter(
-            children: [
-              UserOrderRouter()
-            ]
+              children: [
+                UserCarRouter()
+              ]
           )
         ]
-      ));
-    }
-  };
+    ));
+  }
 
-  _listenAuthStore(NavigationResolver resolver) => (AuthStoreState state) {
-    print('auth Store: ${state.auth}');
-
-    if(state.auth == null  && !resolver.isResolved) {
-      print('next');
-
-      resolver.next();
-    } else {
-      print('redirect');
-      resolver.redirect(SplashRouter(
-          children: [
-            StoreRouter(
+  _toStore(NavigationResolver resolver) {
+    resolver.redirect(SplashRouter(
+        children: [
+          StoreRouter(
               children: [
-                StoreOrderRouter(
-                  children: [
-                    StoreOrdersRoute()
-                  ]
-                )
+                StoreOrderRouter()
               ]
-            )
-          ]
-      ));
-    }
-  };
+          )
+        ]
+    ));
+  }
 
 }

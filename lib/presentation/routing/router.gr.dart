@@ -70,6 +70,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    RateOrderRoute.name: (routeData) {
+      final args = routeData.argsAs<RateOrderRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RateOrderScreen(
+          key: args.key,
+          order: args.order,
+        ),
+      );
+    },
     OrderOffersRoute.name: (routeData) {
       final args = routeData.argsAs<OrderOffersRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -139,6 +149,30 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const UserProfileScreen(),
+      );
+    },
+    DocumentsRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DocumentsScreen(),
+      );
+    },
+    DocumentRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DocumentSplashScreen(),
+      );
+    },
+    PrivacyRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: PrivacyScreen(),
+      );
+    },
+    ContractOfferRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ContractOfferScreen(),
       );
     },
     SplashRouter.name: (routeData) {
@@ -223,30 +257,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PickerScreen(),
-      );
-    },
-    DocumentsRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: DocumentsScreen(),
-      );
-    },
-    DocumentRouter.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: DocumentSplashScreen(),
-      );
-    },
-    PrivacyRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: PrivacyScreen(),
-      );
-    },
-    ContractOfferRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: ContractOfferScreen(),
       );
     },
   };
@@ -424,6 +434,44 @@ class DetailsOrderRouteArgs {
   @override
   String toString() {
     return 'DetailsOrderRouteArgs{key: $key, order: $order}';
+  }
+}
+
+/// generated route for
+/// [RateOrderScreen]
+class RateOrderRoute extends PageRouteInfo<RateOrderRouteArgs> {
+  RateOrderRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RateOrderRoute.name,
+          args: RateOrderRouteArgs(
+            key: key,
+            order: order,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'RateOrderRoute';
+
+  static const PageInfo<RateOrderRouteArgs> page =
+      PageInfo<RateOrderRouteArgs>(name);
+}
+
+class RateOrderRouteArgs {
+  const RateOrderRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'RateOrderRouteArgs{key: $key, order: $order}';
   }
 }
 
@@ -650,6 +698,62 @@ class UserProfileRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DocumentsScreen]
+class DocumentsRoute extends PageRouteInfo<void> {
+  const DocumentsRoute({List<PageRouteInfo>? children})
+      : super(
+          DocumentsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DocumentsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DocumentSplashScreen]
+class DocumentRouter extends PageRouteInfo<void> {
+  const DocumentRouter({List<PageRouteInfo>? children})
+      : super(
+          DocumentRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DocumentRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PrivacyScreen]
+class PrivacyRoute extends PageRouteInfo<void> {
+  const PrivacyRoute({List<PageRouteInfo>? children})
+      : super(
+          PrivacyRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PrivacyRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ContractOfferScreen]
+class ContractOfferRoute extends PageRouteInfo<void> {
+  const ContractOfferRoute({List<PageRouteInfo>? children})
+      : super(
+          ContractOfferRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ContractOfferRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [SplashScreen]
 class SplashRouter extends PageRouteInfo<void> {
   const SplashRouter({List<PageRouteInfo>? children})
@@ -841,62 +945,6 @@ class PickerRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'PickerRouter';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DocumentsScreen]
-class DocumentsRoute extends PageRouteInfo<void> {
-  const DocumentsRoute({List<PageRouteInfo>? children})
-      : super(
-          DocumentsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DocumentsRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DocumentSplashScreen]
-class DocumentRouter extends PageRouteInfo<void> {
-  const DocumentRouter({List<PageRouteInfo>? children})
-      : super(
-          DocumentRouter.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'DocumentRouter';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [PrivacyScreen]
-class PrivacyRoute extends PageRouteInfo<void> {
-  const PrivacyRoute({List<PageRouteInfo>? children})
-      : super(
-          PrivacyRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'PrivacyRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [ContractOfferScreen]
-class ContractOfferRoute extends PageRouteInfo<void> {
-  const ContractOfferRoute({List<PageRouteInfo>? children})
-      : super(
-          ContractOfferRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ContractOfferRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

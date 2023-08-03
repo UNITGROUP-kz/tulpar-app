@@ -29,7 +29,7 @@ class AuthUserRepository {
             return auth!;
         });
 
-    static Future deleteProfile() => ApiService.I.delete('/delete').then((value) {
+    static Future deleteProfile() => ApiService.I.delete('/delete-profile').then((value) {
       clear();
     });
 

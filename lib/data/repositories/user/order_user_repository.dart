@@ -17,4 +17,7 @@ class OrderUserRepository {
         .get('/order/$orderId')
         .then((value) => OrderModel.fromMap(value.data['order']));
 
+    static Future rate(int orderId, int rate) => ApiService.I
+        .post('/order/$orderId/rate', data: { 'rate': rate });
+
 }

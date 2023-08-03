@@ -13,6 +13,7 @@ import 'package:garage/presentation/screens/user/order/orders_screen.dart';
 import 'package:garage/presentation/screens/user/profile/profile_screen.dart';
 import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
+import '../../data/models/auth/store_model.dart';
 import '../../data/models/dictionary/car_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
 import '../../data/models/dictionary/city_model.dart';
@@ -36,6 +37,7 @@ import '../screens/user/auth/login_screen.dart';
 import '../screens/user/auth/register_screen.dart';
 import '../screens/user/car/details_car_screen.dart';
 import '../screens/user/offer/offers_screen.dart';
+import '../screens/user/order/rate_order_screen.dart';
 import '../screens/user/profile/change_profile.dart';
 
 
@@ -87,6 +89,7 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: ProducerPickerRoute.page),
               AutoRoute(page: CarModelPickerRoute.page),
               AutoRoute(page: CityPickerRoute.page),
+              AutoRoute(page: RateOrderRoute.page)
             ]
         ),
 

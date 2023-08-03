@@ -17,26 +17,12 @@ class AuthStoreCubit extends Cubit<AuthStoreState> {
 
   initial() async {
     AuthStoreModel? auth = await AuthStoreRepository.read();
-    if(auth != null) {
-      print(auth.token);
-      emit(AuthStoreState(auth: auth));
-    }
+    if(auth == null) return;
+    print('Store: ${auth.token}');
+
+    emit(AuthStoreState(auth: auth));
   }
 
-  login(String phone, String password) async {
-    if(state.isLoading) return;
-    emit(AuthStoreState(isLoading: true));
-
-    await AuthStoreRepository.login(LoginStoreParams(
-        password: password,
-        phone: phone
-    )).then((value) {
-      set(value);
-    }).catchError((error) {
-      print(error);
-      emit(AuthStoreState(isLoading: false, error: ErrorModel.parse(error)));
-    });
-  }
 
   logout() async {
     await AuthStoreRepository.clear().then((value) {
@@ -45,7 +31,7 @@ class AuthStoreCubit extends Cubit<AuthStoreState> {
   }
 
   set(AuthStoreModel auth) {
-    emit(AuthStoreState(auth: auth, isLoading: false));
+    emit(AuthStoreState(auth: auth));
   }
 
   bool get isLogin => state.auth != null;

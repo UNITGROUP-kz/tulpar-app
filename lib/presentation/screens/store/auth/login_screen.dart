@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/fform/forms/store_login_form.dart';
+import 'package:garage/logic/bloc/store/login/login_store_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/form/fields/password_field.dart';
 import 'package:garage/presentation/widgets/form/fields/phone_field.dart';
@@ -28,7 +30,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
 
   _submit() async {
     if (_check()) {
-      await context.read<AuthStoreCubit>().login(
+      await context.read<LoginStoreCubit>().login(
           _phoneController.value.text,
           _passwordController.value.text
       );
@@ -64,14 +66,13 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
     super.dispose();
   }
 
-  _listener(BuildContext context, AuthStoreState state) {
+  _listener(BuildContext context, LoginStoreState state) {
     if (state.error != null) {
       showErrorSnackBar(
           context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     }
-    else if(state.auth != null) {
-      print(state.auth);
-      context.router.navigate(
+    else if(state.status == FetchStatus.success) {
+      context.router.replace(
           SplashRouter(
               children: [
                 StoreRouter(
@@ -86,7 +87,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
   }
 
   _toRegister() {
-    context.router.pop();
+    context.router.replace(LoginRoute());
   }
 
 
@@ -110,10 +111,10 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
                 controller: _passwordController,
               ),
               SizedBox(height: 10),
-              BlocConsumer<AuthStoreCubit, AuthStoreState>(
+              BlocConsumer<LoginStoreCubit, LoginStoreState>(
                 listener: _listener,
                 builder: (context, state) {
-                  if(state.isLoading) return ElevatedButtonWidget(
+                  if(state.status == FetchStatus.loading) return ElevatedButtonWidget(
                       onPressed: () {},
                       child: CupertinoActivityIndicator()
                   );

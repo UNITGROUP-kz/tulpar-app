@@ -7,6 +7,7 @@ import 'package:garage/presentation/widgets/cards/offer_card.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
 import '../../../../logic/bloc/store/my_offers/my_offers_cubit.dart';
+import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
@@ -63,6 +64,7 @@ class _MyOffersScreenState extends State<MyOffersScreen> {
       scrollController: _scrollController,
       onRefresh: _onRefresh,
       children: [
+        Header(title: 'Предложения', isBack: false),
         BlocConsumer<MyOffersCubit, MyOffersState>(
           listener: _listenerState,
           builder: (context, state) {

@@ -19,6 +19,8 @@ class AuthCubit extends Cubit<AuthState> {
   initial() async {
     AuthModel? auth = await AuthUserRepository.read();
     if(auth == null) return;
+
+    print('User: ${auth.token}');
     set(auth);
   }
 
