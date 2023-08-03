@@ -21,10 +21,8 @@ class ChangeProfileCubit extends Cubit<ChangeProfileState> {
       authCubit.set(value);
       emit(ChangeProfileState(status: FetchStatus.success));
     }).catchError((error) {
-      print('success $error');
       emit(ChangeProfileState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
-
-
   }
+
 }

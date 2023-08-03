@@ -31,14 +31,11 @@ class StoreGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    resolver.next();
-    //
-    // _check(resolver)(auth.state);
-    // auth.stream.listen(_check(resolver));
+    _check(resolver)(auth.state);
+    auth.stream.listen(_check(resolver));
   }
 
   _check(NavigationResolver resolver) => (AuthStoreState state) {
-
     if(state.auth != null && !resolver.isResolved) {
       resolver.next();
     } else {
@@ -56,10 +53,10 @@ class NotAuthGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    resolver.next();
+    // resolver.next();
     //
-    // _listenAuthStore(resolver)(authStore.state);
-    // authStore.stream.listen(_listenAuthStore(resolver));
+    _listenAuthStore(resolver)(authStore.state);
+    authStore.stream.listen(_listenAuthStore(resolver));
     //
     // _listenAuth(resolver)(auth.state);
     // auth.stream.listen(_listenAuth(resolver));
@@ -88,9 +85,12 @@ class NotAuthGuard extends AutoRouteGuard {
   _listenAuthStore(NavigationResolver resolver) => (AuthStoreState state) {
     print('auth Store: ${state.auth}');
 
-    if(state.auth == null && resolver.isResolved) {
+    if(state.auth == null  && !resolver.isResolved) {
+      print('next');
+
       resolver.next();
     } else {
+      print('redirect');
       resolver.redirect(SplashRouter(
           children: [
             StoreRouter(

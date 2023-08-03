@@ -1,3 +1,6 @@
+
+import 'package:dio/dio.dart';
+
 class ChangeProfileParams {
   final String name;
   final String email;
@@ -11,21 +14,19 @@ class ChangeProfileParams {
     required this.password,
   });
 
-  toData() {
-    final data = {
+  FormData toData() {
+    FormData data = FormData.fromMap({
       'name': name,
-    };
-
+    });
     if(phone.isNotEmpty) {
-      data.addAll({'phone': phone ?? ''});
+      data.fields.add(MapEntry('phone', phone));
     }
     if(password.isNotEmpty) {
-      data.addAll({'password': password ?? ''});
+      data.fields.add(MapEntry('password', password));
     }
     if(email.isNotEmpty) {
-      data.addAll({'email': email ?? ''});
+      data.fields.add(MapEntry('email', email));
     }
-    print(data);
 
     return data;
   }

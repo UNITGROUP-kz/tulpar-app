@@ -1,11 +1,13 @@
 import 'package:garage/core/services/api/api_service.dart';
 import 'package:garage/core/services/api/interceptors/auth_interceptor.dart';
-import 'package:garage/core/services/isar_service.dart';
 import 'package:garage/data/models/auth/auth_model.dart';
 import 'package:garage/data/models/auth/user_model.dart';
 import 'package:garage/data/params/auth/auth_user_params.dart';
 import 'package:garage/data/params/profile/change_profile_params.dart';
 import 'package:isar/isar.dart';
+
+import '../../../core/services/database/isar_service.dart';
+import '../../params/change_image_params.dart';
 
 
 class AuthUserRepository {
@@ -27,6 +29,10 @@ class AuthUserRepository {
             return auth!;
         });
 
+    static Future deleteProfile() => ApiService.I.delete('/delete').then((value) {
+      clear();
+    });
+
     static Future<AuthModel> code(ConfirmUserParams params) =>
         ApiService.I.post('/confirmCode', data: params.toData()).then((value) async {
           final token = value.data['token'];
@@ -46,6 +52,13 @@ class AuthUserRepository {
         return auth!;
       });
 
+    static Future<AuthModel> changeImage(ChangeImageParams params) => ApiService.I.post('/user/update', data: params.toData()).then((value) async {
+      UserModel user = UserModel.fromMap(value.data['user']);
+      auth?.user.value = user;
+      await write(auth!);
+      return auth!;
+    });
+
     static Future write(AuthModel auth) async {
         await IsarService.I.writeTxn(() async {
             await IsarService.I.authModels.put(auth);
@@ -55,6 +68,8 @@ class AuthUserRepository {
     }
 
     static Future clear() async {
+      _removeInterceptor();
+      auth = null;
       await IsarService.I.writeTxn(() async {
         await IsarService.I.authModels.clear();
       });
@@ -72,10 +87,15 @@ class AuthUserRepository {
     }
 
     static _addInterceptor(AuthModel auth) {
-      if(interceptor != null) {
-        ApiService.removerInterceptor(interceptor!);
-      }
+      _removeInterceptor();
       interceptor = AuthInterceptor(auth.token);
       ApiService.addInterceptor(interceptor!);
     }
+
+    static _removeInterceptor() {
+      if(interceptor != null) {
+        ApiService.removerInterceptor(interceptor!);
+      }
+    }
+
 }

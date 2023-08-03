@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:garage/core/services/fb_service.dart';
+
+import 'fb_service.dart';
 
 class FBAuthService {
   static late FirebaseAuth _instance;

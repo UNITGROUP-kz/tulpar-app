@@ -1,36 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:garage/core/services/api/api_service.dart';
-import 'package:garage/core/services/fb_auth_service.dart';
-import 'package:garage/core/services/fb_notification.dart';
-import 'package:garage/core/services/fb_service.dart';
-import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
-import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
-import 'package:garage/logic/bloc/dictionary/producer/producer_cubit.dart';
-import 'package:garage/logic/bloc/store/change_store/change_store_cubit.dart';
-import 'package:garage/logic/bloc/store/orders/orders_cubit.dart';
-import 'package:garage/logic/bloc/user/change_profile/change_profile_cubit.dart';
-import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
-import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
-import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
-import 'package:garage/logic/bloc/user/login/login_cubit.dart';
-import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
-import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
-import 'package:garage/logic/bloc/user/order_offer/order_offer_cubit.dart';
-import 'package:garage/logic/bloc/user/register/register_cubit.dart';
-import 'package:garage/presentation/routing/router.dart';
 
-import 'core/services/isar_service.dart';
+import 'core/services/api/api_service.dart';
+import 'core/services/database/isar_service.dart';
+import 'core/services/database/shared_preference.dart';
+import 'core/services/firebase/fb_auth_service.dart';
+import 'core/services/firebase/fb_notification.dart';
+import 'core/services/firebase/fb_service.dart';
+
+import 'logic/bloc/dictionary/car_model/car_model_cubit.dart';
+import 'logic/bloc/dictionary/current_city/current_city_cubit.dart';
+import 'logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
+import 'logic/bloc/store/change_image/change_image_cubit.dart';
+import 'logic/bloc/store/change_store/change_store_cubit.dart';
 import 'logic/bloc/store/my_offers/my_offers_cubit.dart';
+import 'logic/bloc/store/orders/orders_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
+import 'logic/bloc/user/change_image/change_image_cubit.dart';
+import 'logic/bloc/user/change_profile/change_profile_cubit.dart';
+import 'logic/bloc/user/create_car/create_car_cubit.dart';
+import 'logic/bloc/user/create_order/create_order_cubit.dart';
+import 'logic/bloc/user/details_car/details_car_cubit.dart';
 import 'logic/bloc/user/details_order/details_order_cubit.dart';
+import 'logic/bloc/user/login/login_cubit.dart';
+import 'logic/bloc/user/my_car/my_car_cubit.dart';
+import 'logic/bloc/user/my_orders/my_order_cubit.dart';
+import 'logic/bloc/user/order_offer/order_offer_cubit.dart';
+import 'logic/bloc/user/register/register_cubit.dart';
+
+import 'presentation/routing/router.dart';
 
 // bool shouldUseFirebaseEmulator = true;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SPService.initialize();
   await dotenv.load(fileName: ".env");
   await FBService.initialize();
   await FbNotification.initialize();
@@ -111,7 +117,13 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChangeProfileCubit(_authCubit),
         ),
         BlocProvider(
+          create: (context) => ChangeImageUserCubit(_authCubit),
+        ),
+        BlocProvider(
           create: (context) => ChangeStoreCubit(_authStoreCubit),
+        ),
+        BlocProvider(
+          create: (context) => ChangeImageStoreCubit(_authStoreCubit),
         ),
         BlocProvider(
           create: (context) => CreateCarCubit(_myCarCubit),

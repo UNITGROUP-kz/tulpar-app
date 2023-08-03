@@ -1,9 +1,9 @@
-import 'package:garage/core/services/isar_service.dart';
 import 'package:garage/data/params/dictionary/index_city_params.dart';
 import 'package:isar/isar.dart';
 
 import '../../../core/services/api/api_service.dart';
 import '../../../core/services/api/interceptors/city_interceptor.dart';
+import '../../../core/services/database/isar_service.dart';
 import '../../models/dictionary/city_model.dart';
 
 class CityRepository {

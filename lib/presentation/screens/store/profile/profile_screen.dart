@@ -8,6 +8,7 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../core/services/firebase/fb_notification.dart';
 import '../../../../data/models/dictionary/city_model.dart';
 import '../../../../data/models/dictionary/offer_model.dart';
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
@@ -53,8 +54,9 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
     ));
   }
 
-  _notificationSwitch(bool value) {
-
+  _notificationSwitch(bool value) async {
+    await FbNotification.toggle();
+    setState(() {});
   }
 
   _changeCity() async {
@@ -85,7 +87,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
     return ScreenDefaultTemplate(
       scrollController: _scrollController,
       children: [
-        BlocBuilder<AuthCubit, AuthState>(
+        BlocBuilder<AuthStoreCubit, AuthStoreState>(
           builder: (context, state) {
             return ClipOval(
               child: Container(
@@ -93,7 +95,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: MediaQuery.of(context).size.width * 0.35,
                 child: CachedNetworkImage(
-                  imageUrl: state.user?.image ?? '',
+                  imageUrl: state.store?.image ?? '',
                   placeholder: (context, String val) => CupertinoActivityIndicator(),
                   errorWidget: (context, String val, err) => Icon(Icons.person, size: MediaQuery.of(context).size.width * 0.2, color: Colors.grey),
                 ),
@@ -117,9 +119,9 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
           label: 'Уведомления',
           child: Switch(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            value: true,
+            value: FbNotification.checkTopic() ?? false,
             onChanged: _notificationSwitch,
-          ),
+          )
         ),
         SettingsTile(label: 'Документы', child: Icon(Icons.insert_drive_file_sharp, color: Colors.grey), callback: _toDocument),
 

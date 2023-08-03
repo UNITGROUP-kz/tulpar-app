@@ -1,16 +1,23 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
+import 'package:garage/presentation/widgets/bottomsheets/choose_image_picker.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/fform/forms/change_profile_form.dart';
 import '../../../../data/models/auth/user_model.dart';
+import '../../../../data/params/change_image_params.dart';
 import '../../../../data/params/profile/change_profile_params.dart';
+import '../../../../logic/bloc/user/change_image/change_image_cubit.dart';
 import '../../../../logic/bloc/user/change_profile/change_profile_cubit.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/form/fields/password_field.dart';
@@ -79,11 +86,92 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
     super.initState();
   }
 
+  _showDeleteDialog() {
+    showDialog(
+        context: context,
+        builder: (context) => CupertinoAlertDialog(
+          title: Text('Удалить аккаунт'),
+          actions: [
+            CupertinoDialogAction(child: Text('Отмена'), onPressed: _back(context)),
+            CupertinoDialogAction(child: Text('Удалить'), onPressed: _delete(context)),
+          ],
+        )
+    );
+  }
+
+  _delete(BuildContext context) => (){
+    context.read<AuthCubit>().delete().then((value) {
+      _back(context)();
+    });
+  };
+
+  _back(BuildContext context) => () {
+    context.router.pop();
+  };
+
+  _showChooseImage() {
+    showModalBottomSheet(
+        context: context,
+        useRootNavigator: true,
+
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+        ),
+        builder: (context) => ChooseImagePicker(callback: _changeImage(context))
+    );
+  }
+
+  _changeImage(BuildContext context) => (XFile? image) async {
+    if(image == null) return;
+
+    Uint8List bytes = await image.readAsBytes();
+    MultipartFile imageMF = MultipartFile.fromBytes(bytes, filename: image.name);
+    
+    context.read<ChangeImageUserCubit>().change(ChangeImageParams(imageMF), bytes);
+
+    _back(context)();
+  };
+
+  _listenerImage(BuildContext context, ChangeImageUserState state) {
+    if(state.status == FetchStatus.error) {
+      showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
       children: [
         Header(title: 'Изменить профиль'),
+        BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, authState) {
+            return BlocConsumer<ChangeImageUserCubit, ChangeImageUserState>(
+              listener: _listenerImage,
+              builder: (context, state) {
+                return InkWell(
+                  customBorder: CircleBorder(),
+                  onTap: _showChooseImage,
+                  child: ClipOval(
+                    child: Container(
+                      color: Colors.grey.shade200,
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.width * 0.35,
+                      child: state.bytes == null ? CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: authState.user?.image ?? '',
+                        placeholder: (context, String val) => CupertinoActivityIndicator(),
+                        errorWidget: (context, String val, err) => Icon(Icons.person, size: MediaQuery.of(context).size.width * 0.2, color: Colors.grey),
+                      ) : Image.memory(
+                        state.bytes!,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
         TextFieldWidget(
             isRequired: true,
             controller: _nameController,
@@ -129,7 +217,9 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
                 }
             );
           },
-        )
+        ),
+        SizedBox(height: 10),
+        TextButton(child: Text('Удалить профиль'), onPressed: _showDeleteDialog)
       ],
     );
   }
