@@ -36,9 +36,6 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   late TextEditingController _commentController;
   late CityController _cityController;
 
-
-
-
   _createOrder() {
     if (_check()) {
       context.read<CreateOrderCubit>().create(CreateOrderParams(

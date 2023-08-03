@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/dictionary/order_model.dart';
 import '../../routing/router.dart';
+import '../tiles/data_tile.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderModel order;
@@ -30,10 +31,14 @@ class OrderCard extends StatelessWidget {
           width: double.infinity,
           child: Column(
             children: [
-              Text(order.title),
-              Text(order.status.name),
-              Text(order.part?.name ?? 'Неизвестно'),
-              Text(order.store?.name ?? 'Нет магазина')
+              DataTile(title: 'Заголовок', data: order.title, isDivider: false),
+              DataTile(title: 'Запчасть', data: order.part?.name ?? 'Неизвестно', isDivider: false),
+              if(order.store != null) DataTile(title: 'Магазин', data: order.store?.name ?? 'Нет магазина', isDivider: false),
+              DataTile(title: 'Комментарий', data: order.comment ?? 'Неизвестно', isDivider: false),
+
+              SizedBox(height: 10),
+              Divider(thickness: 1),
+              Text(order.status.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
             ],
           ),
         ),

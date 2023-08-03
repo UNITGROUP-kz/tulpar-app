@@ -18,7 +18,7 @@ class DataTile extends StatelessWidget {
             children: [
               Expanded(
                   flex: 1,
-                  child: Text(title, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500),)
+                  child: Text(title, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500), softWrap: false,)
               ),
               if(data != null) Expanded(
                   flex: 2,

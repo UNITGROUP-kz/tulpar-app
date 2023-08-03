@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:garage/core/services/api/api_service.dart';
 import 'package:garage/core/services/fb_auth_service.dart';
+import 'package:garage/core/services/fb_notification.dart';
 import 'package:garage/core/services/fb_service.dart';
 import 'package:garage/logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
@@ -24,6 +25,7 @@ import 'core/services/isar_service.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
 import 'logic/bloc/store/my_offers/my_offers_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
+import 'logic/bloc/user/details_order/details_order_cubit.dart';
 
 // bool shouldUseFirebaseEmulator = true;
 
@@ -31,6 +33,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await FBService.initialize();
+  await FbNotification.initialize();
+
   FBAuthService.setInstance();
   ApiService.initialize();
   await IsarService.initialize();
@@ -132,7 +136,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => CurrentCityCubit(_authCubit)..initial(),
         ),
-
+        BlocProvider(
+          create: (context) => DetailsOrderCubit(),
+        ),
         BlocProvider(
           create: (context) => StoreOrdersCubit(),
         )
