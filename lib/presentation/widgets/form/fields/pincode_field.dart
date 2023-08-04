@@ -17,6 +17,8 @@ class PincodeFieldWidget extends StatelessWidget {
       appContext: context,
       controller: controller,
       length: 6,
+      keyboardType: TextInputType.number,
+      inputFormatters: [],
       pinTheme: PinTheme.defaults(
         activeColor: Theme.of(context).colorScheme.primary,
         selectedColor: Theme.of(context).colorScheme.primary,

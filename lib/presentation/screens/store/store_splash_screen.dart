@@ -31,9 +31,9 @@ class StoreSplashScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  BottomItem(icon: Icons.garage, index: 0),
+                  BottomItem(icon: Icons.home, index: 0),
                   BottomItem(icon: Icons.garage, index: 1,),
-                  BottomItem(icon: Icons.garage, index: 2,),
+                  BottomItem(icon: Icons.person, index: 2,),
                 ],
               ),
             )

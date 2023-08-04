@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:garage/logic/bloc/store/create_offer/create_offer_cubit.dart';
 
 import 'core/services/api/api_service.dart';
 import 'core/services/database/isar_service.dart';
@@ -67,6 +68,7 @@ class _MyAppState extends State<MyApp> {
   late RegisterCubit _registerCubit;
   late MyCarCubit _myCarCubit;
   late MyOrderCubit _myOrderCubit;
+  late MyOffersCubit _myOfferCubit;
   late AppRouter _appRouter;
 
   @override
@@ -77,6 +79,8 @@ class _MyAppState extends State<MyApp> {
 
     _myCarCubit = MyCarCubit(_authCubit);
     _myOrderCubit = MyOrderCubit(_authCubit);
+    _myOfferCubit = MyOffersCubit(_authStoreCubit);
+
     _appRouter = AppRouter(_authCubit, _authStoreCubit);
     super.initState();
   }
@@ -112,7 +116,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => _myOrderCubit,
         ),
         BlocProvider(
-          create: (context) => MyOffersCubit(_authCubit),
+          create: (context) => _myOfferCubit,
         ),
 
 
@@ -134,6 +138,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => CreateOrderCubit(_myOrderCubit),
+        ),
+        BlocProvider(
+          create: (context) => CreateOfferCubit(_myOfferCubit),
         ),
 
         BlocProvider(

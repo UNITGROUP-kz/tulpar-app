@@ -6,7 +6,9 @@ import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../data/models/dictionary/order_model.dart';
 import '../../../../logic/bloc/store/orders/orders_cubit.dart';
+import '../../../routing/router.dart';
 import '../../../widgets/cards/order_card.dart';
 import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
@@ -58,6 +60,10 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
     }
   }
 
+  _toDetails(OrderModel order) => () {
+    context.router.navigate(DetailsOrderStoreRoute(order: order));
+  };
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -71,7 +77,7 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
             return Column(
               children: [
                 ...state.orders.map((order) {
-                  return OrderCard(order: order);
+                  return OrderCard(order: order, callback: _toDetails(order));
                 }).toList(),
                 if(state.orders.isEmpty && state.status == FetchStatus.success) Text('Нет Заказов'),
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),

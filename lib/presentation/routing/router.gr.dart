@@ -193,6 +193,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: StoreOrdersScreen(),
       );
     },
+    CreateOfferRoute.name: (routeData) {
+      final args = routeData.argsAs<CreateOfferRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CreateOfferScreen(
+          key: args.key,
+          order: args.order,
+        ),
+      );
+    },
     MyOffersRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -257,6 +267,16 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PickerScreen(),
+      );
+    },
+    DetailsOrderStoreRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOrderStoreRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsOrderStoreScreen(
+          key: args.key,
+          order: args.order,
+        ),
       );
     },
   };
@@ -796,6 +816,44 @@ class StoreOrdersRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CreateOfferScreen]
+class CreateOfferRoute extends PageRouteInfo<CreateOfferRouteArgs> {
+  CreateOfferRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CreateOfferRoute.name,
+          args: CreateOfferRouteArgs(
+            key: key,
+            order: order,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CreateOfferRoute';
+
+  static const PageInfo<CreateOfferRouteArgs> page =
+      PageInfo<CreateOfferRouteArgs>(name);
+}
+
+class CreateOfferRouteArgs {
+  const CreateOfferRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'CreateOfferRouteArgs{key: $key, order: $order}';
+  }
+}
+
+/// generated route for
 /// [MyOffersScreen]
 class MyOffersRoute extends PageRouteInfo<void> {
   const MyOffersRoute({List<PageRouteInfo>? children})
@@ -947,4 +1005,42 @@ class PickerRouter extends PageRouteInfo<void> {
   static const String name = 'PickerRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DetailsOrderStoreScreen]
+class DetailsOrderStoreRoute extends PageRouteInfo<DetailsOrderStoreRouteArgs> {
+  DetailsOrderStoreRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsOrderStoreRoute.name,
+          args: DetailsOrderStoreRouteArgs(
+            key: key,
+            order: order,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsOrderStoreRoute';
+
+  static const PageInfo<DetailsOrderStoreRouteArgs> page =
+      PageInfo<DetailsOrderStoreRouteArgs>(name);
+}
+
+class DetailsOrderStoreRouteArgs {
+  const DetailsOrderStoreRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'DetailsOrderStoreRouteArgs{key: $key, order: $order}';
+  }
 }

@@ -32,7 +32,6 @@ class CityPickerWidget extends StatelessWidget {
           )
         ]
     )).then((value) {
-      print(value);
       if(value != null) controller?._change(value as CityModel);
 
     });

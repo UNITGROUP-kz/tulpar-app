@@ -35,8 +35,8 @@ class UserSplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   BottomItem(icon: Icons.garage, index: 0),
-                  BottomItem(icon: Icons.shopping_cart_outlined, index: 1,),
-                  BottomItem(icon: Icons.person_outline, index: 2,),
+                  BottomItem(icon: Icons.shopping_cart, index: 1,),
+                  BottomItem(icon: Icons.person, index: 2,),
 
                 ],
               ),

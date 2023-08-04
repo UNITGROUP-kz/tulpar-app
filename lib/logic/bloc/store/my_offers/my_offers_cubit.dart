@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/dictionary/offer_model.dart';
 import 'package:garage/data/repositories/store/offer_store_repository.dart';
+import 'package:garage/logic/bloc/store/auth/auth_store_cubit.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/error_model.dart';
@@ -11,7 +12,7 @@ import '../../user/auth/auth_cubit.dart';
 part 'my_offers_state.dart';
 
 class MyOffersCubit extends Cubit<MyOffersState> {
-  final AuthCubit authCubit;
+  final AuthStoreCubit authCubit;
   MyOffersCubit(this.authCubit) : super(MyOffersState());
 
   Future fetch([IndexOfferParams? params]) async {

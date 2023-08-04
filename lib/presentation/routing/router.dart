@@ -4,6 +4,7 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/presentation/routing/guards/auth_guard.dart';
 import 'package:garage/presentation/screens/splash_screen.dart';
 import 'package:garage/presentation/screens/store/offers/my_offers_screen.dart';
+import 'package:garage/presentation/screens/store/order/details_order_screen.dart';
 import 'package:garage/presentation/screens/user/car/create_car_screen.dart';
 import 'package:garage/presentation/screens/user/car/my_car_screen.dart';
 import 'package:garage/presentation/screens/user/offer/details_offer_screen.dart';
@@ -29,6 +30,7 @@ import '../screens/picker/car_model_picker_screen.dart';
 import '../screens/picker/city_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
 import '../screens/store/auth/login_screen.dart';
+import '../screens/store/offers/create_offer_screen.dart';
 import '../screens/store/order/order_screen.dart';
 import '../screens/store/profile/profile_screen.dart';
 import '../screens/store/profile/change_store_screen.dart';
@@ -98,6 +100,8 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: StoreOrderRouter.page, path: '',
                 children: [
                   AutoRoute(path: '', page: StoreOrdersRoute.page),
+                  AutoRoute(path: '', page: DetailsOrderStoreRoute.page),
+
                 ]
               ),
               AutoRoute(page: StoreOfferRouter.page,
@@ -112,6 +116,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: StoreFormRouter.page, path: 'store-form',
             children: [
               AutoRoute(page: ChangeStoreRoute.page),
+              AutoRoute(page: CreateOfferRoute.page),
             ],
             guards: [StoreGuard(authStoreCubit)]
         ),

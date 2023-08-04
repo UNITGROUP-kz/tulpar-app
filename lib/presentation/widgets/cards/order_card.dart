@@ -9,19 +9,18 @@ import '../tiles/data_tile.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderModel order;
+  final VoidCallback? callback;
 
-  const OrderCard({super.key, required this.order});
+  const OrderCard({super.key, required this.order, this.callback});
 
-  _toDetails(BuildContext context) => () {
-    context.router.navigate(DetailsOrderRoute(order: order));
-  };
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
-        onTap: _toDetails(context),
+        onTap: callback,
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(

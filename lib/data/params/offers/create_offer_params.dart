@@ -1,20 +1,10 @@
 
+import '../../models/dictionary/offer_model.dart';
 import '../../models/dictionary/order_model.dart';
-
-enum ConditionOffer {
-  used, new1;
-
-  String get name {
-    switch(this) {
-      case ConditionOffer.used: return used.name;
-      case ConditionOffer.new1: return 'new';
-    }
-  }
-}
 
 class CreateOfferParams {
   final OrderModel order;
-  final int price;
+  final double price;
   final String delivery;
   final String producer;
   final ConditionOffer condition;
