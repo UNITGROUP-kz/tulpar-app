@@ -41,6 +41,7 @@ import '../screens/user/car/details_car_screen.dart';
 import '../screens/user/offer/offers_screen.dart';
 import '../screens/user/order/rate_order_screen.dart';
 import '../screens/user/profile/change_profile.dart';
+import '../screens/user/profile/support_screen.dart';
 
 
 part 'router.gr.dart';
@@ -83,6 +84,7 @@ class AppRouter extends _$AppRouter {
             AutoRoute(path: '', page: CreateCarRoute.page),
             AutoRoute(page: CreateOrderRoute.page),
             AutoRoute(page: ChangeProfileRoute.page),
+            AutoRoute(page: SupportRoute.page),
           ],
           guards: [UserGuard(authCubit)]
         ),

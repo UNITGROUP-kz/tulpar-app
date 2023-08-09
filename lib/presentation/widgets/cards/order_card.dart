@@ -33,11 +33,14 @@ class OrderCard extends StatelessWidget {
               DataTile(title: 'Заголовок', data: order.title, isDivider: false),
               DataTile(title: 'Запчасть', data: order.part?.name ?? 'Неизвестно', isDivider: false),
               if(order.store != null) DataTile(title: 'Магазин', data: order.store?.name ?? 'Нет магазина', isDivider: false),
-              DataTile(title: 'Комментарий', data: order.comment ?? 'Неизвестно', isDivider: false),
-
+              if(order.comment != null || order.comment?.isNotEmpty == true)...[
+                Divider(thickness: 1),
+                Text('Комментарий', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w700),),
+                Text(order.comment ?? 'Нет комментария', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),),
+              ],
               SizedBox(height: 10),
               Divider(thickness: 1),
-              Text(order.status.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
+              Text(order.status.toString(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),),
             ],
           ),
         ),

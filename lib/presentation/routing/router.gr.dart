@@ -279,6 +279,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    SupportRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SupportScreen(),
+      );
+    },
   };
 }
 
@@ -1043,4 +1049,18 @@ class DetailsOrderStoreRouteArgs {
   String toString() {
     return 'DetailsOrderStoreRouteArgs{key: $key, order: $order}';
   }
+}
+
+/// generated route for
+/// [SupportScreen]
+class SupportRoute extends PageRouteInfo<void> {
+  const SupportRoute({List<PageRouteInfo>? children})
+      : super(
+          SupportRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SupportRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

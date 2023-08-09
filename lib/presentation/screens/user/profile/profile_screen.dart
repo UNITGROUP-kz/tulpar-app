@@ -49,6 +49,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     ));
   }
 
+  _toSupport() {
+    context.router.push(SplashRouter(
+      children: [
+        UserFormRouter(
+            children: [
+              SupportRoute()
+            ]
+        )
+      ]
+    ));
+  }
+
   _change() {
     context.router.navigate(const SplashRouter(
       children: [
@@ -107,25 +119,40 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         SizedBox(height: 20,),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
-              return SettingsTile(label: 'Город', child: Text(state.currentCity?.name ?? 'Не выбран'), callback: _changeCity,);
+              return SettingsTile(
+                label: 'Город',
+                child: Text(state.currentCity?.name ?? 'Не выбран'),
+                callback: _changeCity,
+                icon: Icons.location_city,
+              );
             }
         ),
         SettingsTile(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           label: 'Уведомления',
+          icon: Icons.notifications_active_outlined,
+          backgroundIcon: Colors.amber,
           child: Switch(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             value: FbNotification.checkTopic() ?? false,
             onChanged: _notificationSwitch,
           )
         ),
-        SettingsTile(label: 'Документы', child: Icon(Icons.insert_drive_file_sharp, color: Colors.grey), callback: _toDocument),
         SettingsTile(
+            label: 'Помощь',
+            icon: Icons.info,
+            backgroundIcon: Colors.grey,
+            callback: _toSupport
+        ),
+        SettingsTile(
+            label: 'Документы',
+            icon: Icons.insert_drive_file_sharp,
+            backgroundIcon: Colors.grey,
+            callback: _toDocument
+        ),
+        SettingsTile(
+            icon: Icons.exit_to_app_rounded,
             label: 'Выйти',
-            child: Icon(
-              Icons.exit_to_app_rounded,
-              color: Colors.red.shade800,
-            ),
+            backgroundIcon: Colors.red,
             callback: _exit,
         ),
       ],

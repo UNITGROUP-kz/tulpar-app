@@ -108,6 +108,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
               return SettingsTile(
+                  icon: Icons.location_city,
                   label: 'Город',
                   child: Text(state.currentCity?.name ?? 'Не выбран'),
                   callback: _changeCity,
@@ -115,22 +116,25 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
             }
         ),
         SettingsTile(
-          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           label: 'Уведомления',
+          icon: Icons.notifications,
           child: Switch(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             value: FbNotification.checkTopic() ?? false,
             onChanged: _notificationSwitch,
-          )
-        ),
-        SettingsTile(label: 'Документы', child: Icon(Icons.insert_drive_file_sharp, color: Colors.grey), callback: _toDocument),
-
-        SettingsTile(
-          label: 'Выйти',
-          child: Icon(
-            Icons.exit_to_app_rounded,
-            color: Colors.red.shade800,
           ),
+          backgroundIcon: Colors.amber,
+        ),
+        SettingsTile(
+            label: 'Документы',
+            icon: Icons.insert_drive_file_sharp,
+            backgroundIcon: Colors.grey,
+            callback: _toDocument
+        ),
+        SettingsTile(
+          icon: Icons.exit_to_app_rounded,
+          backgroundIcon: Colors.red,
+          label: 'Выйти',
           callback: _exit,
         ),
 

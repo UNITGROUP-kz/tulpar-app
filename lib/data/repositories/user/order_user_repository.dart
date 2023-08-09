@@ -20,4 +20,7 @@ class OrderUserRepository {
     static Future rate(int orderId, int rate) => ApiService.I
         .post('/order/$orderId/rate', data: { 'rate': rate });
 
+    static Future complete(int orderId) => ApiService.I
+        .post('/order/$orderId/complete');
+
 }

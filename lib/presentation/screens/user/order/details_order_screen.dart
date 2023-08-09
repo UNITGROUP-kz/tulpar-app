@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/dictionary/order_model.dart';
@@ -74,6 +76,18 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     }
   }
 
+  _complete() {
+    context.read<DetailsOrderCubit>().complete(widget.order.id).then((value) {
+      _toRate();
+    }).catchError((error) {
+      if(error is DioException) {
+        showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
+      } else {
+        showErrorSnackBar(context, 'Неизвестная ошибка');
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Details Order');
@@ -118,10 +132,10 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       SizedBox(height: 20),
                       ElevatedButtonWidget(onPressed: _toOffers, child: Text('Предложения'))
                     ],
-                    if(widget.order.status == OrderStatus.completed) ...[
+                    if(widget.order.status == OrderStatus.active && widget.order.store != null) ...[
                       SizedBox(height: 20),
-                      ElevatedButtonWidget(onPressed: _toRate, child: Text('Оценить'))
-                    ]
+                      ElevatedButtonWidget(onPressed: _complete, child: Text('Завершить заказ'))
+                    ],
                   ],
                 ],
               ),

@@ -25,6 +25,7 @@ class DetailsOrderCubit extends Cubit<DetailsOrderState> {
     }
 
     return OrderUserRepository.info(state.order?.id ?? orderId!).then((value) {
+      print(value.id);
       emit(state.copyWith(status: FetchStatus.success, order: value));
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
@@ -40,4 +41,11 @@ class DetailsOrderCubit extends Cubit<DetailsOrderState> {
   Future rate(int orderId, int rate) {
     return OrderUserRepository.rate(orderId, rate);
   }
+
+  Future complete(int orderId) {
+    return OrderUserRepository.complete(orderId).then((value) {
+      fetch(orderId);
+    });
+  }
+
 }

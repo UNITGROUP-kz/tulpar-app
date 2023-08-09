@@ -32,6 +32,7 @@ import 'logic/bloc/user/my_orders/my_order_cubit.dart';
 import 'logic/bloc/user/order_offer/order_offer_cubit.dart';
 import 'logic/bloc/user/register/register_cubit.dart';
 
+import 'logic/bloc/user/support/support_cubit.dart';
 import 'presentation/routing/router.dart';
 
 // bool shouldUseFirebaseEmulator = true;
@@ -142,7 +143,9 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => CreateOfferCubit(_myOfferCubit),
         ),
-
+        BlocProvider(
+          create: (context) => SupportCubit()
+        ),
         BlocProvider(
           create: (context) => OrderOfferCubit(),
         ),

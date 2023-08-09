@@ -73,19 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if(state.status == LoginStatus.validate) {
       context.router.navigate(RegisterRoute(emailPhone: _emailPhoneController.value.text));
     }
-    else if(state.status == LoginStatus.success) {
-      context.router.navigate(
-        SplashRouter(
-          children: [
-            UserRouter(
-              children: [
-                UserCarRouter()
-              ]
-            )
-          ]
-        )
-      );
-    }
   }
 
   _toRegister() {

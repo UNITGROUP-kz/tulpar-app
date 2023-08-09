@@ -11,15 +11,15 @@ class UserGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
-    _check(resolver)(auth.state);
-    auth.stream.listen(_check(resolver));
+    _check(resolver, router)(auth.state);
+    auth.stream.listen(_check(resolver, router));
   }
 
-  _check(NavigationResolver resolver) => (AuthState state) {
+  _check(NavigationResolver resolver, StackRouter router) => (AuthState state) {
     if(state.auth != null && !resolver.isResolved) {
       resolver.next();
     } else {
-      resolver.redirect(LoginRoute());
+      router.replace(LoginRoute());
     }
   };
 }
@@ -57,34 +57,32 @@ class NotAuthGuard extends AutoRouteGuard {
     print(authStore.isLogin);
 
     if(auth.isLogin) {
-      _toUser(resolver);
+      _toUser(router);
     } else if(authStore.isLogin) {
-      _toStore(resolver);
+      _toStore(router);
     } else {
       resolver.next();
     }
 
-    authStore.stream.listen(_listenStore(resolver));
-    auth.stream.listen(_listenUser(resolver));
+    authStore.stream.listen(_listenStore(router));
+    auth.stream.listen(_listenUser(router));
 
   }
 
-  _listenStore(NavigationResolver resolver) => (AuthStoreState state) {
+  _listenStore(StackRouter router) => (AuthStoreState state) {
     if(state.isLogin) {
-      print(state.isLogin);
-      _toStore(resolver);
+      _toStore(router);
     }
   };
 
-  _listenUser(NavigationResolver resolver) => (AuthState state) {
+  _listenUser(StackRouter router) => (AuthState state) {
     if(state.isLogin) {
-      print(state.isLogin);
-      _toUser(resolver);
+      _toUser(router);
     }
   };
 
-  _toUser(NavigationResolver resolver) {
-    resolver.redirect(SplashRouter(
+  _toUser(StackRouter router) {
+    router.replace(SplashRouter(
         children: [
           UserRouter(
               children: [
@@ -95,8 +93,8 @@ class NotAuthGuard extends AutoRouteGuard {
     ));
   }
 
-  _toStore(NavigationResolver resolver) {
-    resolver.redirect(SplashRouter(
+  _toStore(StackRouter router) {
+    router.replace(SplashRouter(
         children: [
           StoreRouter(
               children: [

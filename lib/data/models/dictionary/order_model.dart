@@ -16,6 +16,17 @@ enum OrderStatus {
       case 'completed': return OrderStatus.completed;
     }
   }
+
+  @override
+  String toString() {
+    switch(this) {
+      case OrderStatus.moderation: return 'На модерацие';
+      case OrderStatus.active: return 'Активный';
+      case OrderStatus.canceled: return 'Закрыт';
+      case OrderStatus.completed: return 'Законче';
+
+    }
+  }
 }
 
 class OrderModel {

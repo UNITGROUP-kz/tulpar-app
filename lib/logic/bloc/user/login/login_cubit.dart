@@ -26,6 +26,7 @@ class LoginCubit extends Cubit<LoginState> {
         email: Check.isEmail(emailPhone) ? emailPhone : null,
         phone: Check.isPhone(emailPhone) ? emailPhone : null
     )).then((value) {
+      emit(LoginState());
       authCubit.set(value);
     }).catchError((error) {
       if(error is DioException) {
