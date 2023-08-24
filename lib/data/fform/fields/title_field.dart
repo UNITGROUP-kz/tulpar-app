@@ -2,7 +2,15 @@
 import 'package:fform/fform.dart';
 
 enum TitleError {
-  empty,;
+  empty;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Заголовок пустой';
+      default: return 'Заголовок не верный';
+    }
+  }
 }
 
 class TitleField extends FFormField {

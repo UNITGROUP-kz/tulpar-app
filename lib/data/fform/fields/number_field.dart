@@ -1,8 +1,15 @@
 import 'package:fform/fform.dart';
-import 'package:garage/core/utils/check.dart';
 
 enum PriceError {
   empty, min, not;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Цена пустая';
+      default: return 'Цена не верного формата';
+    }
+  }
 }
 
 class PriceField extends FFormField {

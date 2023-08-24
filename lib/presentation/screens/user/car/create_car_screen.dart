@@ -90,17 +90,17 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
         Header(title: 'Создать машину'),
         TextFieldWidget(
             isRequired: true,
-            label: 'VIN-code',
+            label: 'VIN-код',
             controller: _vinController
         ),
         SizedBox(height: 10),
-        ProducerPickerWidget(label: 'Producer', controller: _producerController),
+        ProducerPickerWidget(label: 'Производитель', controller: _producerController),
         SizedBox(height: 10),
         ValueListenableBuilder(
             valueListenable: _producerController,
             builder: (context, value, child) {
               if(value == null) return Container();
-              return CarModelPickerWidget(label: 'Car model', producer: value, controller: _carModelController);
+              return CarModelPickerWidget(label: 'Модель машины', producer: value, controller: _carModelController);
             }
         ),
         SizedBox(height: 10),

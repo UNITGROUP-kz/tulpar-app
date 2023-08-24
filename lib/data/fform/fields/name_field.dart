@@ -3,6 +3,14 @@ import 'package:fform/fform.dart';
 
 enum NameError {
   empty;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Название пустое';
+      default: return 'Название не верное';
+    }
+  }
 }
 
 class NameField extends FFormField {

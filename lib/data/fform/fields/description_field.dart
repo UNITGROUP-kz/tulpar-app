@@ -2,6 +2,14 @@ import 'package:fform/fform.dart';
 
 enum DescriptionError {
   empty;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Описание пустое';
+      default: return 'Описание не верного формата';
+    }
+  }
 }
 
 class DescriptionField extends FFormField {

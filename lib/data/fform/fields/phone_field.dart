@@ -4,6 +4,16 @@ import 'package:garage/core/utils/check.dart';
 
 enum PhoneError {
   empty, not;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Телефон пустой';
+      case not: return 'Не верный формат телефона';
+
+      default: return 'Телефона не верный';
+    }
+  }
 }
 
 class PhoneField extends FFormField {

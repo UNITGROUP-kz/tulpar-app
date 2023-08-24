@@ -4,6 +4,15 @@ import 'package:garage/core/utils/check.dart';
 
 enum CodeError {
   empty, min;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Код пустой';
+      case min: return 'Код меншьше 6';
+      default: return 'Код не верного формата';
+    }
+  }
 }
 
 class CodeField extends FFormField {

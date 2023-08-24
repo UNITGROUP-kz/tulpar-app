@@ -4,6 +4,15 @@ import 'package:garage/core/utils/check.dart';
 
 enum EmailError {
   empty, not;
+
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return 'Email пустой';
+      case not: return 'Email не верного формата';
+      default: return 'Email не верного формата';
+    }
+  }
 }
 
 class EmailField extends FFormField {

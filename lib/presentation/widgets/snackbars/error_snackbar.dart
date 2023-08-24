@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 showErrorSnackBar(BuildContext context, String error) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       elevation: 40,
+      behavior: SnackBarBehavior.floating,
       backgroundColor: Theme.of(context).colorScheme.background,
       duration: Duration(seconds: 5),
       content: Row(

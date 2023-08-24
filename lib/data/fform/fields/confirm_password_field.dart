@@ -1,7 +1,15 @@
 import 'package:fform/fform.dart';
 
 enum ConfirmPasswordError {
-  empty, doesNotMatch
+  empty, doesNotMatch;
+  @override
+  String toString() {
+    switch(this) {
+      case empty: return '"Повторите пароль" пустой';
+      case doesNotMatch: return '"Повторите пароль" не похож на пароль';
+      default: return 'Описание не верного формата';
+    }
+  }
 }
 
 class ConfirmPasswordField<String> extends FFormField {
