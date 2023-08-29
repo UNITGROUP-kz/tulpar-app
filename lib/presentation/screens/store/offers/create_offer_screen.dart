@@ -1,6 +1,7 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/models/dictionary/order_model.dart';
 import 'package:garage/presentation/widgets/form/fields/number_field.dart';
@@ -134,7 +135,7 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
             if(state.status == FetchStatus.loading) {
               return ElevatedButtonWidget(
                   onPressed: () {},
-                  child: CupertinoActivityIndicator()
+                  child: CupertinoActivityIndicator(color: Colors.black45)
               );
             }
             return MultiValueListenableBuilder(

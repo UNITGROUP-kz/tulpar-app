@@ -114,7 +114,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
             builder: (context, state) {
               if(state.status == FetchStatus.loading) return ElevatedButtonWidget(
                   onPressed: () {},
-                  child: CupertinoActivityIndicator()
+                  child: CupertinoActivityIndicator(color: Colors.black45)
               );
               return ElevatedButtonWidget(
                   onPressed: _submit,
@@ -132,7 +132,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
                     text: 'Пользователь',
                     recognizer: TapGestureRecognizer()..onTap = _toRegister,
                     style: TextStyle(
-                        color: Theme.of(context).primaryColor
+                        color: Theme.of(context).colorScheme.primary
                     )
                 )
               ]

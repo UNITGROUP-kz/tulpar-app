@@ -12,7 +12,7 @@ class StepWidget extends StatelessWidget {
     super.key,
     required this.maxStep,
     required this.currentStep,
-    this.focusedColor = Colors.blue,
+    this.focusedColor = Colors.yellow,
     this.disableColor = Colors.grey
   });
 

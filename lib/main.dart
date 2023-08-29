@@ -15,6 +15,7 @@ import 'logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import 'logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
+import 'logic/bloc/store/change_category/change_category_cubit.dart';
 import 'logic/bloc/store/change_image/change_image_cubit.dart';
 import 'logic/bloc/store/change_store/change_store_cubit.dart';
 import 'logic/bloc/store/login/login_store_cubit.dart';
@@ -124,6 +125,9 @@ class _MyAppState extends State<MyApp> {
 
         //FORM
         BlocProvider(
+          create: (context) => ChangeCategoryCubit(_authStoreCubit),
+        ),
+        BlocProvider(
           create: (context) => PartPickerCubit()..fetch(),
         ),
         BlocProvider(
@@ -178,6 +182,13 @@ class _MyAppState extends State<MyApp> {
         )
       ],
       child: MaterialApp.router(
+        theme: ThemeData.dark(
+          
+        ).copyWith(
+          colorScheme: ColorScheme.dark().copyWith(
+            primary: Color.fromRGBO(239, 213, 83, 1)
+          )
+        ),
         routerConfig: _appRouter.config(),
       ),
     );

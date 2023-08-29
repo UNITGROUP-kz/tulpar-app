@@ -10,6 +10,7 @@ import '../../../core/services/api/interceptors/auth_interceptor.dart';
 import '../../../core/services/database/isar_service.dart';
 import '../../models/auth/auth_store_model.dart';
 import '../../models/auth/store_model.dart';
+import '../../params/profile/change_category_params.dart';
 import '../../params/store/change_store_params.dart';
 
 class AuthStoreRepository {
@@ -32,6 +33,22 @@ class AuthStoreRepository {
   static Future<AuthStoreModel> update(ChangeStoreParams params) => ApiService.I.post('/store/${auth!.store.value!.id}', data: params.toData())
       .then((value) async {
     final store = StoreModel.fromMap(value.data['store']);
+    auth?.store.value = store;
+    await write(auth!);
+    return auth!;
+  });
+
+  static Future<AuthStoreModel> info() => ApiService.I.get('/store/${auth!.store.value!.id}')
+      .then((value) async {
+    final store = StoreModel.fromMap(value.data['store']);
+    auth?.store.value = store;
+    await write(auth!);
+    return auth!;
+  });
+
+  static Future<AuthStoreModel> updateCategory(ChangeCategoryParams params) => ApiService.I.post('/store/updateСategory', data: params.toData()).then((value) async {
+    final store = StoreModel.fromMap(value.data['store']);
+    print(value.data['store']);
     auth?.store.value = store;
     await write(auth!);
     return auth!;

@@ -43,13 +43,9 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
   }
 
   _change() {
-    context.router.navigate(SplashRouter(
+    context.router.navigate(StoreFormRouter(
         children: [
-          StoreFormRouter(
-              children: [
-                ChangeStoreRoute()
-              ]
-          )
+          ChangeStoreRoute()
         ]
     ));
   }

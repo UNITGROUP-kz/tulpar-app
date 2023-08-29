@@ -139,7 +139,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
             if(state.status == FetchStatus.loading) {
               return ElevatedButtonWidget(
                   onPressed: () {},
-                  child: CupertinoActivityIndicator()
+                  child: CupertinoActivityIndicator(color: Colors.black45)
               );
             }
             return MultiValueListenableBuilder(

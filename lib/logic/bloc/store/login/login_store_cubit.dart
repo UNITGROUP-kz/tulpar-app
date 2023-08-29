@@ -5,6 +5,7 @@ import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/models/auth/store_model.dart';
 import 'package:garage/logic/bloc/store/auth/auth_store_cubit.dart';
 
+import '../../../../data/models/auth/auth_store_model.dart';
 import '../../../../data/models/error_model.dart';
 import '../../../../data/params/auth/auth_store_params.dart';
 import '../../../../data/repositories/store/auth_store_repository.dart';
@@ -27,7 +28,7 @@ class LoginStoreCubit extends Cubit<LoginStoreState> {
         phone: phone
     )).then((value) {
       authCubit.set(value);
-      emit(LoginStoreState(status: FetchStatus.success));
+      emit(LoginStoreState(status: FetchStatus.success, auth: value));
     }).catchError((error) {
       print(error);
       emit(LoginStoreState(status: FetchStatus.error, error: ErrorModel.parse(error)));

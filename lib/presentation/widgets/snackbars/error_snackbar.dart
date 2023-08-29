@@ -17,7 +17,7 @@ showErrorSnackBar(BuildContext context, String error) {
           Expanded(
             child: Text(error,
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onError
+                  color: Colors.white
               ),
             ),
           ),

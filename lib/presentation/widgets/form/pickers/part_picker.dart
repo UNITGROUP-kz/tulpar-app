@@ -6,12 +6,17 @@ import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart'
 import '../../../../data/models/dictionary/part_model.dart';
 
 class PartControllerValue {
-  List<PartModel> checkParent = [];
-  List<PartModel> choseChild = [];
+  List<PartModel> checkParent;
+  List<PartModel> choseChild;
+
+  PartControllerValue({
+    required this.choseChild,
+    required this.checkParent
+  });
 }
 
 class PartController extends ValueNotifier<PartControllerValue> {
-  PartController({PartControllerValue? value}) : super(value ?? PartControllerValue());
+  PartController({PartControllerValue? value}) : super(value ?? PartControllerValue(choseChild: [], checkParent: []));
 
   checkParent(PartModel part, bool isMulti) {
     if(value.checkParent.any((element) => part.id == element.id)) {
@@ -123,7 +128,7 @@ class PartTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (part.childs!.isEmpty) {
-      return PartChildTile(part: part, onPressChild: onPressChild);
+      return PartChildTile(part: part, onPressChild: onPressChild, value: value);
     } else {
       return PartParentTile(part: part, onPressParent: onPressParent, value: value, onPressChild: onPressChild);
     }
@@ -166,10 +171,10 @@ class PartParentTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
                           width: 0.5,
-                          color: Theme.of(context).primaryColor
+                          color: Theme.of(context).colorScheme.primary
                       )
                   ),
-                  child: Icon(visibleChild? Icons.remove : Icons.add, color: Theme.of(context).primaryColor),
+                  child: Icon(visibleChild? Icons.remove : Icons.add, color: Theme.of(context).colorScheme.primary),
                 ),
                 const SizedBox(width: 10),
                 Text(part.name,
@@ -197,11 +202,13 @@ class PartParentTile extends StatelessWidget {
 class PartChildTile extends StatelessWidget {
   final PartModel part;
   final VoidCallback Function(PartModel) onPressChild;
+  final PartControllerValue value;
 
+  const PartChildTile({super.key, required this.part, required this.onPressChild, required this.value});
 
-  const PartChildTile({super.key, required this.part, required this.onPressChild});
   @override
   Widget build(BuildContext context) {
+    final visibleChild = value.choseChild.any((element) => element.id == part.id);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -211,7 +218,7 @@ class PartChildTile extends StatelessWidget {
             width: double.infinity,
             padding: EdgeInsets.all(10),
             child: Text(part.name, style: TextStyle(
-                fontWeight: FontWeight.w600,
+                fontWeight: visibleChild ? FontWeight.w800 : FontWeight.w600,
                 fontSize: 15
               )
             ),

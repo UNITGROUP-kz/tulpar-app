@@ -19,6 +19,15 @@ class AuthStoreCubit extends Cubit<AuthStoreState> {
     emit(AuthStoreState(auth: auth));
   }
 
+  fetchInfo() async {
+    AuthStoreRepository.info().then((value) {
+      emit(AuthStoreState(auth: value));
+    }).catchError((error) {
+      logout();
+    });
+
+  }
+
 
   logout() async {
     await AuthStoreRepository.clear().then((value) {

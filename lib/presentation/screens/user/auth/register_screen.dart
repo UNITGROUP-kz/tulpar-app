@@ -151,7 +151,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Column(
             children: [
               Header(title: 'Регистрация'),
-              StepWidget(maxStep: 2, currentStep: state.status == RegisterStatusState.register? 1 : 2),
+              StepWidget(
+                  maxStep: 2,
+                  currentStep: state.status == RegisterStatusState.register? 1 : 2,
+                  focusedColor: Theme.of(context).colorScheme.primary,
+              ),
               Spacer(),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +184,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(height: 10),
                     if (state.isLoading) ElevatedButtonWidget(
                         onPressed: () {},
-                        child: CupertinoActivityIndicator()
+                        child: CupertinoActivityIndicator(color: Colors.black45)
                     ) else ElevatedButtonWidget(
                         onPressed: _submitRegister,
                         child: Text('Регистрация')
@@ -195,7 +199,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     SizedBox(height: 10),
                     if (state.isLoading) ElevatedButtonWidget(
                         onPressed: () {},
-                        child: CupertinoActivityIndicator()
+                        child: CupertinoActivityIndicator(color: Colors.black45)
                     ) else ElevatedButtonWidget(
                         onPressed: _submitVerify,
                         child: Text('Верификация')
@@ -211,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         TextSpan(
                             text: 'Политикой конфиденциальности',
                             style: TextStyle(
-                                color: Theme.of(context).primaryColor
+                                color: Theme.of(context).colorScheme.primary
                             ),
                             recognizer: TapGestureRecognizer()..onTap = _toPrivacy
                         ),

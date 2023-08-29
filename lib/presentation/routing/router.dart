@@ -123,6 +123,8 @@ class AppRouter extends _$AppRouter {
             children: [
               AutoRoute(page: ChangeStoreRoute.page),
               AutoRoute(page: CreateOfferRoute.page),
+              AutoRoute(page: ChangeCategoryRoute.page),
+
             ],
             guards: [StoreGuard(authStoreCubit)]
         ),

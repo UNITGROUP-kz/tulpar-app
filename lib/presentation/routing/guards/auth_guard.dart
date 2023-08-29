@@ -104,13 +104,9 @@ class NotAuthGuard extends AutoRouteGuard {
   _toUser(StackRouter router) {
     print('redirect user 2');
 
-    router.replace(const SplashRouter(
+    router.replace(UserRouter(
         children: [
-          UserRouter(
-              children: [
-                UserCarRouter()
-              ]
-          )
+          UserCarRouter()
         ]
     ));
   }
@@ -118,13 +114,9 @@ class NotAuthGuard extends AutoRouteGuard {
   _toStore(StackRouter router) {
     print('redirect store 2');
 
-    router.replace(const SplashRouter(
+    router.replace(StoreRouter(
         children: [
-          StoreRouter(
-              children: [
-                StoreOrderRouter()
-              ]
-          )
+          StoreOrderRouter()
         ]
     ));
   }

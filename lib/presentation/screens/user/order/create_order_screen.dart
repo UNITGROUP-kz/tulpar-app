@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
@@ -124,7 +125,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             if(state.status == FetchStatus.loading) {
               return ElevatedButtonWidget(
                 onPressed: () {},
-                child: CupertinoActivityIndicator()
+                child: CupertinoActivityIndicator(color: Colors.black45)
               );
             }
             return MultiValueListenableBuilder(

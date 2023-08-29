@@ -15,7 +15,9 @@ showSuccessSnackBar(BuildContext context, String success) {
           ),
           SizedBox(width: 15,),
           Expanded(
-            child: Text(success),
+            child: Text(success, style: TextStyle(
+              color: Colors.white
+            )),
           ),
         ],
       )

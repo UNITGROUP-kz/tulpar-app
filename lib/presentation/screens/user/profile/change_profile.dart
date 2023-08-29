@@ -199,7 +199,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
             if(state.status == FetchStatus.loading) {
               return ElevatedButtonWidget(
                   onPressed: () {},
-                  child: CupertinoActivityIndicator()
+                  child: CupertinoActivityIndicator(color: Colors.black45)
               );
             }
             return MultiValueListenableBuilder(

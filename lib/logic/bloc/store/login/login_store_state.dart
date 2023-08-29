@@ -4,27 +4,27 @@ class LoginStoreState extends Equatable {
 
   final ErrorModel? error;
   final FetchStatus status;
-  final StoreCategoryModel? category;
+  final AuthStoreModel? auth;
 
   const LoginStoreState({
     this.error,
     this.status = FetchStatus.initial,
-    this.category,
+    this.auth,
   });
 
   @override
-  List<Object?> get props => [status, error];
+  List<Object?> get props => [status, error, auth];
 
 
   LoginStoreState copyWith({
     FetchStatus? status,
     ErrorModel? error,
-    StoreCategoryModel? category
+    AuthStoreModel? auth
   }) {
     return LoginStoreState(
         status: status ?? this.status,
         error: error ?? this.error,
-        category: category ?? this.category
+        auth: auth ?? this.auth
     );
   }
 }

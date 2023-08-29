@@ -75,6 +75,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
 
   @override
   void initState() {
+    context.read<AuthStoreCubit>().fetchInfo();
     StoreModel? store = context.read<AuthStoreCubit>().state.store;
     _nameController = TextEditingController(text: store?.name ?? '');
     _descriptionController = TextEditingController(text: store?.description ?? '');
@@ -125,6 +126,14 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
     if(city != null) context.read<CurrentCityCubit>().change(city as CityModel);
   }
 
+  _changeCategories() {
+    context.router.navigate(StoreFormRouter(
+        children: [
+          ChangeCategoryRoute()
+        ]
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -163,7 +172,11 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
         SizedBox(height: 10),
         DescriptionFieldWidget(label: 'Описание', controller: _descriptionController),
         SizedBox(height: 10),
-        SettingsTile(label: 'Изменить свои услуги', icon: Icons.handyman),
+        SettingsTile(
+          label: 'Изменить свои услуги',
+          icon: Icons.handyman,
+          callback: _changeCategories,
+        ),
         // SizedBox(height: 5),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
             builder: (context, state) {
@@ -184,7 +197,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
             if(state.status == FetchStatus.loading) {
               return ElevatedButtonWidget(
                   onPressed: () {},
-                  child: CupertinoActivityIndicator()
+                  child: CupertinoActivityIndicator(color: Colors.black45)
               );
             }
             return MultiValueListenableBuilder(

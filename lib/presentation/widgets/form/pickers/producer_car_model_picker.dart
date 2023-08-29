@@ -5,16 +5,16 @@ import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
 class ProducerCarModelPicker extends StatefulWidget {
-  final ProducerController producerController;
-  final CarModelController carModelController;
+  ProducerController? producerController;
+  CarModelController? carModelController;
   final YearController? yearController;
   final VolumeController? volumeController;
 
 
-  const ProducerCarModelPicker({
+  ProducerCarModelPicker({
     super.key,
-    required this.producerController,
-    required this.carModelController,
+    this.producerController,
+    this.carModelController,
     this.yearController,
     this.volumeController
   });
@@ -27,18 +27,28 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
 
   @override
   void initState() {
-    widget.producerController.addListener(_listenerProducer);
+    widget.producerController ??= ProducerController();
+    widget.carModelController ??= CarModelController();
+
+    widget.producerController?.addListener(_listenerProducer);
     super.initState();
   }
 
   _listenerProducer() {
-    widget.carModelController.remove();
+    widget.carModelController?.remove();
   }
 
   @override
   void dispose() {
-    widget.producerController.dispose();
+    widget.producerController?.removeListener(_listenerProducer);
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant ProducerCarModelPicker oldWidget) {
+    widget.producerController ??= oldWidget.producerController;
+    widget.carModelController ??= oldWidget.carModelController;
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -54,7 +64,7 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
         ),
         const SizedBox(height: 10),
         ValueListenableBuilder(
-            valueListenable: widget.producerController,
+            valueListenable: widget.producerController!,
             builder: (context, value, child) {
               if(value == null) return Container();
               return CarModelPickerWidget(
