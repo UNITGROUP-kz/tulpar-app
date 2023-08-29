@@ -16,8 +16,10 @@ class ElevatedButtonWidget extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           textStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)
-          )
+            borderRadius: BorderRadius.circular(10),
+
+          ),
+
         ),
         onPressed: onPressed,
         child: child,

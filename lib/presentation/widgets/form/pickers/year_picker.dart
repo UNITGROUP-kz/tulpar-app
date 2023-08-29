@@ -4,39 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:garage/data/models/dictionary/car_model_model.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
-import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
 import '../../../../data/models/dictionary/producer_model.dart';
 
-class CarModelController extends ValueNotifier<CarModelModel?> {
-  CarModelController({ CarModelModel? value }): super(value);
+class YearController extends ValueNotifier<DateTime?> {
+  YearController({ DateTime? value }): super(value);
 
-  _change(CarModelModel carModel) {
-    value = carModel;
+  _change(DateTime year) {
+    value = year;
     notifyListeners();
   }
 
-  void toCarModelScreen(
-      BuildContext context,
-      ProducerModel producer,
-      YearController? yearController,
-      VolumeController? volumeController
-  ) {
-    print('aaa');
-    context.router.push(SplashRouter(
+  void toYearScreen(BuildContext context, VolumeController? volume) {
+    context.router.push(const SplashRouter(
         children: [
           PickerRouter(
-              children: [CarModelPickerRoute(producer: producer)]
+              children: [YearPickerRoute()]
           )
         ]
     )).then((value) {
       if(value != null) {
-        _change(value as CarModelModel);
-        if(yearController != null) {
-          yearController.toYearScreen(
-              context,
-              volumeController
-          );
+        _change(value as DateTime);
+        if(volume != null) {
+          volume.toVolumeScreen(context);
         }
       }
     });
@@ -48,27 +38,22 @@ class CarModelController extends ValueNotifier<CarModelModel?> {
   }
 }
 
-class CarModelPickerWidget extends StatelessWidget {
-  final CarModelController? controller;
-  final YearController? yearController;
+class YearPickerWidget extends StatelessWidget {
+  final YearController? controller;
   final VolumeController? volumeController;
-  final ProducerModel producer;
   final String label;
 
-  const CarModelPickerWidget({
+  const YearPickerWidget({
     super.key,
     required this.label,
     this.controller,
-    required this.producer,
-    this.yearController,
-    this.volumeController
+    this.volumeController,
   });
 
-
   _onTap(BuildContext context) => () {
-    print('aaa');
-    controller?.toCarModelScreen(context, producer, yearController, volumeController);
+    controller?.toYearScreen(context, volumeController);
   };
+
 
   @override
   Widget build(BuildContext context) {
@@ -93,10 +78,10 @@ class CarModelPickerWidget extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: ValueListenableBuilder(
-                  valueListenable: controller ?? CarModelController(),
+                  valueListenable: controller ?? YearController(),
                   builder: (context, value, child) {
                     return Text(
-                        value?.name ?? 'Не выбрано'
+                        (value?.year ?? 'Не выбрано').toString()
                     );
                   }
               ),

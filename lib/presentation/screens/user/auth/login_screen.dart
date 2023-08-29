@@ -7,6 +7,7 @@ import 'package:garage/logic/bloc/user/auth/auth_cubit.dart';
 import 'package:garage/logic/bloc/user/login/login_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/form/fields/password_field.dart';
+import 'package:garage/presentation/widgets/form/fields/phone_field.dart';
 import 'package:garage/presentation/widgets/navigation/header.dart';
 
 import '../../../../data/fform/forms/login_form.dart';
@@ -40,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    _emailPhoneController = TextEditingController();
+    _emailPhoneController = TextEditingController(text: '+7');
     _passwordController = TextEditingController();
     super.initState();
   }
@@ -86,103 +87,99 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text('Авторизация', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              TextFieldWidget(
-                label: 'Email или Телефон',
-                controller: _emailPhoneController,
-              ),
-              SizedBox(height: 10),
-              PasswordFieldWidget(
-                label: 'Пароль',
-                controller: _passwordController,
-              ),
-              SizedBox(height: 10),
-              BlocConsumer<LoginCubit, LoginState>(
-                listener: _listener,
-                builder: (context, state) {
-                  if(state.status == LoginStatus.loading) return ElevatedButtonWidget(
-                      onPressed: () {},
-                      child: CupertinoActivityIndicator()
-                  );
-                  return ElevatedButtonWidget(
-                      onPressed: _submit,
-                      child: Text('Авторизоваться')
-                  );
-                },
-              ),
-              SizedBox(height: 10),
-              Text.rich(TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'У вас нет аккаунта? ',
-                  ),
-                  TextSpan(
+    return Padding(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        children: [
+          Text('Авторизация', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          PhoneFieldWidget(
+            label: 'Телефон',
+            controller: _emailPhoneController,
+          ),
+          SizedBox(height: 10),
+          PasswordFieldWidget(
+            label: 'Пароль',
+            controller: _passwordController,
+          ),
+          SizedBox(height: 10),
+          BlocConsumer<LoginCubit, LoginState>(
+            listener: _listener,
+            builder: (context, state) {
+              if(state.status == LoginStatus.loading) return ElevatedButtonWidget(
+                  onPressed: () {},
+                  child: CupertinoActivityIndicator()
+              );
+              return ElevatedButtonWidget(
+                  onPressed: _submit,
+                  child: Text('Авторизоваться')
+              );
+            },
+          ),
+          SizedBox(height: 10),
+          Text.rich(TextSpan(
+              children: [
+                TextSpan(
+                  text: 'У вас нет аккаунта? ',
+                ),
+                TextSpan(
                     text: 'Зарегистрироваться',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor
                     ),
                     recognizer: TapGestureRecognizer()..onTap = _toRegister
-                  )
-                ]
-              )),
-              Text.rich(TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Войти как ',
+                )
+              ]
+          )),
+          Text.rich(TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Войти как ',
+                ),
+                TextSpan(
+                    text: 'Магазин',
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor
                     ),
-                    TextSpan(
-                        text: 'Магазин',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor
-                        ),
-                        recognizer: TapGestureRecognizer()..onTap = _toLogin
-                    )
-                  ]
-              )),
+                    recognizer: TapGestureRecognizer()..onTap = _toLogin
+                )
+              ]
+          )),
 
-              // SignInButton(
-              //   Buttons.Google,
-              //   onPressed: () async {
-              //     try {
-              //       await FirebaseAuthRepository.withGoogle();
-              //       // Успешная авторизация
-              //     } catch (e) {
-              //       // Обработка ошибок
-              //     }
-              //   },
-              // ),
-              // SignInButton(
-              //   Buttons.Facebook,
-              //   onPressed: () async {
-              //     try {
-              //       await FirebaseAuthRepository.withFacebook();
-              //       // Успешная авторизация
-              //     } catch (e) {
-              //       // Обработка ошибок
-              //     }
-              //   },
-              // ),
-              // SignInButton(
-              //   Buttons.AppleDark,
-              //   onPressed: () async {
-              //     try {
-              //       await FirebaseAuthRepository.withApple();
-              //       // Успешная авторизация
-              //     } catch (e) {
-              //       // Обработка ошибок
-              //     }
-              //   },
-              // ),
-            ],
-          ),
-        ),
+          // SignInButton(
+          //   Buttons.Google,
+          //   onPressed: () async {
+          //     try {
+          //       await FirebaseAuthRepository.withGoogle();
+          //       // Успешная авторизация
+          //     } catch (e) {
+          //       // Обработка ошибок
+          //     }
+          //   },
+          // ),
+          // SignInButton(
+          //   Buttons.Facebook,
+          //   onPressed: () async {
+          //     try {
+          //       await FirebaseAuthRepository.withFacebook();
+          //       // Успешная авторизация
+          //     } catch (e) {
+          //       // Обработка ошибок
+          //     }
+          //   },
+          // ),
+          // SignInButton(
+          //   Buttons.AppleDark,
+          //   onPressed: () async {
+          //     try {
+          //       await FirebaseAuthRepository.withApple();
+          //       // Успешная авторизация
+          //     } catch (e) {
+          //       // Обработка ошибок
+          //     }
+          //   },
+          // ),
+        ],
       ),
     );
   }

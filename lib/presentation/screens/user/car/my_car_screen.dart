@@ -7,6 +7,8 @@ import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/presentation/widgets/navigation/header.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:garage/presentation/widgets/tiles/setting_tile.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../../data/models/dictionary/car_model.dart';
 import '../../../routing/router.dart';
@@ -93,6 +95,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
       onRefresh: _onRefresh,
+      padding: EdgeInsets.zero,
       scrollController: _scrollController,
       children: [
         BlocConsumer<MyCarCubit, MyCarState>(
@@ -100,21 +103,60 @@ class _MyCarScreenState extends State<MyCarScreen> {
           builder: (context, state) {
             return Column(
               children: [
-                Header(isBack: false, title: 'Гараж'),
-                if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
-                if(state.status == FetchStatus.error) Text('Ошибка'),
-                ...state.cars.map((car) {
-                  return CarCard(car: car, callback: _toDetails(car));
-                }).toList(),
-                if(state.cars.isEmpty && state.status == FetchStatus.success) Text('Нет Машин'),
-
-                if(state.status == FetchStatus.success) Container(
-                    width: double.infinity,
-                    child: ElevatedButtonWidget(
-                        onPressed: _addCar,
-                        child: Text('Добавить машину')
-                    )
+                Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Header(isBack: false, title: 'Гараж'),
+                      SettingsTile(label: 'Искать запчасти в ручную', icon: Icons.handyman),
+                      if(state.status == FetchStatus.success) Container(
+                          width: double.infinity,
+                          child: ElevatedButtonWidget(
+                              onPressed: _addCar,
+                              child: Text('Добавить машину')
+                          )
+                      ),
+                    ],
+                  )
                 ),
+                if(state.status == FetchStatus.success) CarouselSlider(
+                  options: CarouselOptions(
+                      // height: 400.0
+                      // height: double.maxFinite,
+                    aspectRatio : 16 / 7,
+                    viewportFraction: 0.9,
+                    enlargeCenterPage: true,
+                    enableInfiniteScroll: false,
+                    enlargeFactor: 0.2
+                  ),
+                  items: state.cars.map((car) {
+                    return CarCard(car: car, callback: _toDetails(car));
+                  }).toList(),
+                ),
+                Padding(
+                  padding: EdgeInsets.zero,
+                  child: Column(
+                    children: [
+                      // if(state.status == FetchStatus.success) ...state.cars.map((car) {
+                      //   return CarCard(car: car, callback: _toDetails(car));
+                      // }).toList(),
+
+                      Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            if(state.cars.isEmpty && state.status == FetchStatus.success) Text('У вас нет Машин'),
+                            if(state.status == FetchStatus.error) Text('Неизвестная ошибка'),
+                            if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
+
+                          ],
+                        ),
+                      )
+
+                    ],
+                  ),
+                )
+
               ]
             );
           },

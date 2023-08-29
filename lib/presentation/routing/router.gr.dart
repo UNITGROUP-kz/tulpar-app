@@ -31,6 +31,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: CityPickerScreen(),
       );
     },
+    VolumePickerRoute.name: (routeData) {
+      return AutoRoutePage<double>(
+        routeData: routeData,
+        child: const VolumePickerScreen(),
+      );
+    },
+    YearPickerRoute.name: (routeData) {
+      return AutoRoutePage<DateTime>(
+        routeData: routeData,
+        child: const YearPickerScreen(),
+      );
+    },
     ProducerPickerRoute.name: (routeData) {
       return AutoRoutePage<ProducerModel>(
         routeData: routeData,
@@ -151,6 +163,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const UserProfileScreen(),
       );
     },
+    SupportRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: SupportScreen(),
+      );
+    },
     DocumentsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -187,6 +205,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: StoreSplashScreen(),
       );
     },
+    DetailsOrderStoreRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOrderStoreRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsOrderStoreScreen(
+          key: args.key,
+          order: args.order,
+        ),
+      );
+    },
     StoreOrdersRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -221,10 +249,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const StoreProfileScreen(),
       );
     },
+    ChangeCategoryRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ChangeCategoryScreen(),
+      );
+    },
     ChangeStoreRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const ChangeStoreScreen(),
+      );
+    },
+    AuthRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: AuthScreen(),
       );
     },
     UserOrderRouter.name: (routeData) {
@@ -267,22 +307,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PickerScreen(),
-      );
-    },
-    DetailsOrderStoreRoute.name: (routeData) {
-      final args = routeData.argsAs<DetailsOrderStoreRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: DetailsOrderStoreScreen(
-          key: args.key,
-          order: args.order,
-        ),
-      );
-    },
-    SupportRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: SupportScreen(),
       );
     },
   };
@@ -336,6 +360,34 @@ class CityPickerRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'CityPickerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [VolumePickerScreen]
+class VolumePickerRoute extends PageRouteInfo<void> {
+  const VolumePickerRoute({List<PageRouteInfo>? children})
+      : super(
+          VolumePickerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'VolumePickerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [YearPickerScreen]
+class YearPickerRoute extends PageRouteInfo<void> {
+  const YearPickerRoute({List<PageRouteInfo>? children})
+      : super(
+          YearPickerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'YearPickerRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -724,6 +776,20 @@ class UserProfileRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [SupportScreen]
+class SupportRoute extends PageRouteInfo<void> {
+  const SupportRoute({List<PageRouteInfo>? children})
+      : super(
+          SupportRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SupportRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [DocumentsScreen]
 class DocumentsRoute extends PageRouteInfo<void> {
   const DocumentsRoute({List<PageRouteInfo>? children})
@@ -805,6 +871,44 @@ class StoreRouter extends PageRouteInfo<void> {
   static const String name = 'StoreRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DetailsOrderStoreScreen]
+class DetailsOrderStoreRoute extends PageRouteInfo<DetailsOrderStoreRouteArgs> {
+  DetailsOrderStoreRoute({
+    Key? key,
+    required OrderModel order,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsOrderStoreRoute.name,
+          args: DetailsOrderStoreRouteArgs(
+            key: key,
+            order: order,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsOrderStoreRoute';
+
+  static const PageInfo<DetailsOrderStoreRouteArgs> page =
+      PageInfo<DetailsOrderStoreRouteArgs>(name);
+}
+
+class DetailsOrderStoreRouteArgs {
+  const DetailsOrderStoreRouteArgs({
+    this.key,
+    required this.order,
+  });
+
+  final Key? key;
+
+  final OrderModel order;
+
+  @override
+  String toString() {
+    return 'DetailsOrderStoreRouteArgs{key: $key, order: $order}';
+  }
 }
 
 /// generated route for
@@ -902,6 +1006,20 @@ class StoreProfileRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [ChangeCategoryScreen]
+class ChangeCategoryRoute extends PageRouteInfo<void> {
+  const ChangeCategoryRoute({List<PageRouteInfo>? children})
+      : super(
+          ChangeCategoryRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ChangeCategoryRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [ChangeStoreScreen]
 class ChangeStoreRoute extends PageRouteInfo<void> {
   const ChangeStoreRoute({List<PageRouteInfo>? children})
@@ -911,6 +1029,20 @@ class ChangeStoreRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ChangeStoreRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [AuthScreen]
+class AuthRouter extends PageRouteInfo<void> {
+  const AuthRouter({List<PageRouteInfo>? children})
+      : super(
+          AuthRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'AuthRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -1009,58 +1141,6 @@ class PickerRouter extends PageRouteInfo<void> {
         );
 
   static const String name = 'PickerRouter';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DetailsOrderStoreScreen]
-class DetailsOrderStoreRoute extends PageRouteInfo<DetailsOrderStoreRouteArgs> {
-  DetailsOrderStoreRoute({
-    Key? key,
-    required OrderModel order,
-    List<PageRouteInfo>? children,
-  }) : super(
-          DetailsOrderStoreRoute.name,
-          args: DetailsOrderStoreRouteArgs(
-            key: key,
-            order: order,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'DetailsOrderStoreRoute';
-
-  static const PageInfo<DetailsOrderStoreRouteArgs> page =
-      PageInfo<DetailsOrderStoreRouteArgs>(name);
-}
-
-class DetailsOrderStoreRouteArgs {
-  const DetailsOrderStoreRouteArgs({
-    this.key,
-    required this.order,
-  });
-
-  final Key? key;
-
-  final OrderModel order;
-
-  @override
-  String toString() {
-    return 'DetailsOrderStoreRouteArgs{key: $key, order: $order}';
-  }
-}
-
-/// generated route for
-/// [SupportScreen]
-class SupportRoute extends PageRouteInfo<void> {
-  const SupportRoute({List<PageRouteInfo>? children})
-      : super(
-          SupportRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SupportRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

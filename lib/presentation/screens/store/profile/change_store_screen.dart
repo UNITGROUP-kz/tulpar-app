@@ -15,14 +15,18 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/fform/forms/change_store_form.dart';
 import '../../../../data/models/auth/store_model.dart';
+import '../../../../data/models/dictionary/city_model.dart';
 import '../../../../data/params/change_image_params.dart';
 import '../../../../data/params/store/change_store_params.dart';
+import '../../../../logic/bloc/dictionary/current_city/current_city_cubit.dart';
 import '../../../../logic/bloc/store/auth/auth_store_cubit.dart';
 import '../../../../logic/bloc/store/change_image/change_image_cubit.dart';
 import '../../../../logic/bloc/store/change_store/change_store_cubit.dart';
+import '../../../routing/router.dart';
 import '../../../widgets/bottomsheets/choose_image_picker.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/navigation/header.dart';
+import '../../../widgets/tiles/setting_tile.dart';
 
 @RoutePage()
 class ChangeStoreScreen extends StatefulWidget {
@@ -107,6 +111,20 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
     }
   }
 
+  _changeCity() async {
+    final city = await context.router.push(SplashRouter(
+        children: [
+          PickerRouter(
+              children: [
+                CityPickerRoute()
+              ]
+          )
+        ]
+    ));
+
+    if(city != null) context.read<CurrentCityCubit>().change(city as CityModel);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -144,7 +162,22 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
         TextFieldWidget(label: 'Название', controller: _nameController),
         SizedBox(height: 10),
         DescriptionFieldWidget(label: 'Описание', controller: _descriptionController),
+        SizedBox(height: 10),
+        SettingsTile(label: 'Изменить свои услуги', icon: Icons.handyman),
+        // SizedBox(height: 5),
+        BlocBuilder<CurrentCityCubit, CurrentCityState>(
+            builder: (context, state) {
+              return SettingsTile(
+                icon: Icons.location_city,
+                label: 'Город',
+                child: Text(state.currentCity?.name ?? 'Не выбран'),
+                callback: _changeCity,
+              );
+            }
+        ),
         SizedBox(height: 20),
+
+
         BlocConsumer<ChangeStoreCubit, ChangeStoreState>(
           listener: _listenerState,
           builder: (context, state) {
@@ -168,7 +201,7 @@ class _ChangeStoreScreenState extends State<ChangeStoreScreen> {
                 }
             );
           },
-        )
+        ),
       ],
     );
   }

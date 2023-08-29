@@ -3,10 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/auth/auth_store_model.dart';
 import 'package:garage/data/models/auth/store_model.dart';
 
-import '../../../../data/models/auth/auth_model.dart';
-import '../../../../data/models/auth/user_model.dart';
-import '../../../../data/models/error_model.dart';
-import '../../../../data/params/auth/auth_store_params.dart';
 import '../../../../data/repositories/store/auth_store_repository.dart';
 
 part 'auth_store_state.dart';

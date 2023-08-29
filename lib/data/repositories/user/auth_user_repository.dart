@@ -72,6 +72,7 @@ class AuthUserRepository {
       auth = null;
       await IsarService.I.writeTxn(() async {
         await IsarService.I.authModels.clear();
+        await IsarService.I.userModels.clear();
       });
     }
 

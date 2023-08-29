@@ -14,22 +14,31 @@ class DataTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 2),
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                  flex: 1,
-                  child: Text(title, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500), softWrap: false,)
-              ),
-              if(data != null) Expanded(
-                  flex: 1,
-                  child: Text(
-                      data!,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)
-                  )
-              ),
+          IntrinsicHeight(
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    Text(title,
+                      style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w500,
+                      ),
+                      softWrap: false,
+                    ),
+                  ],
+                ),
+                if(data != null) Expanded(
+                    flex: 1,
+                    child: Text(
+                        data!,
+                        textAlign: TextAlign.right,
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)
+                    )
+                ),
 
-            ],
+              ],
+            ),
           ),
           if(isDivider) Divider(thickness: 1)
           else SizedBox(height: 2)

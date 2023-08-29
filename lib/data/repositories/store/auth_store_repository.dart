@@ -1,4 +1,7 @@
 import 'package:garage/core/services/api/api_service.dart';
+import 'package:garage/data/models/dictionary/car_model_model.dart';
+import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:garage/data/params/auth/auth_store_params.dart';
 import 'package:garage/data/params/change_image_params.dart';
 import 'package:isar/isar.dart';
@@ -43,9 +46,11 @@ class AuthStoreRepository {
   });
 
   static Future write(AuthStoreModel auth) async {
+    StoreModel store = auth.store.value!;
+
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authStoreModels.put(auth);
-      await IsarService.I.storeModels.put(auth.store.value!);
+      await IsarService.I.storeModels.put(store);
       await auth.store.save();
     });
   }
@@ -55,6 +60,7 @@ class AuthStoreRepository {
     auth = null;
     await IsarService.I.writeTxn(() async {
       await IsarService.I.authStoreModels.clear();
+      await IsarService.I.storeModels.clear();
     });
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart';
 import 'package:garage/logic/bloc/store/create_offer/create_offer_cubit.dart';
 
 import 'core/services/api/api_service.dart';
@@ -26,6 +27,7 @@ import 'logic/bloc/user/create_car/create_car_cubit.dart';
 import 'logic/bloc/user/create_order/create_order_cubit.dart';
 import 'logic/bloc/user/details_car/details_car_cubit.dart';
 import 'logic/bloc/user/details_order/details_order_cubit.dart';
+import 'logic/bloc/user/favorite/favorite_cubit.dart';
 import 'logic/bloc/user/login/login_cubit.dart';
 import 'logic/bloc/user/my_car/my_car_cubit.dart';
 import 'logic/bloc/user/my_orders/my_order_cubit.dart';
@@ -108,7 +110,6 @@ class _MyAppState extends State<MyApp> {
           create: (context) => LoginStoreCubit(_authStoreCubit),
         ),
 
-
         //SCREEN WITH AUTH
         BlocProvider(
           create: (context) => _myCarCubit,
@@ -122,6 +123,9 @@ class _MyAppState extends State<MyApp> {
 
 
         //FORM
+        BlocProvider(
+          create: (context) => PartPickerCubit()..fetch(),
+        ),
         BlocProvider(
           create: (context) => ChangeProfileCubit(_authCubit),
         ),
@@ -153,6 +157,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => DetailsCarCubit(),
         ),
 
+        //DICTIONARY
         BlocProvider(
           create: (context) => ProducerCubit(),
         ),
@@ -167,6 +172,9 @@ class _MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => StoreOrdersCubit(),
+        ),
+        BlocProvider(
+          create: (context) => FavoriteCubit()..fetch(),
         )
       ],
       child: MaterialApp.router(

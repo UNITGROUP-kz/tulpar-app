@@ -8,16 +8,15 @@ class CreateOrderParams {
   final String title;
   final CarModel car;
   final PartModel part;
-  final String comment;
+  final String? comment;
   final List<MultipartFile> photos;
   final CityModel city;
 
   CreateOrderParams({
-
     required this.title,
     required this.car,
     required this.part,
-    required this.comment,
+    this.comment,
     required this.city,
     this.photos = const []
   });

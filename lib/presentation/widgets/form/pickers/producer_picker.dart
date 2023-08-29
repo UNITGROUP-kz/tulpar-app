@@ -3,6 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
 class ProducerController extends ValueNotifier<ProducerModel?> {
   ProducerController({ ProducerModel? value }): super(value);
@@ -15,16 +18,22 @@ class ProducerController extends ValueNotifier<ProducerModel?> {
 
 class ProducerPickerWidget extends StatelessWidget {
   final ProducerController? controller;
+  final CarModelController? carModelController;
+  final YearController? yearController;
+  final VolumeController? volumeController;
   final String label;
 
   const ProducerPickerWidget({
     super.key,
     required this.label,
-    this.controller
+    this.controller,
+    this.carModelController,
+    this.yearController,
+    this.volumeController
   });
 
 
-  _toProducerScreen(BuildContext context) => () async {
+  void Function() _toProducerScreen(BuildContext context) => () {
     context.router.push(const SplashRouter(
       children: [
         PickerRouter(
@@ -32,9 +41,18 @@ class ProducerPickerWidget extends StatelessWidget {
         )
       ]
     )).then((value) {
-      print(value);
-      if(value != null) controller?._change(value as ProducerModel);
-
+      if(value != null) {
+        controller?._change(value as ProducerModel);
+        if(carModelController != null) {
+          print('Заебал');
+          carModelController?.toCarModelScreen(
+            context,
+            value as ProducerModel,
+            yearController,
+            volumeController
+          );
+        }
+      }
     });
   };
 
@@ -49,7 +67,6 @@ class ProducerPickerWidget extends StatelessWidget {
           onTap: _toProducerScreen(context),
           child: Container(
             height: 55,
-
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(

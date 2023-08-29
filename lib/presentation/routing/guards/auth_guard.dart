@@ -4,6 +4,18 @@ import 'package:garage/presentation/routing/router.dart';
 
 import '../../../logic/bloc/store/auth/auth_store_cubit.dart';
 
+const login = AuthRouter(
+    children: [
+      LoginRoute()
+    ]
+);
+
+const storeLogin = AuthRouter(
+  children: [
+    StoreLoginRoute()
+  ]
+);
+
 class UserGuard extends AutoRouteGuard {
   final AuthCubit auth;
 
@@ -17,9 +29,13 @@ class UserGuard extends AutoRouteGuard {
 
   _check(NavigationResolver resolver, StackRouter router) => (AuthState state) {
     if(state.auth != null && !resolver.isResolved) {
+      print('next user');
+
       resolver.next();
     } else {
-      router.replace(LoginRoute());
+      print('replace user');
+
+      router.replace(login);
     }
   };
 }
@@ -31,15 +47,19 @@ class StoreGuard extends AutoRouteGuard {
 
   @override
   void onNavigation(NavigationResolver resolver, StackRouter router) {
+    print(auth.isLogin);
     _check(resolver)(auth.state);
     auth.stream.listen(_check(resolver));
   }
 
   _check(NavigationResolver resolver) => (AuthStoreState state) {
     if(state.auth != null && !resolver.isResolved) {
+      print('next store');
       resolver.next();
     } else {
-      resolver.redirect(StoreLoginRoute());
+      print('redirect store');
+
+      resolver.redirect(storeLogin);
     }
   };
 }
@@ -82,7 +102,9 @@ class NotAuthGuard extends AutoRouteGuard {
   };
 
   _toUser(StackRouter router) {
-    router.replace(SplashRouter(
+    print('redirect user 2');
+
+    router.replace(const SplashRouter(
         children: [
           UserRouter(
               children: [
@@ -94,7 +116,9 @@ class NotAuthGuard extends AutoRouteGuard {
   }
 
   _toStore(StackRouter router) {
-    router.replace(SplashRouter(
+    print('redirect store 2');
+
+    router.replace(const SplashRouter(
         children: [
           StoreRouter(
               children: [

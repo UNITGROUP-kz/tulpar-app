@@ -1,15 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/auth/auth_model.dart';
 import 'package:garage/data/models/auth/user_model.dart';
-import 'package:garage/data/models/error_model.dart';
-
-import '../../../../core/utils/check.dart';
-import '../../../../data/enums/fetch_status.dart';
-import '../../../../data/params/auth/auth_user_params.dart';
 import '../../../../data/repositories/user/auth_user_repository.dart';
-import '../register/register_cubit.dart';
 
 part 'auth_state.dart';
 

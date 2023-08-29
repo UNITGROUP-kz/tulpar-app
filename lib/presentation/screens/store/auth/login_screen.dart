@@ -39,7 +39,7 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
 
   @override
   void initState() {
-    _phoneController = TextEditingController();
+    _phoneController = TextEditingController(text: '+7');
     _passwordController = TextEditingController();
     super.initState();
   }
@@ -93,55 +93,51 @@ class _StoreLoginScreenState extends State<StoreLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Text('Авторизация Магазина', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              PhoneFieldWidget(
-                label: 'Телефон',
-                controller: _phoneController,
-              ),
-              SizedBox(height: 10),
-              PasswordFieldWidget(
-                label: 'Пароль',
-                controller: _passwordController,
-              ),
-              SizedBox(height: 10),
-              BlocConsumer<LoginStoreCubit, LoginStoreState>(
-                listener: _listener,
-                builder: (context, state) {
-                  if(state.status == FetchStatus.loading) return ElevatedButtonWidget(
-                      onPressed: () {},
-                      child: CupertinoActivityIndicator()
-                  );
-                  return ElevatedButtonWidget(
-                      onPressed: _submit,
-                      child: Text('Авторизоваться')
-                  );
-                },
-              ),
-              SizedBox(height: 10),
-              Text.rich(TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Войти как ',
-                    ),
-                    TextSpan(
-                        text: 'Пользователь',
-                        recognizer: TapGestureRecognizer()..onTap = _toRegister,
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor
-                        )
-                    )
-                  ]
-              ))
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        children: [
+          Text('Авторизация Магазина', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700)),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+          PhoneFieldWidget(
+            label: 'Телефон',
+            controller: _phoneController,
           ),
-        ),
+          SizedBox(height: 10),
+          PasswordFieldWidget(
+            label: 'Пароль',
+            controller: _passwordController,
+          ),
+          SizedBox(height: 10),
+          BlocConsumer<LoginStoreCubit, LoginStoreState>(
+            listener: _listener,
+            builder: (context, state) {
+              if(state.status == FetchStatus.loading) return ElevatedButtonWidget(
+                  onPressed: () {},
+                  child: CupertinoActivityIndicator()
+              );
+              return ElevatedButtonWidget(
+                  onPressed: _submit,
+                  child: Text('Авторизоваться')
+              );
+            },
+          ),
+          SizedBox(height: 10),
+          Text.rich(TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Войти как ',
+                ),
+                TextSpan(
+                    text: 'Пользователь',
+                    recognizer: TapGestureRecognizer()..onTap = _toRegister,
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor
+                    )
+                )
+              ]
+          ))
+        ],
       ),
     );
   }

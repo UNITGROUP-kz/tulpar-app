@@ -1,11 +1,15 @@
+
+
 class PartModel {
   final int id;
   final String name;
+  final List<PartModel>? childs;
 
   factory PartModel.fromMap(Map<String, dynamic> map) {
     return PartModel(
         id: map['id'],
-        name: map['name']
+        name: map['name'],
+        childs: map['childs'] != null? PartModel.fromListMap(map['childs']): null
     );
   }
 
@@ -17,6 +21,7 @@ class PartModel {
 
   PartModel({
     required this.id,
-    required this.name
+    required this.name,
+    this.childs = const []
   });
 }

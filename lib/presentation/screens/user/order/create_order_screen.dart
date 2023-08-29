@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
@@ -135,9 +134,10 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 _cityController
               ],
               builder: (context, value, child) {
+                final isValid = value[0].text.isNotEmpty && value[1].text.isNotEmpty && value[2] != null;
                 return ElevatedButtonWidget(
-                    onPressed: value[0].text.isNotEmpty && value[1].text.isNotEmpty && value[2] != null? _createOrder : null,
-                    child: Text('Создать заказ')
+                    onPressed: isValid ? _createOrder : null,
+                    child: const Text('Создать заказ')
                 );
               }
             );

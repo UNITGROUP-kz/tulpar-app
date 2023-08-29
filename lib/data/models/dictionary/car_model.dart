@@ -2,21 +2,25 @@ import 'package:garage/core/utils/parser.dart';
 
 class CarModel {
   final int id;
-  final String vinNumber;
+  final String? vinNumber;
   final String name;
   final String producerName;
   final int producerId;
   final String modelName;
   final int modelId;
+  final int year;
+  final double volumeEngine;
 
   CarModel({
     required this.id,
-    required this.vinNumber,
+    this.vinNumber,
     required this.name,
     required this.producerName,
     required this.producerId,
     required this.modelName,
-    required this.modelId
+    required this.modelId,
+    required this.year,
+    required this.volumeEngine
   });
 
   factory CarModel.fromMap(Map<String, dynamic> map) {
@@ -27,7 +31,9 @@ class CarModel {
         producerName: map['producer_name'],
         modelName: map['model_name'],
         modelId: Parser.toInt(map['model_id'] ?? 0),
-        producerId: Parser.toInt(map['model_id'] ?? 0),
+        producerId: Parser.toInt(map['producer_id'] ?? 0),
+        year: map['year'],
+        volumeEngine: Parser.toDouble(map['engine_volume'])
     );
   }
 

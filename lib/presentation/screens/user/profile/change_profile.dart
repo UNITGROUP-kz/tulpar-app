@@ -80,7 +80,7 @@ class _ChangeProfileScreenState extends State<ChangeProfileScreen> {
   void initState() {
     UserModel? user = context.read<AuthCubit>().state.user;
     _nameController = TextEditingController(text: user?.name ?? '');
-    _phoneController = TextEditingController(text: user?.phone ?? '');
+    _phoneController = TextEditingController(text: user?.phone ?? '+7');
     _emailController = TextEditingController(text: user?.email ?? '');
     _passwordController = TextEditingController();
     super.initState();

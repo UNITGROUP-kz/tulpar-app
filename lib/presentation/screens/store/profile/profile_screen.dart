@@ -59,19 +59,6 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
     setState(() {});
   }
 
-  _changeCity() async {
-    final city = await context.router.push(SplashRouter(
-        children: [
-          PickerRouter(
-              children: [
-                CityPickerRoute()
-              ]
-          )
-        ]
-    ));
-
-    if(city != null) context.read<CurrentCityCubit>().change(city as CityModel);
-  }
 
   _toDocument() {
     context.router.navigate(DocumentRouter(
@@ -105,16 +92,7 @@ class _StoreProfileScreenState extends State<StoreProfileScreen> {
         ),
         TextButton(onPressed: _change, child: Text('Изменить профиль')),
         SizedBox(height: 20,),
-        BlocBuilder<CurrentCityCubit, CurrentCityState>(
-            builder: (context, state) {
-              return SettingsTile(
-                  icon: Icons.location_city,
-                  label: 'Город',
-                  child: Text(state.currentCity?.name ?? 'Не выбран'),
-                  callback: _changeCity,
-              );
-            }
-        ),
+
         SettingsTile(
           label: 'Уведомления',
           icon: Icons.notifications,

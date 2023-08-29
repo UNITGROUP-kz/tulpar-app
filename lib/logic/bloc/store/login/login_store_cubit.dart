@@ -2,6 +2,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/enums/fetch_status.dart';
+import 'package:garage/data/models/auth/store_model.dart';
 import 'package:garage/logic/bloc/store/auth/auth_store_cubit.dart';
 
 import '../../../../data/models/error_model.dart';

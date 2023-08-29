@@ -9,36 +9,32 @@ import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/form/fields/text_field.dart';
 import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/part_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../widgets/buttons/elevated_button.dart';
-import '../../../widgets/form/pickers/producer_car_model_picker.dart';
 import '../../../widgets/form/pickers/producer_picker.dart';
 import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
-class CreateCarScreen extends StatefulWidget {
+class ChangeCategoryScreen extends StatefulWidget {
   @override
-  State<CreateCarScreen> createState() => _CreateCarScreenState();
+  State<ChangeCategoryScreen> createState() => _ChangeCategoryScreenState();
 }
 
-class _CreateCarScreenState extends State<CreateCarScreen> {
-  late TextEditingController _vinController;
+class _ChangeCategoryScreenState extends State<ChangeCategoryScreen> {
   late ProducerController _producerController;
   late CarModelController _carModelController;
-  late VolumeController _volumeController;
-  late YearController _yearController;
+  late PartController _partController;
 
   @override
   void initState() {
-    _vinController = TextEditingController();
     _producerController = ProducerController()..addListener(_listenerProducer);
     _carModelController = CarModelController();
-    _volumeController = VolumeController();
-    _yearController = YearController();
+    _partController = PartController();
     super.initState();
   }
 
@@ -48,47 +44,41 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
 
   @override
   void dispose() {
-    _vinController.dispose();
     _producerController.removeListener(_listenerProducer);
     _producerController.dispose();
     _carModelController.dispose();
-    _volumeController.dispose();
-    _yearController.dispose();
+    _partController.dispose();
     super.dispose();
   }
 
   _create() {
     if(_check()) {
-      context.read<CreateCarCubit>().create(CreateCarParams(
-          model: _carModelController.value!,
-          producer: _producerController.value!,
-          vinNumber: _vinController.value.text,
-          volume: _volumeController.value!,
-          engineVolume: _volumeController.value!,
-          year: _yearController.value!.year
-        )
-      );
+      // context.read<CreateCarCubit>().create(CreateCarParams(
+      //     model: _carModelController.value!,
+      //     producer: _producerController.value!,
+      //   )
+      // );
     }
   }
 
   _check() {
-    final form = CreateCarForm.parse(vin: _vinController.value.text);
+    // final form = CreateCarForm.parse(vin: _vinController.value.text);
+    //
+    // if(form.isInvalid) {
+    //   for (var e in form.exceptions) {
+    //     print(e);
+    //     showErrorSnackBar(context, e.toString());
+    //   }
+    // }
 
-    if(form.isInvalid) {
-      for (var e in form.exceptions) {
-        print(e);
-        showErrorSnackBar(context, e.toString());
-      }
-    }
-    
-    return form.isValid;
+    return true;
   }
 
   _listener(BuildContext context, CreateCarState state) {
     if(state.status == FetchStatus.error) {
       showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     } else if(state.status == FetchStatus.success) {
-      context.router.pop();
+      _back();
     }
   }
 
@@ -100,39 +90,26 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
       children: [
-        const Header(title: 'Создать машину', isBack: true),
-        TextFieldWidget(
-            isRequired: true,
-            label: 'VIN-код',
-            controller: _vinController
-        ),
+        const Header(title: 'Изменить услуги', isBack: true),
         const SizedBox(height: 10),
-        ProducerCarModelPicker(
-          producerController: _producerController,
+        ProducerPickerWidget(
+          label: 'Производитель',
+          controller: _producerController,
           carModelController: _carModelController,
-          yearController: _yearController,
-          volumeController: _volumeController,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         ValueListenableBuilder(
-            valueListenable: _carModelController,
+            valueListenable: _producerController,
             builder: (context, value, child) {
               if(value == null) return Container();
-              return YearPickerWidget(
-                  label: 'Год машины',
-                  controller: _yearController,
-                  volumeController: _volumeController,
+              return CarModelPickerWidget(
+                label: 'Модель машины',
+                producer: value,
+                controller: _carModelController,
               );
             }
         ),
-        ValueListenableBuilder(
-            valueListenable: _yearController,
-            builder: (context, value, child) {
-              if(value == null) return Container();
-              return VolumePickerWidget(label: 'Объем бака', controller: _volumeController);
-            }
-        ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         BlocConsumer<CreateCarCubit, CreateCarState>(
           listener: _listener,
           builder: (context, state) {
@@ -144,21 +121,15 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
             }
             return MultiValueListenableBuilder(
                 valuesListenable: [
-                  _vinController,
                   _producerController,
                   _carModelController,
-                  _yearController,
-                  _volumeController
                 ],
                 builder: (context, value, child) {
-                  bool isValid = value[0].text.isNotEmpty
-                      && value[1] != null
-                      && value[2] != null
-                      && value[3] != null
-                      && value[4] != null;
+                  bool isValid = value[0] != null
+                      && value[1] != null;
                   return ElevatedButtonWidget(
                       onPressed: isValid ? _create : null,
-                      child: const Text('Cоздать машину')
+                      child: Text('Изменить услуги')
                   );
                 }
             );

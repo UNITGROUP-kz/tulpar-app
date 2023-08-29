@@ -29,9 +29,12 @@ import '../screens/documents/privacy_screen.dart';
 import '../screens/picker/car_model_picker_screen.dart';
 import '../screens/picker/city_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
+import '../screens/picker/volume_picker_screen.dart';
+import '../screens/picker/year_picker_screen.dart';
 import '../screens/store/auth/login_screen.dart';
 import '../screens/store/offers/create_offer_screen.dart';
 import '../screens/store/order/order_screen.dart';
+import '../screens/store/profile/change_categories_screen.dart';
 import '../screens/store/profile/profile_screen.dart';
 import '../screens/store/profile/change_store_screen.dart';
 import '../screens/store/store_splash_screen.dart';
@@ -93,10 +96,11 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: ProducerPickerRoute.page),
               AutoRoute(page: CarModelPickerRoute.page),
               AutoRoute(page: CityPickerRoute.page),
-              AutoRoute(page: RateOrderRoute.page)
+              AutoRoute(page: RateOrderRoute.page),
+              AutoRoute(page: YearPickerRoute.page),
+              AutoRoute(page: VolumePickerRoute.page),
             ]
         ),
-
         AutoRoute(path: 'store', page: StoreRouter.page,
             children: [
               AutoRoute(page: StoreOrderRouter.page, path: '',
@@ -122,12 +126,20 @@ class AppRouter extends _$AppRouter {
             ],
             guards: [StoreGuard(authStoreCubit)]
         ),
+        AutoRoute(
+          path: 'auth',
+          page: AuthRouter.page,
+          children: [
+            AutoRoute(page: LoginRoute.page, path: ''),
+            AutoRoute(page: StoreLoginRoute.page),
+            AutoRoute(page: RegisterRoute.page),
+          ], guards: [NotAuthGuard(authCubit, authStoreCubit)]
+        ),
+        // RedirectRoute(path: '*', redirectTo: '/')
+
       ]
     ),
 
-    AutoRoute(page: LoginRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
-    AutoRoute(page: StoreLoginRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
-    AutoRoute(page: RegisterRoute.page, guards: [NotAuthGuard(authCubit, authStoreCubit)]),
 
     AutoRoute(
         page: DocumentRouter.page,
@@ -138,11 +150,19 @@ class AppRouter extends _$AppRouter {
 
         ]
     ),
-
-    RedirectRoute(path: '*', redirectTo: '/'),
+    RedirectRoute(path: '*', redirectTo: '/auth')
 
 
   ];
+}
+
+@RoutePage(name: 'AuthRouter')
+class AuthScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print('Auth Screen');
+    return AutoRouter();
+  }
 }
 
 @RoutePage(name: 'UserOrderRouter')
@@ -150,6 +170,7 @@ class UserOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('UserOrderRouter');
+
     return AutoRouter();
   }
 }
@@ -158,6 +179,8 @@ class UserOrderScreen extends StatelessWidget {
 class UserCarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('UserCarRouter');
+
     return AutoRouter();
   }
 }
@@ -167,6 +190,7 @@ class UserFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('UserFormRouter');
+
     return AutoRouter();
   }
 }
@@ -175,6 +199,8 @@ class UserFormScreen extends StatelessWidget {
 class StoreFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('StoreFormRouter');
+
     return AutoRouter();
   }
 }
@@ -183,6 +209,8 @@ class StoreFormScreen extends StatelessWidget {
 class StoreOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('StoreOrderRouter');
+
     return AutoRouter();
   }
 }
@@ -191,6 +219,8 @@ class StoreOrderScreen extends StatelessWidget {
 class StoreOfferScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('StoreOfferRouter');
+
     return AutoRouter();
   }
 }
@@ -201,6 +231,8 @@ class StoreOfferScreen extends StatelessWidget {
 class PickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print('PickerRouter');
+
     return AutoRouter();
   }
 }

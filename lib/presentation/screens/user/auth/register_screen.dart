@@ -14,6 +14,7 @@ import '../../../../data/fform/fields/password_field.dart';
 import '../../../../data/fform/forms/verify_form.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/form/fields/password_field.dart';
+import '../../../widgets/form/fields/phone_field.dart';
 import '../../../widgets/form/fields/pincode_field.dart';
 import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
@@ -142,94 +143,90 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: BlocConsumer<RegisterCubit, RegisterState>(
-          listener: _listener,
-          builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
+    return BlocConsumer<RegisterCubit, RegisterState>(
+      listener: _listener,
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              Header(title: 'Регистрация'),
+              StepWidget(maxStep: 2, currentStep: state.status == RegisterStatusState.register? 1 : 2),
+              Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Header(title: 'Регистрация'),
-                  StepWidget(maxStep: 2, currentStep: state.status == RegisterStatusState.register? 1 : 2),
-                  Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    // mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (state.status == RegisterStatusState.register) ...[
-                        TextFieldWidget(
-                          label: 'Имя',
-                          controller: _nameController,
+                  if (state.status == RegisterStatusState.register) ...[
+                    TextFieldWidget(
+                      label: 'Имя',
+                      controller: _nameController,
+                    ),
+                    SizedBox(height: 10),
+                    PhoneFieldWidget(
+                      label: 'Телефон',
+                      controller: _emailPhoneController,
+                    ),
+                    SizedBox(height: 10),
+                    PasswordFieldWidget(
+                      label: 'Пароль',
+                      controller: _passwordController,
+                    ),
+                    SizedBox(height: 10),
+                    PasswordFieldWidget(
+                      label: 'Повторите пароль',
+                      controller: _passwordConfirmController,
+                    ),
+                    SizedBox(height: 10),
+                    if (state.isLoading) ElevatedButtonWidget(
+                        onPressed: () {},
+                        child: CupertinoActivityIndicator()
+                    ) else ElevatedButtonWidget(
+                        onPressed: _submitRegister,
+                        child: Text('Регистрация')
+                    )
+                  ]
+                  else if (state.status == RegisterStatusState.verify)...[
+                    PinCodeTextField(
+                      appContext: context,
+                      length: 6,
+                      controller: _pincodeController,
+                    ),
+                    SizedBox(height: 10),
+                    if (state.isLoading) ElevatedButtonWidget(
+                        onPressed: () {},
+                        child: CupertinoActivityIndicator()
+                    ) else ElevatedButtonWidget(
+                        onPressed: _submitVerify,
+                        child: Text('Верификация')
+                    ),
+
+                  ],
+                  SizedBox(height: 10),
+                  Text.rich(TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Регистрируясь вы соглашаетесь с ',
                         ),
-                        SizedBox(height: 10),
-                        TextFieldWidget(
-                          label: 'Email или Телефон',
-                          controller: _emailPhoneController,
+                        TextSpan(
+                            text: 'Политикой конфиденциальности',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor
+                            ),
+                            recognizer: TapGestureRecognizer()..onTap = _toPrivacy
                         ),
-                        SizedBox(height: 10),
-                        PasswordFieldWidget(
-                          label: 'Пароль',
-                          controller: _passwordController,
-                        ),
-                        SizedBox(height: 10),
-                        PasswordFieldWidget(
-                          label: 'Повторите пароль',
-                          controller: _passwordConfirmController,
-                        ),
-                        SizedBox(height: 10),
-                        if (state.isLoading) ElevatedButtonWidget(
-                            onPressed: () {},
-                            child: CupertinoActivityIndicator()
-                        ) else ElevatedButtonWidget(
-                            onPressed: _submitRegister,
-                            child: Text('Регистрация')
+                        TextSpan(
+                            text: ' приложения'
                         )
                       ]
-                      else if (state.status == RegisterStatusState.verify)...[
-                        PinCodeTextField(
-                          appContext: context,
-                          length: 6,
-                          controller: _pincodeController,
-                        ),
-                        SizedBox(height: 10),
-                        if (state.isLoading) ElevatedButtonWidget(
-                            onPressed: () {},
-                            child: CupertinoActivityIndicator()
-                        ) else ElevatedButtonWidget(
-                            onPressed: _submitVerify,
-                            child: Text('Верификация')
-                        ),
-
-                      ],
-                      SizedBox(height: 10),
-                      Text.rich(TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Регистрируясь вы соглашаетесь с ',
-                            ),
-                            TextSpan(
-                                text: 'Политикой конфиденциальности',
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor
-                                ),
-                                recognizer: TapGestureRecognizer()..onTap = _toPrivacy
-                            ),
-                            TextSpan(
-                              text: ' приложения'
-                            )
-                          ]
-                      ), textAlign: TextAlign.center,),
-                    ],
-                  ),
-                  Spacer(),
+                  ), textAlign: TextAlign.center,),
                 ],
               ),
-            );
-          },
-        ),
-      ),
+              Spacer(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

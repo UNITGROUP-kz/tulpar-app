@@ -29,7 +29,7 @@ class SettingsTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
             color: Colors.grey.shade200,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           children: [
