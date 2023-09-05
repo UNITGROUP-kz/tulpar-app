@@ -39,7 +39,7 @@ class OrderModel {
   final StoreModel? store;
   final CityModel? city;
 
-  factory OrderModel.fromMap(Map<String, dynamic> map) {
+  factory OrderModel.fromMap(map) {
     return OrderModel(
         id: map['id'],
         title: map['title'],
@@ -54,6 +54,7 @@ class OrderModel {
   }
 
   static List<OrderModel> fromListMap(data) {
+    print(data);
     return data.map<OrderModel>((map) {
       return OrderModel.fromMap(map);
     }).toList();

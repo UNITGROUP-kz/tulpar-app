@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
@@ -6,11 +7,13 @@ import 'package:garage/data/repositories/dictionary/dictionary_repository.dart';
 
 import '../../../../data/models/error_model.dart';
 import '../../../../data/params/dictionary/index_part_params.dart';
+import '../auth/auth_cubit.dart';
 
 part 'details_car_state.dart';
 
 class DetailsCarCubit extends Cubit<DetailsCarState> {
-  DetailsCarCubit() : super(DetailsCarState());
+  final AuthCubit authCubit;
+  DetailsCarCubit(this.authCubit) : super(DetailsCarState());
 
   Future fetch([IndexPartParams? params]) async {
     if(state.status == FetchStatus.loading) return;
@@ -21,7 +24,12 @@ class DetailsCarCubit extends Cubit<DetailsCarState> {
       print(value);
       replace(value, params ?? IndexPartParams());
     }).catchError((error) {
-      print(error);
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

@@ -21,6 +21,7 @@ class MyOrderCubit extends Cubit<MyOrderState> {
     return OrderUserRepository.indexMy(params ?? IndexOrderParams()).then((value) {
       replace(value, params ?? IndexOrderParams());
     }).catchError((error) {
+      print(error);
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

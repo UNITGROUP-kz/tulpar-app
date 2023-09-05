@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/params/profile/change_category_params.dart';
 
@@ -21,7 +22,12 @@ class ChangeCategoryCubit extends Cubit<ChangeCategoryState> {
       authCubit.set(value);
       emit(ChangeCategoryState(status: FetchStatus.success));
     }).catchError((error) {
-      print(error);
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(ChangeCategoryState(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(ChangeCategoryState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

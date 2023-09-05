@@ -5,7 +5,7 @@ class PartModel {
   final String name;
   final List<PartModel>? childs;
 
-  factory PartModel.fromMap(Map<String, dynamic> map) {
+  factory PartModel.fromMap(map) {
     return PartModel(
         id: map['id'],
         name: map['name'],
@@ -14,9 +14,15 @@ class PartModel {
   }
 
   static List<PartModel> fromListMap(data) {
-    return data.map<PartModel>((producer) {
-      return PartModel.fromMap(producer);
-    }).toList();
+    // return [];
+    try {
+      return data.map<PartModel>((producer) {
+        return PartModel.fromMap(producer);
+      }).toList();
+    } catch (e) {
+      return [PartModel.fromMap(data)];
+    }
+
   }
 
   PartModel({

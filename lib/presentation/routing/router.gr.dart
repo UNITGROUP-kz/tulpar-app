@@ -134,6 +134,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: MyCarScreen(),
       );
     },
+    StoreRoute.name: (routeData) {
+      final args = routeData.argsAs<StoreRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: StoreScreen(
+          key: args.key,
+          store: args.store,
+        ),
+      );
+    },
     RegisterRoute.name: (routeData) {
       final args = routeData.argsAs<RegisterRouteArgs>(
           orElse: () => const RegisterRouteArgs());
@@ -693,6 +703,43 @@ class MyCarRoute extends PageRouteInfo<void> {
   static const String name = 'MyCarRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [StoreScreen]
+class StoreRoute extends PageRouteInfo<StoreRouteArgs> {
+  StoreRoute({
+    Key? key,
+    required StoreModel store,
+    List<PageRouteInfo>? children,
+  }) : super(
+          StoreRoute.name,
+          args: StoreRouteArgs(
+            key: key,
+            store: store,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'StoreRoute';
+
+  static const PageInfo<StoreRouteArgs> page = PageInfo<StoreRouteArgs>(name);
+}
+
+class StoreRouteArgs {
+  const StoreRouteArgs({
+    this.key,
+    required this.store,
+  });
+
+  final Key? key;
+
+  final StoreModel store;
+
+  @override
+  String toString() {
+    return 'StoreRouteArgs{key: $key, store: $store}';
+  }
 }
 
 /// generated route for

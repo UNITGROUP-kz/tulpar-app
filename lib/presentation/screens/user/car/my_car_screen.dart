@@ -130,7 +130,11 @@ class _MyCarScreenState extends State<MyCarScreen> {
                     enlargeFactor: 0.2
                   ),
                   items: state.cars.map((car) {
-                    return CarCard(car: car, callback: _toDetails(car));
+                    return CarCard(
+                      car: car,
+                      callback: _toDetails(car),
+                      isMy: true,
+                    );
                   }).toList(),
                 ),
                 Padding(

@@ -128,6 +128,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChangeCategoryCubit(_authStoreCubit),
         ),
         BlocProvider(
+          lazy: false,
           create: (context) => PartPickerCubit()..fetch(),
         ),
         BlocProvider(
@@ -143,22 +144,22 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChangeImageStoreCubit(_authStoreCubit),
         ),
         BlocProvider(
-          create: (context) => CreateCarCubit(_myCarCubit),
+          create: (context) => CreateCarCubit(_myCarCubit, _authCubit),
         ),
         BlocProvider(
-          create: (context) => CreateOrderCubit(_myOrderCubit),
+          create: (context) => CreateOrderCubit(_myOrderCubit, _authCubit),
         ),
         BlocProvider(
-          create: (context) => CreateOfferCubit(_myOfferCubit),
+          create: (context) => CreateOfferCubit(_myOfferCubit, _authStoreCubit),
         ),
         BlocProvider(
-          create: (context) => SupportCubit()
+          create: (context) => SupportCubit(_authCubit)
         ),
         BlocProvider(
-          create: (context) => OrderOfferCubit(),
+          create: (context) => OrderOfferCubit(_authCubit),
         ),
         BlocProvider(
-          create: (context) => DetailsCarCubit(),
+          create: (context) => DetailsCarCubit(_authCubit),
         ),
 
         //DICTIONARY
@@ -172,10 +173,10 @@ class _MyAppState extends State<MyApp> {
           create: (context) => CurrentCityCubit(_authCubit)..initial(),
         ),
         BlocProvider(
-          create: (context) => DetailsOrderCubit(),
+          create: (context) => DetailsOrderCubit(_authCubit),
         ),
         BlocProvider(
-          create: (context) => StoreOrdersCubit(),
+          create: (context) => StoreOrdersCubit(_authStoreCubit),
         ),
         BlocProvider(
           create: (context) => FavoriteCubit()..fetch(),

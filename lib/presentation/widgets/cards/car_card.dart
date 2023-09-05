@@ -11,8 +11,9 @@ import '../../routing/router.dart';
 class CarCard extends StatelessWidget {
   final VoidCallback? callback;
   final CarModel car;
+  final bool isMy;
 
-  const CarCard({super.key, required this.car, this.callback});
+  const CarCard({super.key, required this.car, this.callback, this.isMy = false});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +32,11 @@ class CarCard extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Align(
+              if(isMy) Align(
                 alignment: Alignment.centerRight,
                 child: FavoriteBuilder(carId: car.id),
               ),
-              Spacer(),
+              // Spacer(),
               DataTile(title: 'VIN', data: car.vinNumber, isDivider: false),
               DataTile(title: 'Машина', data: car.name, isDivider: false),
               DataTile(title: 'Год', data: car.year.toString(), isDivider: false),

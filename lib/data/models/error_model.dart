@@ -18,7 +18,7 @@ class ErrorModel {
     return ErrorModel.nothing;
   }
 
-  static ErrorModel get nothing => ErrorModel(['Unknown_error']);
+  static ErrorModel get nothing => ErrorModel(['Неизвестная ошибка']);
 
   factory ErrorModel.parse(data) {
     if(data is DioException) {

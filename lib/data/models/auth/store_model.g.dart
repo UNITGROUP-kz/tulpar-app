@@ -17,28 +17,33 @@ const StoreModelSchema = CollectionSchema(
   name: r'StoreModel',
   id: -6493577386176654648,
   properties: {
-    r'description': PropertySchema(
+    r'address': PropertySchema(
       id: 0,
+      name: r'address',
+      type: IsarType.string,
+    ),
+    r'description': PropertySchema(
+      id: 1,
       name: r'description',
       type: IsarType.string,
     ),
     r'image': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'image',
       type: IsarType.string,
     ),
     r'name': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'name',
       type: IsarType.string,
     ),
     r'phone': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'phone',
       type: IsarType.string,
     ),
     r'rating': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'rating',
       type: IsarType.double,
     )
@@ -64,6 +69,12 @@ int _storeModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   {
+    final value = object.address;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.description;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -86,11 +97,12 @@ void _storeModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.description);
-  writer.writeString(offsets[1], object.image);
-  writer.writeString(offsets[2], object.name);
-  writer.writeString(offsets[3], object.phone);
-  writer.writeDouble(offsets[4], object.rating);
+  writer.writeString(offsets[0], object.address);
+  writer.writeString(offsets[1], object.description);
+  writer.writeString(offsets[2], object.image);
+  writer.writeString(offsets[3], object.name);
+  writer.writeString(offsets[4], object.phone);
+  writer.writeDouble(offsets[5], object.rating);
 }
 
 StoreModel _storeModelDeserialize(
@@ -100,12 +112,13 @@ StoreModel _storeModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = StoreModel(
-    description: reader.readStringOrNull(offsets[0]),
+    address: reader.readStringOrNull(offsets[0]),
+    description: reader.readStringOrNull(offsets[1]),
     id: id,
-    image: reader.readStringOrNull(offsets[1]),
-    name: reader.readString(offsets[2]),
-    phone: reader.readString(offsets[3]),
-    rating: reader.readDouble(offsets[4]),
+    image: reader.readStringOrNull(offsets[2]),
+    name: reader.readString(offsets[3]),
+    phone: reader.readString(offsets[4]),
+    rating: reader.readDouble(offsets[5]),
   );
   return object;
 }
@@ -122,10 +135,12 @@ P _storeModelDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (reader.readDouble(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -221,6 +236,155 @@ extension StoreModelQueryWhere
 
 extension StoreModelQueryFilter
     on QueryBuilder<StoreModel, StoreModel, QFilterCondition> {
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition>
+      addressIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'address',
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition>
+      addressGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'address',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'address',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'address',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition> addressIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition>
+      addressIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'address',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QAfterFilterCondition>
       descriptionIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -907,6 +1071,18 @@ extension StoreModelQueryLinks
 
 extension StoreModelQuerySortBy
     on QueryBuilder<StoreModel, StoreModel, QSortBy> {
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QAfterSortBy> sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -970,6 +1146,18 @@ extension StoreModelQuerySortBy
 
 extension StoreModelQuerySortThenBy
     on QueryBuilder<StoreModel, StoreModel, QSortThenBy> {
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByAddress() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.asc);
+    });
+  }
+
+  QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByAddressDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'address', Sort.desc);
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QAfterSortBy> thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
@@ -1045,6 +1233,13 @@ extension StoreModelQuerySortThenBy
 
 extension StoreModelQueryWhereDistinct
     on QueryBuilder<StoreModel, StoreModel, QDistinct> {
+  QueryBuilder<StoreModel, StoreModel, QDistinct> distinctByAddress(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'address', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<StoreModel, StoreModel, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1085,6 +1280,12 @@ extension StoreModelQueryProperty
   QueryBuilder<StoreModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<StoreModel, String?, QQueryOperations> addressProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'address');
     });
   }
 

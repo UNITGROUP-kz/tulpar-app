@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/dictionary/offer_model.dart';
 import 'package:garage/data/repositories/store/offer_store_repository.dart';
@@ -21,6 +22,12 @@ class MyOffersCubit extends Cubit<MyOffersState> {
     return OfferStoreRepository.indexMy(params ?? IndexOfferParams()).then((value) {
       replace(value, params == null || params.startRow == 0);
     }).catchError((error) {
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

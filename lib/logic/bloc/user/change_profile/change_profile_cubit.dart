@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/params/profile/change_profile_params.dart';
 import 'package:garage/data/repositories/user/auth_user_repository.dart';
@@ -21,6 +22,12 @@ class ChangeProfileCubit extends Cubit<ChangeProfileState> {
       authCubit.set(value);
       emit(ChangeProfileState(status: FetchStatus.success));
     }).catchError((error) {
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(ChangeProfileState(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(ChangeProfileState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

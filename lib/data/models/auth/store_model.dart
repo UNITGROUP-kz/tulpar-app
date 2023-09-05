@@ -4,6 +4,7 @@ import 'package:garage/core/utils/parser.dart';
 import 'package:garage/data/models/dictionary/car_model_model.dart';
 import 'package:isar/isar.dart';
 
+import '../dictionary/city_model.dart';
 import '../dictionary/part_model.dart';
 import '../dictionary/producer_model.dart';
 
@@ -17,6 +18,9 @@ class StoreModel {
   final String phone;
   final String? image;
   final double rating;
+  @ignore
+  final CityModel? city;
+  final String? address;
 
   @ignore
   final StoreCategoryModel? categories;
@@ -29,7 +33,9 @@ class StoreModel {
         phone: map['phone'],
         image: map['image'],
         rating: Parser.toDouble(map['rating']),
-        categories: map['store_category'] != null ? StoreCategoryModel.fromMap(map['store_category']) : null
+        categories: map['store_category'] != null ? StoreCategoryModel.fromMap(map['store_category']) : null,
+        city: map['city'] != null ? CityModel.fromMap(map['city']): null,
+        address: map['address']
     );
     return store;
   }
@@ -41,7 +47,9 @@ class StoreModel {
     required this.phone,
     required this.rating,
     this.image,
-    this.categories
+    this.categories,
+    this.city,
+    this.address
   });
 }
 

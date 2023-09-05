@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/params/profile/change_profile_params.dart';
@@ -25,6 +26,12 @@ class ChangeImageUserCubit extends Cubit<ChangeImageUserState> {
       authCubit.set(value);
       emit(ChangeImageUserState(status: FetchStatus.success));
     }).catchError((error) {
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(ChangeImageUserState(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
 import '../../../../data/enums/fetch_status.dart';
+import '../../../../data/models/auth/store_model.dart';
 import '../../../../data/models/dictionary/order_model.dart';
 import '../../../../logic/bloc/user/details_order/details_order_cubit.dart';
 import '../../../routing/router.dart';
@@ -88,6 +89,22 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     });
   }
 
+  _toStore(StoreModel store) => () {
+    context.router.navigate(SplashRouter(
+      children: [
+        UserRouter(
+          children: [
+            UserOrderRouter(
+              children: [
+                StoreRoute(store: store)
+              ]
+            )
+          ]
+        )
+      ]
+    ));
+  };
+
   @override
   Widget build(BuildContext context) {
     print('Details Order');
@@ -107,8 +124,11 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                   if(state.status == FetchStatus.loading) Center(child:  CupertinoActivityIndicator(),),
                   if(state.order != null) ...[
                     if(state.order?.car != null) CarCard(
-                        car: state.order!.car!
+                        car: state.order!.car!,
+                        isMy: true,
                     ),
+                    SizedBox(height: 10),
+
                     Text(state.order?.title ?? 'Заголовок', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600)),
                     SizedBox(height: 10),
                     DataTile(title: 'Город', data: state.order!.city?.name),
@@ -122,11 +142,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       SizedBox(height: 10),
                       Text('Исполнитель заказа: ', style: TextStyle(fontSize: 17),),
                       SizedBox(height: 5),
-                      StoreTile(store: widget.order.store!),
-                    ],
-                    if(widget.order.status == OrderStatus.moderation) ...[
-                      SizedBox(height: 20),
-                      Text('Описание', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w500)),
+                      StoreTile(store: widget.order.store!, callback: _toStore(widget.order.store!)),
                     ],
                     if(widget.order.status == OrderStatus.active) ...[
                       SizedBox(height: 20),
