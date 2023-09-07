@@ -6,6 +6,7 @@ import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 
 import '../../../logic/bloc/dictionary/producer/producer_cubit.dart';
+import '../../widgets/form/fields/text_field.dart';
 import '../../widgets/screen_templates/screen_default_template.dart';
 import '../../widgets/tiles/producer_tile.dart';
 
@@ -17,7 +18,6 @@ class ProducerPickerScreen extends StatefulWidget {
 }
 
 class _ProducerPickerScreenState extends State<ProducerPickerScreen> {
-
   late ScrollController _scrollController;
 
   @override
@@ -51,6 +51,14 @@ class _ProducerPickerScreenState extends State<ProducerPickerScreen> {
     context.router.pop<ProducerModel>(producer);
   };
 
+  _onFilter(String text) async {
+    final params = context.read<ProducerCubit>().state.params;
+    await context.read<ProducerCubit>().fetch(params?.copyWith(
+        filter: text,
+        startRow: 0
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -58,6 +66,10 @@ class _ProducerPickerScreenState extends State<ProducerPickerScreen> {
       scrollController: _scrollController,
       padding: EdgeInsets.zero,
       children: [
+        Padding(
+            padding: EdgeInsets.all(20),
+            child: TextFieldWidget(icon: Icon(Icons.search), onSubmit: _onFilter,)
+        ),
         BlocBuilder<ProducerCubit, ProducerState>(
           builder: (context, state) {
             return Column(

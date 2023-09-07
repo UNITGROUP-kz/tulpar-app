@@ -8,6 +8,7 @@ import 'package:garage/data/models/dictionary/producer_model.dart';
 import '../../../data/models/dictionary/car_model_model.dart';
 import '../../../data/params/dictionary/index_car_model_params.dart';
 import '../../../logic/bloc/dictionary/car_model/car_model_cubit.dart';
+import '../../widgets/form/fields/text_field.dart';
 import '../../widgets/screen_templates/screen_default_template.dart';
 import '../../widgets/tiles/car_model_tile.dart';
 
@@ -24,7 +25,6 @@ class CarModelPickerScreen extends StatefulWidget {
 }
 
 class _CarModelPickerScreenState extends State<CarModelPickerScreen> {
-
   late ScrollController _scrollController;
 
   @override
@@ -58,6 +58,14 @@ class _CarModelPickerScreenState extends State<CarModelPickerScreen> {
     context.router.pop<CarModelModel>(carModel);
   };
 
+  _onFilter(String text) async {
+    final params = context.read<CarModelCubit>().state.params;
+    await context.read<CarModelCubit>().fetch(params?.copyWith(
+        filter: text,
+        startRow: 0
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -65,6 +73,10 @@ class _CarModelPickerScreenState extends State<CarModelPickerScreen> {
       scrollController: _scrollController,
       padding: EdgeInsets.zero,
       children: [
+        Padding(
+            padding: EdgeInsets.all(20),
+            child: TextFieldWidget(icon: Icon(Icons.search), onSubmit: _onFilter,)
+        ),
         BlocBuilder<CarModelCubit, CarModelState>(
           builder: (context, state) {
             return Column(

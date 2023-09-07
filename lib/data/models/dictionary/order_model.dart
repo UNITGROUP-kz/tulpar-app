@@ -20,7 +20,7 @@ enum OrderStatus {
   @override
   String toString() {
     switch(this) {
-      case OrderStatus.moderation: return 'На модерацие';
+      case OrderStatus.moderation: return 'На модерации';
       case OrderStatus.active: return 'Активный';
       case OrderStatus.canceled: return 'Закрыт';
       case OrderStatus.completed: return 'Законче';

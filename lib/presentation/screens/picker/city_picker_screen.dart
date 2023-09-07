@@ -6,6 +6,7 @@ import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/logic/bloc/dictionary/current_city/current_city_cubit.dart';
 
 import '../../../data/models/dictionary/city_model.dart';
+import '../../widgets/form/fields/text_field.dart';
 import '../../widgets/screen_templates/screen_default_template.dart';
 import '../../widgets/tiles/city_tile.dart';
 
@@ -17,7 +18,6 @@ class CityPickerScreen extends StatefulWidget {
 }
 
 class _CityPickerScreenState extends State<CityPickerScreen> {
-
   late ScrollController _scrollController;
 
   @override
@@ -51,6 +51,14 @@ class _CityPickerScreenState extends State<CityPickerScreen> {
     context.router.pop<CityModel>(city);
   };
 
+  _onFilter(String text) async {
+    final params = context.read<CurrentCityCubit>().state.params;
+    await context.read<CurrentCityCubit>().fetch(params?.copyWith(
+        filter: text,
+        startRow: 0
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -58,6 +66,10 @@ class _CityPickerScreenState extends State<CityPickerScreen> {
       scrollController: _scrollController,
       padding: EdgeInsets.zero,
       children: [
+        Padding(
+            padding: EdgeInsets.all(20),
+            child: TextFieldWidget(icon: Icon(Icons.search), onSubmit: _onFilter,)
+        ),
         BlocBuilder<CurrentCityCubit, CurrentCityState>(
           builder: (context, state) {
             return Column(
