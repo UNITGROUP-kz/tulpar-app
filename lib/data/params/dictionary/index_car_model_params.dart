@@ -43,7 +43,7 @@ class IndexCarModelParams extends IndexParams {
     return {
       'sortBy': sortBy.name,
       'filter': filter,
-      'producer_id': producer?.id
+      'producer_id': producer?.apiId
     }..addAll(super.toData());
   }
 }

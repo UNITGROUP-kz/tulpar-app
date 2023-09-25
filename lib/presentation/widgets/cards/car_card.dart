@@ -2,6 +2,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/presentation/widgets/builder/favorite_builder.dart';
 import 'package:garage/presentation/widgets/tiles/data_tile.dart';
 
@@ -10,7 +11,7 @@ import '../../routing/router.dart';
 
 class CarCard extends StatelessWidget {
   final VoidCallback? callback;
-  final CarModel car;
+  final CarApiModel car;
   final bool isMy;
 
   const CarCard({super.key, required this.car, this.callback, this.isMy = false});
@@ -37,10 +38,9 @@ class CarCard extends StatelessWidget {
                 child: FavoriteBuilder(carId: car.id),
               ),
               // Spacer(),
-              DataTile(title: 'VIN', data: car.vinNumber, isDivider: false),
               DataTile(title: 'Машина', data: car.name, isDivider: false),
-              DataTile(title: 'Год', data: car.year.toString(), isDivider: false),
-              DataTile(title: 'Объем двигателя', data: car.volumeEngine.toString(), isDivider: false)
+              DataTile(title: 'Бренд', data: car.producerName, isDivider: false),
+              DataTile(title: 'Модель', data: car.modelName, isDivider: false)
 
             ],
           ),

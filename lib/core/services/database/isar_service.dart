@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:garage/data/models/dictionary/car_model_model.dart';
-import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';

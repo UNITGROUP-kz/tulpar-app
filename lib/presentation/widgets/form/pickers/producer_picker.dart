@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
@@ -21,6 +22,7 @@ class ProducerPickerWidget extends StatelessWidget {
   final CarModelController? carModelController;
   final YearController? yearController;
   final VolumeController? volumeController;
+  final CarApiController? carApiController;
   final String label;
 
   const ProducerPickerWidget({
@@ -29,7 +31,8 @@ class ProducerPickerWidget extends StatelessWidget {
     this.controller,
     this.carModelController,
     this.yearController,
-    this.volumeController
+    this.volumeController,
+    this.carApiController
   });
 
 
@@ -49,7 +52,8 @@ class ProducerPickerWidget extends StatelessWidget {
             context,
             value as ProducerModel,
             yearController,
-            volumeController
+            volumeController,
+            carApiController
           );
         }
       }

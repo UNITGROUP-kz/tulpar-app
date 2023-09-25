@@ -16,10 +16,12 @@ import 'package:garage/presentation/screens/user/user_splash_screen.dart';
 
 import '../../data/models/auth/store_model.dart';
 import '../../data/models/dictionary/car_model.dart';
+import '../../data/models/dictionary/car_api_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
 import '../../data/models/dictionary/city_model.dart';
 import '../../data/models/dictionary/offer_model.dart';
 import '../../data/models/dictionary/order_model.dart';
+import '../../data/models/dictionary/group_model.dart';
 import '../../data/models/dictionary/part_model.dart';
 import '../../data/models/dictionary/producer_model.dart';
 import '../../logic/bloc/store/auth/auth_store_cubit.dart';
@@ -27,6 +29,7 @@ import '../screens/documents/contract_offer_screen.dart';
 import '../screens/documents/documents_screen.dart';
 import '../screens/documents/privacy_screen.dart';
 import '../screens/picker/car_model_picker_screen.dart';
+import '../screens/picker/car_picker_screen.dart';
 import '../screens/picker/city_picker_screen.dart';
 import '../screens/picker/producer_picker_screen.dart';
 import '../screens/picker/volume_picker_screen.dart';
@@ -41,6 +44,7 @@ import '../screens/store/store_splash_screen.dart';
 import '../screens/user/auth/login_screen.dart';
 import '../screens/user/auth/register_screen.dart';
 import '../screens/user/car/details_car_screen.dart';
+import '../screens/user/car/details_group.dart';
 import '../screens/user/offer/offers_screen.dart';
 import '../screens/user/order/rate_order_screen.dart';
 import '../screens/user/profile/change_profile.dart';
@@ -69,6 +73,7 @@ class AppRouter extends _$AppRouter {
                 children:  [
                   AutoRoute(initial: true, path: '', page: MyCarRoute.page),
                   AutoRoute(page: DetailsCarRoute.page),
+                  AutoRoute(page: DetailsGroupRoute.page)
                 ]
               ),
               AutoRoute(page: UserOrderRouter.page, path: 'order',
@@ -102,6 +107,8 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: RateOrderRoute.page),
               AutoRoute(page: YearPickerRoute.page),
               AutoRoute(page: VolumePickerRoute.page),
+              AutoRoute(page: CarPickerRoute.page),
+
             ]
         ),
         AutoRoute(path: 'store', page: StoreRouter.page,

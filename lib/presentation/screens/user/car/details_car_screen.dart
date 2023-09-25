@@ -1,20 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:garage/data/models/dictionary/part_model.dart';
-import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart';
-import 'package:garage/logic/bloc/user/details_car/details_car_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
-import 'package:garage/presentation/widgets/form/pickers/part_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/group_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
-import 'package:garage/presentation/widgets/tiles/part_model.dart';
-
-import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/models/dictionary/car_model.dart';
-import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/navigation/header.dart';
-import '../../../widgets/snackbars/error_snackbar.dart';
 
 @RoutePage()
 class DetailsCarScreen extends StatefulWidget {
@@ -27,21 +18,25 @@ class DetailsCarScreen extends StatefulWidget {
 }
 
 class _DetailsCarScreenState extends State<DetailsCarScreen> {
-  late PartController _partController;
+  late GroupController _groupController;
 
   @override
   void initState() {
-    _partController = PartController()..addListener(_listenerPart);
+    _groupController = GroupController()..addListener(_listenerGroup);
     super.initState();
   }
 
-  _listenerPart() {
-    if(_partController.value.choseChild.isNotEmpty) {
+  _listenerGroup() {
+    if(_groupController.value.choseChild.isNotEmpty) {
       context.router.navigate(SplashRouter(
         children: [
-          UserFormRouter(
+          UserRouter(
             children: [
-              CreateOrderRoute(part: _partController.value.choseChild.first, car: widget.car)
+              UserCarRouter(
+                  children: [
+                    DetailsGroupRoute(group: _groupController.value.choseChild.first, car: widget.car)
+                  ]
+              )
             ]
           )
         ]
@@ -51,7 +46,7 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
 
   @override
   void dispose() {
-    _partController.dispose();
+    _groupController.dispose();
     super.dispose();
   }
 
@@ -60,7 +55,7 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
     return ScreenDefaultTemplate(
         children: [
           Header(title: 'Машина'),
-          PartPicker(controller: _partController, isMulti: false),
+          GroupPicker(controller: _groupController, isMulti: false, car: widget.car),
         ],
     );
   }

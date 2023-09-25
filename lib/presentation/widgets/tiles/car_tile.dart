@@ -1,15 +1,18 @@
 
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/models/dictionary/car_api_model.dart';
+import '../../../data/models/dictionary/car_model.dart';
 import '../../../data/models/dictionary/car_model_model.dart';
 
-class CarModelTile extends StatelessWidget {
-  final CarModelModel carModel;
+class CarTile extends StatelessWidget {
+  final CarApiModel car;
   final VoidCallback? callback;
 
-  const CarModelTile({super.key, required this.carModel, this.callback});
+  const CarTile({super.key, required this.car, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +25,18 @@ class CarModelTile extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Row(
                 children: [
-                  if(carModel.image != null) ...[
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: carModel.image!,
-                        height: 75,
-                      ),
-                    ),
-                    SizedBox(width: 10)
-                  ],
+                  // if(car.image != null) ...[
+                  //   ClipRRect(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //     child: CachedNetworkImage(
+                  //       imageUrl: car.image!,
+                  //       height: 75,
+                  //     ),
+                  //   ),
+                  //   SizedBox(width: 10)
+                  // ],
                   Expanded(
-                      child: Text(carModel.name,
+                      child: Text(car.name,
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)
                       )
                   ),

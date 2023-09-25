@@ -4,19 +4,19 @@ import 'package:dio/dio.dart';
 class ChangeCategoryParams {
   final List<int> producers;
   final List<int> models;
-  final List<int> parts;
+  final List<int> groups;
 
   ChangeCategoryParams({
     required this.producers,
     required this.models,
-    required this.parts,
+    required this.groups,
   });
 
   FormData toData() {
     FormData data = FormData.fromMap({
       'producers[]': producers,
       'models[]': models,
-      'parts[]': parts
+      'groups[]': groups
     });
     print(data.fields);
 

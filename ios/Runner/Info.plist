@@ -62,5 +62,7 @@
     <string>Access to photos is necessary for the functionality of the application</string>
     <key>NSCameraUsageDescription</key>
     <string>Access to camera is necessary for the functionality of the application</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to location when open.</string>
 </dict>
 </plist>

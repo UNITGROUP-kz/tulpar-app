@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:garage/data/models/dictionary/car_model.dart';
-import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/group_model.dart';
 
 import '../../models/dictionary/city_model.dart';
+import '../../models/dictionary/part_model.dart';
 
 class CreateOrderParams {
   final String title;

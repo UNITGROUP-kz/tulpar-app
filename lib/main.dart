@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:garage/logic/bloc/dictionary/car_picker/car_picker_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart';
 import 'package:garage/logic/bloc/store/create_offer/create_offer_cubit.dart';
 
@@ -13,6 +14,7 @@ import 'core/services/firebase/fb_service.dart';
 
 import 'logic/bloc/dictionary/car_model/car_model_cubit.dart';
 import 'logic/bloc/dictionary/current_city/current_city_cubit.dart';
+import 'logic/bloc/dictionary/group_picker/group_picker_cubit.dart';
 import 'logic/bloc/dictionary/producer/producer_cubit.dart';
 import 'logic/bloc/store/auth/auth_store_cubit.dart';
 import 'logic/bloc/store/change_category/change_category_cubit.dart';
@@ -128,8 +130,10 @@ class _MyAppState extends State<MyApp> {
           create: (context) => ChangeCategoryCubit(_authStoreCubit),
         ),
         BlocProvider(
-          lazy: false,
-          create: (context) => PartPickerCubit()..fetch(),
+          create: (context) => GroupPickerCubit(),
+        ),
+        BlocProvider(
+          create: (context) => PartPickerCubit(),
         ),
         BlocProvider(
           create: (context) => ChangeProfileCubit(_authCubit),
@@ -165,6 +169,9 @@ class _MyAppState extends State<MyApp> {
         //DICTIONARY
         BlocProvider(
           create: (context) => ProducerCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CarPickerCubit(),
         ),
         BlocProvider(
           create: (context) => CarModelCubit(),

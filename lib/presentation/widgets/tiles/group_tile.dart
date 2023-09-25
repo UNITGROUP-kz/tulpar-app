@@ -2,13 +2,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/models/dictionary/part_model.dart';
+import '../../../data/models/dictionary/group_model.dart';
 
-class PartTile extends StatelessWidget {
-  final PartModel part;
+class GroupTile extends StatelessWidget {
+  final GroupModel group;
   final VoidCallback? callback;
 
-  const PartTile({super.key, required this.part, this.callback});
+  const GroupTile({super.key, required this.group, this.callback});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class PartTile extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Expanded(child: Text(part.name)),
+              Expanded(child: Text(group.name)),
               ElevatedButton(onPressed: callback, child: Text('Заказать'))
             ],
           ),

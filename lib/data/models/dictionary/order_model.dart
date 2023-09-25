@@ -1,5 +1,6 @@
+import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/data/models/dictionary/car_model.dart';
-import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/auth/store_model.dart';
 
 import 'city_model.dart';
@@ -32,8 +33,8 @@ enum OrderStatus {
 class OrderModel {
   final int id;
   final String title;
-  final CarModel? car;
-  final PartModel? part;
+  final CarApiModel? car;
+  final GroupModel? group;
   final String? comment;
   final OrderStatus status;
   final StoreModel? store;
@@ -45,8 +46,8 @@ class OrderModel {
         title: map['title'],
         comment: map['comment'],
         status: OrderStatus.parse(map['status']),
-        car: map['car'] != null ? CarModel.fromMap(map['car']) : null,
-        part: map['part'] != null ? PartModel.fromMap(map['part']) : null,
+        car: map['car'] != null ? CarApiModel.fromMap(map['car']) : null,
+        group: map['part'] != null ? GroupModel.fromMap(map['part']) : null,
         store: map['store'] != null ? StoreModel.fromMap(map['store']) : null,
         city: map['city'] != null ? CityModel.fromMap(map['city']) : null,
 
@@ -64,7 +65,7 @@ class OrderModel {
     required this.id,
     required this.title,
     required this.car,
-    required this.part,
+    required this.group,
     required this.comment,
     required this.status,
     required this.store,

@@ -1,11 +1,15 @@
 class ProducerModel {
   final int id;
   final String name;
+  final String apiId;
+  final String? image;
 
   factory ProducerModel.fromMap(Map<String, dynamic> map) {
     return ProducerModel(
         id: map['id'],
-        name: map['name']
+        name: map['name'],
+        apiId: map['api_id'],
+        image: map['img']
     );
   }
 
@@ -17,6 +21,8 @@ class ProducerModel {
 
   ProducerModel({
     required this.id,
-    required this.name
+    required this.name,
+    required this.apiId,
+    this.image
   });
 }

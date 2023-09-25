@@ -43,6 +43,17 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const YearPickerScreen(),
       );
     },
+    CarPickerRoute.name: (routeData) {
+      final args = routeData.argsAs<CarPickerRouteArgs>();
+      return AutoRoutePage<CarApiModel>(
+        routeData: routeData,
+        child: CarPickerScreen(
+          key: args.key,
+          producer: args.producer,
+          carModel: args.carModel,
+        ),
+      );
+    },
     ProducerPickerRoute.name: (routeData) {
       return AutoRoutePage<ProducerModel>(
         routeData: routeData,
@@ -132,6 +143,17 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: MyCarScreen(),
+      );
+    },
+    DetailsGroupRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsGroupRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsGroupScreen(
+          key: args.key,
+          group: args.group,
+          car: args.car,
+        ),
       );
     },
     StoreRoute.name: (routeData) {
@@ -400,6 +422,49 @@ class YearPickerRoute extends PageRouteInfo<void> {
   static const String name = 'YearPickerRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CarPickerScreen]
+class CarPickerRoute extends PageRouteInfo<CarPickerRouteArgs> {
+  CarPickerRoute({
+    Key? key,
+    required ProducerModel producer,
+    required CarModelModel carModel,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CarPickerRoute.name,
+          args: CarPickerRouteArgs(
+            key: key,
+            producer: producer,
+            carModel: carModel,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CarPickerRoute';
+
+  static const PageInfo<CarPickerRouteArgs> page =
+      PageInfo<CarPickerRouteArgs>(name);
+}
+
+class CarPickerRouteArgs {
+  const CarPickerRouteArgs({
+    this.key,
+    required this.producer,
+    required this.carModel,
+  });
+
+  final Key? key;
+
+  final ProducerModel producer;
+
+  final CarModelModel carModel;
+
+  @override
+  String toString() {
+    return 'CarPickerRouteArgs{key: $key, producer: $producer, carModel: $carModel}';
+  }
 }
 
 /// generated route for
@@ -703,6 +768,49 @@ class MyCarRoute extends PageRouteInfo<void> {
   static const String name = 'MyCarRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DetailsGroupScreen]
+class DetailsGroupRoute extends PageRouteInfo<DetailsGroupRouteArgs> {
+  DetailsGroupRoute({
+    Key? key,
+    required GroupModel group,
+    required CarModel car,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsGroupRoute.name,
+          args: DetailsGroupRouteArgs(
+            key: key,
+            group: group,
+            car: car,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsGroupRoute';
+
+  static const PageInfo<DetailsGroupRouteArgs> page =
+      PageInfo<DetailsGroupRouteArgs>(name);
+}
+
+class DetailsGroupRouteArgs {
+  const DetailsGroupRouteArgs({
+    this.key,
+    required this.group,
+    required this.car,
+  });
+
+  final Key? key;
+
+  final GroupModel group;
+
+  final CarModel car;
+
+  @override
+  String toString() {
+    return 'DetailsGroupRouteArgs{key: $key, group: $group, car: $car}';
+  }
 }
 
 /// generated route for

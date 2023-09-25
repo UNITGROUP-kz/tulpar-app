@@ -63,6 +63,8 @@ dependencies:
   expandable_page_view: ^1.0.17
   uuid: ^3.0.7
   flutter_launcher_icons: ^0.13.1
+  google_maps_flutter: ^2.5.0
+  geolocator: ^10.0.1
 
 dev_dependencies:
   flutter_test:

@@ -9,6 +9,7 @@ import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/form/fields/text_field.dart';
 import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
@@ -26,34 +27,35 @@ class CreateCarScreen extends StatefulWidget {
 }
 
 class _CreateCarScreenState extends State<CreateCarScreen> {
-  late TextEditingController _vinController;
   late ProducerController _producerController;
   late CarModelController _carModelController;
-  late VolumeController _volumeController;
-  late YearController _yearController;
+  late CarApiController _carApiController;
+
 
   @override
   void initState() {
-    _vinController = TextEditingController();
     _producerController = ProducerController()..addListener(_listenerProducer);
-    _carModelController = CarModelController();
-    _volumeController = VolumeController();
-    _yearController = YearController();
+    _carModelController = CarModelController()..addListener(_listenerCarModel);
+    _carApiController = CarApiController();
     super.initState();
   }
 
   _listenerProducer() {
     _carModelController.remove();
+    _carApiController.remove();
+  }
+
+  _listenerCarModel() {
+    _carApiController.remove();
   }
 
   @override
   void dispose() {
-    _vinController.dispose();
     _producerController.removeListener(_listenerProducer);
+    _carModelController.removeListener(_listenerCarModel);
     _producerController.dispose();
     _carModelController.dispose();
-    _volumeController.dispose();
-    _yearController.dispose();
+    _carApiController.dispose();
     super.dispose();
   }
 
@@ -62,26 +64,14 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
       context.read<CreateCarCubit>().create(CreateCarParams(
           model: _carModelController.value!,
           producer: _producerController.value!,
-          vinNumber: _vinController.value.text,
-          volume: _volumeController.value!,
-          engineVolume: _volumeController.value!,
-          year: _yearController.value!.year
+          carApi: _carApiController.value!
         )
       );
     }
   }
 
   _check() {
-    final form = CreateCarForm.parse(vin: _vinController.value.text);
-
-    if(form.isInvalid) {
-      for (var e in form.exceptions) {
-        print(e);
-        showErrorSnackBar(context, e.toString());
-      }
-    }
-    
-    return form.isValid;
+    return true;
   }
 
   _listener(BuildContext context, CreateCarState state) {
@@ -101,36 +91,11 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
     return ScreenDefaultTemplate(
       children: [
         const Header(title: 'Создать машину', isBack: true),
-        TextFieldWidget(
-            isRequired: true,
-            label: 'VIN-код',
-            controller: _vinController
-        ),
         const SizedBox(height: 10),
         ProducerCarModelPicker(
           producerController: _producerController,
           carModelController: _carModelController,
-          yearController: _yearController,
-          volumeController: _volumeController,
-        ),
-        const SizedBox(height: 10),
-        ValueListenableBuilder(
-            valueListenable: _carModelController,
-            builder: (context, value, child) {
-              if(value == null) return Container();
-              return YearPickerWidget(
-                  label: 'Год машины',
-                  controller: _yearController,
-                  volumeController: _volumeController,
-              );
-            }
-        ),
-        ValueListenableBuilder(
-            valueListenable: _yearController,
-            builder: (context, value, child) {
-              if(value == null) return Container();
-              return VolumePickerWidget(label: 'Объем бака', controller: _volumeController);
-            }
+          carApiController: _carApiController,
         ),
         const SizedBox(height: 10),
         BlocConsumer<CreateCarCubit, CreateCarState>(
@@ -144,18 +109,14 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
             }
             return MultiValueListenableBuilder(
                 valuesListenable: [
-                  _vinController,
                   _producerController,
                   _carModelController,
-                  _yearController,
-                  _volumeController
+                  _carApiController
                 ],
                 builder: (context, value, child) {
-                  bool isValid = value[0].text.isNotEmpty
+                  bool isValid = value[0] != null
                       && value[1] != null
-                      && value[2] != null
-                      && value[3] != null
-                      && value[4] != null;
+                      && value[2] != null;
                   return ElevatedButtonWidget(
                       onPressed: isValid ? _create : null,
                       child: const Text('Cоздать машину')

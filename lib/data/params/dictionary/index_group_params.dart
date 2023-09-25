@@ -1,21 +1,23 @@
 import 'package:garage/data/params/index.dart';
 
-enum IndexProducerSortBy {
+import '../../models/dictionary/car_model.dart';
+
+enum IndexGroupSortBy {
   id, name;
 }
 
-class IndexProducerParams extends IndexParams {
-  final IndexProducerSortBy sortBy;
+class IndexGroupParams extends IndexParams {
+  final IndexGroupSortBy sortBy;
   final String? filter;
-  final bool isPopular;
+  final CarModel car;
 
-  IndexProducerParams({
+  IndexGroupParams({
     super.descending,
-    super.rowsPerPage = 100,
+    super.rowsPerPage,
     super.startRow,
     this.filter,
-    this.sortBy = IndexProducerSortBy.name,
-    this.isPopular = false
+    this.sortBy = IndexGroupSortBy.id,
+    required this.car,
   });
 
   copyWith({
@@ -23,26 +25,27 @@ class IndexProducerParams extends IndexParams {
     int? startRow,
     bool? descending,
     String? filter,
-    IndexProducerSortBy? sortBy,
-    bool? isPopular,
+    IndexGroupSortBy? sortBy,
+    CarModel? car
   }) {
-    return IndexProducerParams(
+    return IndexGroupParams(
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
       startRow: startRow ?? this.startRow,
       descending: descending ?? this.descending,
       filter: filter ?? this.filter,
       sortBy: sortBy ?? this.sortBy,
-      isPopular: isPopular ?? this.isPopular
+      car: car ?? this.car
     );
   }
 
   @override
   Map<String, dynamic> toData() {
-    print(sortBy.name);
-    return {
+    Map<String, dynamic> data = {
       'sortBy': sortBy.name,
       'filter': filter,
-      'is_popular': isPopular ? 1 : 0
+      'car_id': car.car.apiId
     }..addAll(super.toData());
+    print(data);
+    return data;
   }
 }

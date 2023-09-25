@@ -4,18 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
 import 'package:garage/data/extends/list.dart';
-import 'package:garage/data/fform/forms/create_car_form.dart';
-import 'package:garage/data/params/car/create_car_params.dart';
 import 'package:garage/data/params/profile/change_category_params.dart';
 import 'package:garage/logic/bloc/store/change_category/change_category_cubit.dart';
-import 'package:garage/logic/bloc/user/create_car/create_car_cubit.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
-import 'package:garage/presentation/widgets/form/fields/text_field.dart';
 import 'package:garage/presentation/widgets/form/pickers/car_model_picker.dart';
-import 'package:garage/presentation/widgets/form/pickers/part_picker.dart';
-import 'package:garage/presentation/widgets/form/pickers/producer_car_model_picker.dart';
-import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
-import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/group_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 
@@ -33,32 +27,32 @@ class ChangeCategoryScreen extends StatefulWidget {
 }
 
 class _ChangeCategoryScreenState extends State<ChangeCategoryScreen> {
-  late PartController _partController;
+  late GroupController _groupController;
   late MultiProducerCarModelController _multiController;
 
   @override
   void initState() {
     StoreModel? store = context.read<AuthStoreCubit>().state.store;
-    print(store?.categories?.parts);
     List<MultiProducerCarModelValue> value = store?.categories?.producers.mapWithIndex((e, i) {
       return MultiProducerCarModelValue(
           producerController: ProducerController(value: e),
           carModelController: CarModelController(value: store.categories?.models[i]),
+          carApiController: CarApiController(value: store.categories!.cars[i].car),
           update: false
       );
     }).toList() ?? [];
     _multiController = MultiProducerCarModelController(
       value: value
     );
-    _partController = PartController(value: PartControllerValue(
-      choseChild: store?.categories?.parts ?? [], checkParent: []
+    _groupController = GroupController(value: GroupControllerValue(
+      choseChild: store?.categories?.groups ?? [], checkParent: []
     ));
     super.initState();
   }
 
   @override
   void dispose() {
-    _partController.dispose();
+    _groupController.dispose();
     _multiController.dispose();
     super.dispose();
   }
@@ -68,7 +62,7 @@ class _ChangeCategoryScreenState extends State<ChangeCategoryScreen> {
       context.read<ChangeCategoryCubit>().change(ChangeCategoryParams(
           producers: _multiController.value.map((e) => e.producerController.value!.id).toList(),
           models: _multiController.value.map((e) => e.carModelController.value!.id).toList(),
-          parts: _partController.value.choseChild.map((e) {
+          groups: _groupController.value.choseChild.map((e) {
             return e.id;
           }).toList()
         )
@@ -100,7 +94,7 @@ class _ChangeCategoryScreenState extends State<ChangeCategoryScreen> {
         const SizedBox(height: 10),
         MultiProducerCarModelPicker(controller: _multiController),
         const SizedBox(height: 10),
-        PartPicker(isMulti: true, controller: _partController),
+        // GroupPicker(isMulti: true, controller: _partController),
         const SizedBox(height: 10),
         BlocConsumer<ChangeCategoryCubit, ChangeCategoryState>(
           listener: _listener,
@@ -114,7 +108,7 @@ class _ChangeCategoryScreenState extends State<ChangeCategoryScreen> {
             return MultiValueListenableBuilder(
                 valuesListenable: [
                   _multiController,
-                  _partController
+                  _groupController
                 ],
                 builder: (context, value, child) {
                   bool isValid = value[0].every((element) => element.carModelController.value != null && element.producerController.value != null)

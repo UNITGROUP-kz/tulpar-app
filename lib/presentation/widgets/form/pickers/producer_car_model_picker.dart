@@ -4,19 +4,19 @@ import 'package:garage/presentation/widgets/form/pickers/producer_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
+import 'car_picker.dart';
+
 class ProducerCarModelPicker extends StatefulWidget {
   ProducerController? producerController;
   CarModelController? carModelController;
-  final YearController? yearController;
-  final VolumeController? volumeController;
+  CarApiController? carApiController;
 
 
   ProducerCarModelPicker({
     super.key,
     this.producerController,
     this.carModelController,
-    this.yearController,
-    this.volumeController
+    this.carApiController
   });
 
   @override
@@ -29,18 +29,27 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
   void initState() {
     widget.producerController ??= ProducerController();
     widget.carModelController ??= CarModelController();
-
+    widget.carApiController ??= CarApiController();
     widget.producerController?.addListener(_listenerProducer);
+    widget.carModelController?.addListener(_listenerModel);
+
     super.initState();
   }
 
   _listenerProducer() {
     widget.carModelController?.remove();
+    widget.carApiController?.remove();
+  }
+
+  _listenerModel() {
+    widget.carApiController?.remove();
   }
 
   @override
   void dispose() {
     widget.producerController?.removeListener(_listenerProducer);
+    widget.carApiController?.removeListener(_listenerModel);
+
     super.dispose();
   }
 
@@ -48,6 +57,7 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
   void didUpdateWidget(covariant ProducerCarModelPicker oldWidget) {
     widget.producerController ??= oldWidget.producerController;
     widget.carModelController ??= oldWidget.carModelController;
+    widget.carApiController ??= oldWidget.carApiController;
     super.didUpdateWidget(oldWidget);
   }
 
@@ -59,8 +69,7 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
           label: 'Производитель',
           controller: widget.producerController,
           carModelController: widget.carModelController,
-          yearController: widget.yearController,
-          volumeController: widget.volumeController,
+          carApiController: widget.carApiController,
         ),
         const SizedBox(height: 10),
         ValueListenableBuilder(
@@ -71,8 +80,20 @@ class _ProducerCarModelPickerState extends State<ProducerCarModelPicker> {
                 label: 'Модель машины',
                 producer: value,
                 controller: widget.carModelController,
-                yearController: widget.yearController,
-                volumeController: widget.volumeController,
+                carApiController: widget.carApiController,
+              );
+            }
+        ),
+        const SizedBox(height: 10),
+        ValueListenableBuilder(
+            valueListenable: widget.carModelController!,
+            builder: (context, value, child) {
+              if(value == null) return Container();
+              return CarApiPickerWidget(
+                label: 'Машина',
+                controller: widget.carApiController,
+                producer: widget.producerController!.value!,
+                carModel: value,
               );
             }
         ),

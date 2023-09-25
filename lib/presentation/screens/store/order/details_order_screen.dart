@@ -86,7 +86,7 @@ class _DetailsOrderStoreScreenState extends State<DetailsOrderStoreScreen> {
                     Text(state.order?.title ?? 'Заголовок', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600)),
                     SizedBox(height: 10),
                     DataTile(title: 'Город', data: state.order!.city?.name),
-                    DataTile(title: 'Запчасть', data: state.order!.part?.name),
+                    DataTile(title: 'Запчасть', data: state.order!.group?.name),
                     SizedBox(height: 20),
                     if(state.order!.comment != null) ...[
                       Text('Описание', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),

@@ -12,4 +12,8 @@ class CarUserRepository {
   static Future<CarModel> create(CreateCarParams params) => ApiService.I
       .post('/car', data: params.toData())
       .then((value) => CarModel.fromMap(value.data['car']));
+
+  static Future<CarModel> getByVIN(String vinCode) => ApiService.I
+      .get('/car', queryParameters: { 'q': vinCode})
+      .then((value) => CarModel.fromMap(value.data['car']));
 }

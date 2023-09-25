@@ -1,15 +1,20 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
+import 'package:garage/presentation/screens/picker/lat_lon_picker.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/form/fields/description_field.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/fform/forms/create_order_form.dart';
@@ -32,6 +37,7 @@ class CreateOrderScreen extends StatefulWidget {
 }
 
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
+  late LatLonController _mapController;
   late TextEditingController _titleController;
   late TextEditingController _commentController;
   late CityController _cityController;
@@ -85,11 +91,13 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     _titleController = TextEditingController();
     _cityController = CityController();
     _commentController = TextEditingController();
+    _mapController = LatLonController();
     super.initState();
   }
 
   @override
   void dispose() {
+    _mapController.dispose();
     _titleController.dispose();
     _commentController.dispose();
     _cityController.dispose();
@@ -119,6 +127,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           controller: _cityController
         ),
         SizedBox(height: 10),
+        MapPicker(controller: _mapController),
+        SizedBox(height: 10),
         BlocConsumer<CreateOrderCubit, CreateOrderState>(
           listener: _listenerState,
           builder: (context, state) {
@@ -132,10 +142,14 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               valuesListenable: [
                 _titleController,
                 _commentController,
-                _cityController
+                _cityController,
+                _mapController
               ],
               builder: (context, value, child) {
-                final isValid = value[0].text.isNotEmpty && value[1].text.isNotEmpty && value[2] != null;
+                final isValid = value[0].text.isNotEmpty
+                    && value[1].text.isNotEmpty
+                    && value[2] != null
+                    && value[3] != null;
                 return ElevatedButtonWidget(
                     onPressed: isValid ? _createOrder : null,
                     child: const Text('Создать заказ')

@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,21 @@ class ProducerTile extends StatelessWidget {
         children: [
           Padding(
               padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-              child: Text(producer.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500))
+              child: Row(
+                children: [
+                  if(producer.image != null) ...[
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: CachedNetworkImage(
+                        imageUrl: producer.image!,
+                        height: 30,
+                      ),
+                    ),
+                    SizedBox(width: 10)
+                  ],
+                  Text(producer.name, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                ],
+              )
           ),
           Divider(thickness: 1)
         ],

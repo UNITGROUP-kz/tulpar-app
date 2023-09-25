@@ -10,7 +10,7 @@ class ApiService {
     _dio = Dio();
     _dio.options.baseUrl = dotenv.env['BASE_URL']!;
     _dio.options.headers.addAll({
-      'Accept': 'application/json'
+      'Accept': 'application/json',
     });
     // addInterceptors(ErrorInterceptor());
   }

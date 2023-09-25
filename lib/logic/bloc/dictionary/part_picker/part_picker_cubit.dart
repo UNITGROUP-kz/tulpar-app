@@ -11,11 +11,11 @@ part 'part_picker_state.dart';
 class PartPickerCubit extends Cubit<PartPickerState> {
   PartPickerCubit() : super(const PartPickerState());
 
-  Future fetch() async {
+  Future fetch(IndexPartParams params) async {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
-    return DictionaryRepository.indexParts(IndexPartParams()).then((value) {
-      replace(value, IndexPartParams());
+    return DictionaryRepository.indexParts(params).then((value) {
+      replace(value, params);
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });

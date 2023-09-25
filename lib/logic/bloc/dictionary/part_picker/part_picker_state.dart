@@ -17,8 +17,8 @@ class PartPickerState extends Equatable {
     FetchStatus? status,
   }) {
     return PartPickerState(
-        parts: parts ?? this.parts,
-        status: status ?? this.status,
+      parts: parts ?? this.parts,
+      status: status ?? this.status,
     );
   }
 }

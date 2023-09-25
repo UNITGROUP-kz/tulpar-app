@@ -4,8 +4,9 @@ import 'package:garage/core/utils/parser.dart';
 import 'package:garage/data/models/dictionary/car_model_model.dart';
 import 'package:isar/isar.dart';
 
+import '../dictionary/car_model.dart';
 import '../dictionary/city_model.dart';
-import '../dictionary/part_model.dart';
+import '../dictionary/group_model.dart';
 import '../dictionary/producer_model.dart';
 
 part 'store_model.g.dart';
@@ -56,19 +57,22 @@ class StoreModel {
 class StoreCategoryModel {
   final List<ProducerModel> producers;
   final List<CarModelModel> models;
-  final List<PartModel> parts;
+  final List<CarModel> cars;
+  final List<GroupModel> groups;
 
   StoreCategoryModel({
     required this.producers,
     required this.models,
-    required this.parts
+    required this.groups,
+    required this.cars
   });
 
   factory StoreCategoryModel.fromMap(Map<String, dynamic> map) {
     StoreCategoryModel storeCategory = StoreCategoryModel(
-      parts: map['parts']?.map<PartModel>((val) => PartModel.fromMap(val)).toList() ?? [],
+      groups: map['groups']?.map<GroupModel>((val) => GroupModel.fromMap(val)).toList() ?? [],
       models: map['models']?.map<CarModelModel>((val) => CarModelModel.fromMap(val)).toList() ?? [],
-      producers: map['producers']?.map<ProducerModel>((val) => ProducerModel.fromMap(val)).toList() ?? []
+      producers: map['producers']?.map<ProducerModel>((val) => ProducerModel.fromMap(val)).toList() ?? [],
+      cars: map['cars']?.map<CarModel>((val) => CarModel.fromMap(val)).toList() ?? [],
     );
 
     return storeCategory;

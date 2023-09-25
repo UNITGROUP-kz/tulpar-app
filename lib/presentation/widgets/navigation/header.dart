@@ -6,8 +6,9 @@ import 'back_button.dart';
 class Header extends StatelessWidget {
   final bool isBack;
   final String? title;
+  final Widget? tril;
 
-  const Header({super.key, this.isBack = true, this.title});
+  const Header({super.key, this.isBack = true, this.title, this.tril});
 
 
 
@@ -24,7 +25,8 @@ class Header extends StatelessWidget {
                 fontWeight: FontWeight.w600
               )
             )
-          )
+          ),
+          if(tril != null) tril!
         ],
       ),
     );

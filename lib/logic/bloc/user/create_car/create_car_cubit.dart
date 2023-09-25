@@ -23,6 +23,7 @@ class CreateCarCubit extends Cubit<CreateCarState> {
       myCarCubit.fetch();
       emit(CreateCarState(status: FetchStatus.success));
     }).catchError((error) {
+      print(error);
       if(error is DioException) {
         if(error.response?.statusCode == 403) {
           authCubit.logout();

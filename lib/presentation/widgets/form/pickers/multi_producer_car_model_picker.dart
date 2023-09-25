@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:garage/presentation/widgets/form/pickers/car_picker.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:garage/presentation/widgets/buttons/elevated_button.dart';
@@ -12,11 +13,13 @@ class MultiProducerCarModelValue {
   late String id;
   ProducerController producerController;
   CarModelController carModelController;
+  CarApiController carApiController;
   bool update;
 
   MultiProducerCarModelValue({
     required this.producerController,
     required this.carModelController,
+    required this.carApiController,
     this.update = true
   }) {
     id = const Uuid().v1();
@@ -27,37 +30,48 @@ class MultiProducerCarModelController extends ValueNotifier<List<MultiProducerCa
   MultiProducerCarModelController({List<MultiProducerCarModelValue>? value}) : super(value
       ?? [ MultiProducerCarModelValue(
           producerController: ProducerController(),
-          carModelController: CarModelController()
+          carModelController: CarModelController(),
+          carApiController: CarApiController()
         )
       ]
   ) {
     for (var element in this.value) {
-      element.producerController.addListener(_changeProducer(element.carModelController));
-      element.carModelController.addListener(_changeCarModel(element));
+      element.producerController.addListener(_changeProducer(element.carModelController, element.carApiController));
+      element.carModelController.addListener(_changeModel(element.carApiController));
+      element.carApiController.addListener(_changeCar(element));
     }
   }
 
   _add() {
-    CarModelController carModelController = CarModelController();
-    ProducerController producerController = ProducerController()..addListener(_changeProducer(carModelController));
+    CarApiController carApiController = CarApiController();
+    CarModelController carModelController = CarModelController()..addListener(_changeModel(carApiController));
+    ProducerController producerController = ProducerController()..addListener(_changeProducer(carModelController, carApiController));
     MultiProducerCarModelValue value = MultiProducerCarModelValue(
         producerController: producerController,
-        carModelController: carModelController
+        carModelController: carModelController,
+        carApiController: carApiController
     );
-    carModelController.addListener(_changeCarModel(value));
+    carApiController.addListener(_changeCar(value));
+
 
     this.value.add(value);
 
     notifyListeners();
   }
 
-  _changeProducer(CarModelController controller) => () {
+  _changeProducer(CarModelController controller, CarApiController carApiController) => () {
     controller.remove();
+    carApiController.remove();
     notifyListeners();
   };
 
-  _changeCarModel(MultiProducerCarModelValue value) => () {
-    if(value.carModelController.value != null) value.update = false;
+  _changeModel(CarApiController carApiController) => () {
+    carApiController.remove();
+    notifyListeners();
+  };
+
+  _changeCar(MultiProducerCarModelValue value) => () {
+    if(value.carApiController.value != null) value.update = false;
     notifyListeners();
   };
 
@@ -74,10 +88,12 @@ class MultiProducerCarModelController extends ValueNotifier<List<MultiProducerCa
   @override
   void dispose() {
     for (var element in value) {
-      element.producerController.removeListener(_changeProducer(element.carModelController));
-      element.producerController.removeListener(_changeCarModel(element));
+      element.producerController.removeListener(_changeProducer(element.carModelController, element.carApiController));
+      element.carModelController.removeListener(_changeModel(element.carApiController));
+      element.carApiController.removeListener(_changeCar(element));
       element.producerController.dispose();
       element.carModelController.dispose();
+      element.carApiController.dispose();
     }
     super.dispose();
   }

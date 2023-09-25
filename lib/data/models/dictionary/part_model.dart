@@ -2,14 +2,17 @@
 
 class PartModel {
   final int id;
+  final String apiId;
   final String name;
-  final List<PartModel>? childs;
+  final String? image;
+
 
   factory PartModel.fromMap(map) {
     return PartModel(
         id: map['id'],
         name: map['name'],
-        childs: map['childs'] != null? PartModel.fromListMap(map['childs']): null
+        image: map['img'],
+        apiId: map['api_id'],
     );
   }
 
@@ -28,6 +31,7 @@ class PartModel {
   PartModel({
     required this.id,
     required this.name,
-    this.childs = const []
+    this.image,
+    required this.apiId,
   });
 }

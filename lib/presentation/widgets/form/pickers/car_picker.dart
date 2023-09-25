@@ -3,43 +3,40 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:garage/data/models/dictionary/car_model_model.dart';
 import 'package:garage/presentation/routing/router.dart';
-import 'package:garage/presentation/widgets/form/pickers/car_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/volume_picker.dart';
 import 'package:garage/presentation/widgets/form/pickers/year_picker.dart';
 
+import '../../../../data/models/dictionary/car_api_model.dart';
 import '../../../../data/models/dictionary/producer_model.dart';
 
-class CarModelController extends ValueNotifier<CarModelModel?> {
-  CarModelController({ CarModelModel? value }): super(value);
+class CarApiController extends ValueNotifier<CarApiModel?> {
+  CarApiController({ CarApiModel? value }): super(value);
 
-  _change(CarModelModel carModel) {
+  _change(CarApiModel carModel) {
     value = carModel;
     notifyListeners();
   }
 
-  void toCarModelScreen(
+  void toCarApiScreen(
       BuildContext context,
       ProducerModel producer,
+      CarModelModel carModel,
       YearController? yearController,
-      VolumeController? volumeController,
-      CarApiController? carApiController
-  ) {
-    print('aaa');
+      VolumeController? volumeController
+      ) {
+    print('CAR Picker Route');
     context.router.push(SplashRouter(
         children: [
           PickerRouter(
-              children: [CarModelPickerRoute(producer: producer)]
+              children: [CarPickerRoute(carModel: carModel, producer: producer)]
           )
         ]
     )).then((value) {
       if(value != null) {
-        _change(value as CarModelModel);
-        if(carApiController != null) {
-          carApiController.toCarApiScreen(
+        _change(value as CarApiModel);
+        if(yearController != null) {
+          yearController.toYearScreen(
               context,
-              producer,
-              value,
-              yearController,
               volumeController
           );
         }
@@ -53,27 +50,30 @@ class CarModelController extends ValueNotifier<CarModelModel?> {
   }
 }
 
-class CarModelPickerWidget extends StatelessWidget {
-  final CarModelController? controller;
-  final CarApiController? carApiController;
+class CarApiPickerWidget extends StatelessWidget {
+  final CarApiController? controller;
   final YearController? yearController;
   final VolumeController? volumeController;
   final ProducerModel producer;
+  final CarModelModel carModel;
   final String label;
 
-  const CarModelPickerWidget({
+  const CarApiPickerWidget({
     super.key,
     required this.label,
     this.controller,
+
     required this.producer,
+    required this.carModel,
+
     this.yearController,
     this.volumeController,
-    this.carApiController
   });
 
 
   _onTap(BuildContext context) => () {
-    controller?.toCarModelScreen(context, producer, yearController, volumeController, carApiController);
+    print('aaa');
+    controller?.toCarApiScreen(context, producer, carModel, yearController, volumeController);
   };
 
   @override
@@ -99,7 +99,7 @@ class CarModelPickerWidget extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: ValueListenableBuilder(
-                  valueListenable: controller ?? CarModelController(),
+                  valueListenable: controller ?? CarApiController(),
                   builder: (context, value, child) {
                     return Text(
                         value?.name ?? 'Не выбрано'

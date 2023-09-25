@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
+import 'package:garage/data/repositories/user/car_user_repository.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
+import 'package:garage/presentation/widgets/form/fields/text_field.dart';
 import 'package:garage/presentation/widgets/navigation/header.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
@@ -76,6 +79,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
   }
 
   _toDetails(CarModel car) => () {
+
     context.router.navigate(SplashRouter(
         children: [
           UserRouter(
@@ -90,6 +94,18 @@ class _MyCarScreenState extends State<MyCarScreen> {
         ]
     ));
   };
+
+  _showVin() {
+    showModalBottomSheet(
+        useSafeArea: true,
+        useRootNavigator: true,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        context: context,
+        builder: (context) => VinBottomSheet()
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +125,9 @@ class _MyCarScreenState extends State<MyCarScreen> {
                     children: [
                       Header(isBack: false, title: 'Гараж'),
                       SettingsTile(label: 'Искать запчасти в ручную', icon: Icons.handyman),
-                      if(state.status == FetchStatus.success) Container(
+                      SettingsTile(label: 'Искать запчасти по VIN', icon: Icons.car_rental, backgroundIcon: Colors.blue, callback: _showVin,),
+                      SizedBox(height: 10),
+                      Container(
                           width: double.infinity,
                           child: ElevatedButtonWidget(
                               onPressed: _addCar,
@@ -131,7 +149,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
                   ),
                   items: state.cars.map((car) {
                     return CarCard(
-                      car: car,
+                      car: car.car,
                       callback: _toDetails(car),
                       isMy: true,
                     );
@@ -170,4 +188,122 @@ class _MyCarScreenState extends State<MyCarScreen> {
       ],
     );
   }
+}
+
+
+class VinBottomSheet extends StatefulWidget {
+  @override
+  State<VinBottomSheet> createState() => _VinBottomSheetState();
+}
+
+class _VinBottomSheetState extends State<VinBottomSheet> {
+  late TextEditingController _textEditingController;
+  bool isLoading = false;
+  _showCar(BuildContext context) => () {
+    setState(() {
+      isLoading = false;
+    });
+    CarUserRepository.getByVIN(_textEditingController.value.text).then((value) {
+      showModalBottomSheet(
+          useSafeArea: true,
+          useRootNavigator: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          context: context,
+          builder: (context) => CarBottomSheet(car: value)
+      );
+      setState(() {
+        isLoading = false;
+      });
+    }).catchError((value) {
+      if(value is DioException) {
+        showErrorSnackBar(context, value.response?.data['message'] ?? 'Неизвестная ошибка');
+      } else {
+        showErrorSnackBar(context, 'Неизвестная ошибка');
+      }
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFieldWidget(label: 'VIN-code', controller: _textEditingController),
+          SizedBox(height: 20,),
+          ElevatedButtonWidget(
+              child: !isLoading ? Text('Искать машину')
+                  : CircularProgressIndicator(color: Colors.black,),
+              onPressed: _showCar(context)
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    _textEditingController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+}
+
+
+class CarBottomSheet extends StatelessWidget {
+
+  final CarModel car;
+
+  const CarBottomSheet({super.key, required this.car});
+
+  _toDetails(BuildContext context) => () async {
+    context.router.pop().then((value) async {
+      context.router.pop().then((value) {
+        context.router.navigate(SplashRouter(
+            children: [
+              UserRouter(
+                  children: [
+                    UserCarRouter(
+                        children: [
+                          DetailsCarRoute(car: car)
+                        ]
+                    )
+                  ]
+              )
+            ]
+        ));
+      });
+    });
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Это ваша машина?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+          SizedBox(height: 20,),
+          CarCard(car: car.car),
+          SizedBox(height: 20,),
+          ElevatedButtonWidget(child: Text('Подтвердить'), onPressed: _toDetails(context),)
+        ],
+      ),
+    );
+  }
+
 }

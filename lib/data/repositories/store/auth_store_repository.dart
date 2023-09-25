@@ -1,6 +1,6 @@
 import 'package:garage/core/services/api/api_service.dart';
 import 'package:garage/data/models/dictionary/car_model_model.dart';
-import 'package:garage/data/models/dictionary/part_model.dart';
+import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:garage/data/params/auth/auth_store_params.dart';
 import 'package:garage/data/params/change_image_params.dart';

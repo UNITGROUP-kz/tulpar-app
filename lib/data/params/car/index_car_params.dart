@@ -1,5 +1,8 @@
 import 'package:garage/data/params/index.dart';
 
+import '../../models/dictionary/car_model_model.dart';
+import '../../models/dictionary/producer_model.dart';
+
 enum IndexMyCarSortBy {
   id, model_id, producer_id, vin_number, created_at, updated_at;
 }
@@ -33,5 +36,19 @@ class IndexMyCarParams extends IndexParams {
         descending: descending ?? this.descending,
         sortBy: sortBy ?? this.sortBy
     );
+  }
+}
+
+class GetCarParams {
+  final ProducerModel producer;
+  final CarModelModel carModel;
+
+  GetCarParams({required this.producer, required this.carModel});
+
+  toData() {
+    return {
+      'catalogId': producer.apiId,
+      'modelId': carModel.apiId,
+    };
   }
 }

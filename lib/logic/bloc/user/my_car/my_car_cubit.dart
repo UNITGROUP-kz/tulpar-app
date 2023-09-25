@@ -22,6 +22,7 @@ class MyCarCubit extends Cubit<MyCarState> {
     return CarUserRepository.indexMy(params ?? IndexMyCarParams()).then((value) {
       replace(value, params ?? IndexMyCarParams());
     }).catchError((error) {
+      print(error);
       if(error is DioException) {
         if(error.response?.statusCode == 403) {
           authCubit.logout();
