@@ -2,22 +2,23 @@
 
 class PartModel {
   final int id;
-  final String apiId;
   final String name;
-  final String? image;
+  final String number;
+  final String? notice;
+  final String? description;
 
 
   factory PartModel.fromMap(map) {
     return PartModel(
         id: map['id'],
         name: map['name'],
-        image: map['img'],
-        apiId: map['api_id'],
+        number: map['number'],
+        notice: map['notice'],
+        description: map['description'],
     );
   }
 
   static List<PartModel> fromListMap(data) {
-    // return [];
     try {
       return data.map<PartModel>((producer) {
         return PartModel.fromMap(producer);
@@ -31,7 +32,8 @@ class PartModel {
   PartModel({
     required this.id,
     required this.name,
-    this.image,
-    required this.apiId,
+    required this.number,
+    this.notice,
+    this.description,
   });
 }

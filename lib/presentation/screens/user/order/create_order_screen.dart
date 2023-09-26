@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
@@ -28,7 +29,7 @@ import '../../../widgets/navigation/header.dart';
 class CreateOrderScreen extends StatefulWidget {
 
   final PartModel part;
-  final CarModel car;
+  final CarApiModel car;
 
   const CreateOrderScreen({super.key, required this.part, required this.car});
 

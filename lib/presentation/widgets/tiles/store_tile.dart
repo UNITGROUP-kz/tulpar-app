@@ -13,11 +13,12 @@ class StoreTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(store);
     return InkWell(
       onTap: callback,
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.grey.shade100,
+            color: Colors.grey.shade800,
             borderRadius: BorderRadius.circular(10)
         ),
         padding: EdgeInsets.all(10),

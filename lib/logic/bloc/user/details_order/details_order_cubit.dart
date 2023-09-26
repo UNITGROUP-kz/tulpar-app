@@ -28,9 +28,10 @@ class DetailsOrderCubit extends Cubit<DetailsOrderState> {
     }
 
     return OrderUserRepository.info(state.order?.id ?? orderId!).then((value) {
-      print(value.id);
+      print(value.store);
       emit(state.copyWith(status: FetchStatus.success, order: value));
     }).catchError((error) {
+      print(error);
       if(error is DioException) {
         if(error.response?.statusCode == 403) {
           authCubit.logout();
@@ -48,7 +49,9 @@ class DetailsOrderCubit extends Cubit<DetailsOrderState> {
   }
 
   Future rate(int orderId, int rate) {
-    return OrderUserRepository.rate(orderId, rate);
+    return OrderUserRepository.rate(orderId, rate).then((value) async {
+      await fetch(orderId);
+    });
   }
 
   Future complete(int orderId) {

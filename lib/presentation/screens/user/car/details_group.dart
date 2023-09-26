@@ -7,7 +7,7 @@ import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/params/dictionary/index_part_params.dart';
 import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
-import '../../../../data/models/dictionary/car_model.dart';
+import '../../../../data/models/dictionary/car_api_model.dart';
 import '../../../../data/models/dictionary/part_model.dart';
 import '../../../routing/router.dart';
 import '../../../widgets/navigation/header.dart';
@@ -16,7 +16,7 @@ import '../../../widgets/tiles/part_tile.dart';
 @RoutePage()
 class DetailsGroupScreen extends StatefulWidget {
   final GroupModel group;
-  final CarModel car;
+  final CarApiModel car;
 
   const DetailsGroupScreen({super.key, required this.group, required this.car});
 

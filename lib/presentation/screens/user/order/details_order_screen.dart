@@ -49,27 +49,23 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     await context.read<DetailsOrderCubit>().fetch(widget.order.id);
   }
 
-  _toOffers() {
+  _toOffers(OrderModel order) => () {
     context.router.navigate(
-      OrderOffersRoute(order: widget.order)
+      OrderOffersRoute(order: order)
     );
-  }
+  };
 
-  _toRate() {
-    context.router.navigate(SplashRouter(
+  _toRate(OrderModel order) => () {
+    context.router.push(SplashRouter(
       children: [
-        UserRouter(
+        UserFormRouter(
           children: [
-            UserFormRouter(
-              children: [
-                RateOrderRoute(order: widget.order)
-              ]
-            )
+            RateOrderRoute(order: order)
           ]
         )
       ]
     ));
-  }
+  };
 
   _listener(BuildContext context, DetailsOrderState state) {
     if(state.status == FetchStatus.error) {
@@ -77,17 +73,18 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
     }
   }
 
-  _complete() {
-    context.read<DetailsOrderCubit>().complete(widget.order.id).then((value) {
-      _toRate();
-    }).catchError((error) {
-      if(error is DioException) {
-        showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
-      } else {
-        showErrorSnackBar(context, 'Неизвестная ошибка');
-      }
-    });
-  }
+  // _complete() {
+  //   context.read<DetailsOrderCubit>().complete(widget.order.id).then((value) {
+  //     _toRate();
+  //   }).catchError((error) {
+  //     print(error);
+  //     if(error is DioException) {
+  //       showErrorSnackBar(context, error.response?.data['message'] ?? 'Неизвестная ошибка');
+  //     } else {
+  //       showErrorSnackBar(context, 'Неизвестная ошибка');
+  //     }
+  //   });
+  // }
 
   _toStore(StoreModel store) => () {
     context.router.navigate(SplashRouter(
@@ -132,7 +129,7 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                     Text(state.order?.title ?? 'Заголовок', style: TextStyle(fontSize: 23, fontWeight: FontWeight.w600)),
                     SizedBox(height: 10),
                     DataTile(title: 'Город', data: state.order!.city?.name),
-                    DataTile(title: 'Запчасть', data: state.order!.group?.name),
+                    DataTile(title: 'Запчасть', data: state.order!.part?.name),
                     SizedBox(height: 20),
                     if(state.order!.comment != null) ...[
                       Text('Описание', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
@@ -142,15 +139,15 @@ class _DetailsOrderScreenState extends State<DetailsOrderScreen> {
                       SizedBox(height: 10),
                       Text('Исполнитель заказа: ', style: TextStyle(fontSize: 17),),
                       SizedBox(height: 5),
-                      StoreTile(store: widget.order.store!, callback: _toStore(widget.order.store!)),
+                      StoreTile(store: state.order!.store!, callback: _toStore(state.order!.store!)),
                     ],
-                    if(widget.order.status == OrderStatus.active) ...[
+                    if(state.order?.status == OrderStatus.active) ...[
                       SizedBox(height: 20),
-                      ElevatedButtonWidget(onPressed: _toOffers, child: Text('Предложения'))
+                      ElevatedButtonWidget(onPressed: _toOffers(state.order!), child: Text('Предложения'))
                     ],
-                    if(widget.order.status == OrderStatus.active && widget.order.store != null) ...[
+                    if(state.order?.status == OrderStatus.done && state.order?.store != null) ...[
                       SizedBox(height: 20),
-                      ElevatedButtonWidget(onPressed: _complete, child: Text('Завершить заказ'))
+                      ElevatedButtonWidget(onPressed: _toRate(state.order!), child: Text('Оценить'))
                     ],
                   ],
                 ],

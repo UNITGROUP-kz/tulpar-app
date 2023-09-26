@@ -1,5 +1,6 @@
 import 'package:garage/data/params/index.dart';
 
+import '../../models/dictionary/car_api_model.dart';
 import '../../models/dictionary/car_model.dart';
 
 enum IndexGroupSortBy {
@@ -9,7 +10,7 @@ enum IndexGroupSortBy {
 class IndexGroupParams extends IndexParams {
   final IndexGroupSortBy sortBy;
   final String? filter;
-  final CarModel car;
+  final CarApiModel car;
 
   IndexGroupParams({
     super.descending,
@@ -26,7 +27,7 @@ class IndexGroupParams extends IndexParams {
     bool? descending,
     String? filter,
     IndexGroupSortBy? sortBy,
-    CarModel? car
+    CarApiModel? car
   }) {
     return IndexGroupParams(
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -43,7 +44,7 @@ class IndexGroupParams extends IndexParams {
     Map<String, dynamic> data = {
       'sortBy': sortBy.name,
       'filter': filter,
-      'car_id': car.car.apiId
+      'car_id': car.apiId
     }..addAll(super.toData());
     print(data);
     return data;

@@ -18,7 +18,7 @@ class DictionaryRepository {
       .then((value) => ProducerModel.fromListMap(value.data['list']));
 
   static Future<List<GroupModel>> indexGroups(IndexGroupParams params) => ApiService.I
-      .get('/parts', queryParameters: params.toData())
+      .get('/part-groups', queryParameters: params.toData())
       .then((value) => GroupModel.fromListMap(value.data['list']));
 
   static Future<List<PartModel>> indexParts(IndexPartParams params) => ApiService.I

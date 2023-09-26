@@ -3,9 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
+import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/cards/offer_card.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
 
+import '../../../../data/models/dictionary/offer_model.dart';
 import '../../../../logic/bloc/store/my_offers/my_offers_cubit.dart';
 import '../../../widgets/navigation/header.dart';
 import '../../../widgets/snackbars/error_snackbar.dart';
@@ -57,6 +59,23 @@ class _MyOffersScreenState extends State<MyOffersScreen> {
     }
   }
 
+  _onTap(OfferModel offer) => () {
+    context.router.navigate(SplashRouter(
+      children: [
+        StoreRouter(
+          children: [
+            StoreOfferRouter(
+              children: [
+                DetailsOfferStoreRoute(offer: offer)
+              ]
+            )
+          ]
+        )
+      ]
+    ));
+  };
+
+
   @override
   Widget build(BuildContext context) {
     print('my-offers');
@@ -71,7 +90,7 @@ class _MyOffersScreenState extends State<MyOffersScreen> {
             return Column(
               children: [
                 ...state.offers.map((offer) {
-                  return OfferCard(offer: offer);
+                  return OfferCard(offer: offer, callback: _onTap(offer));
                 }).toList(),
                 if(state.offers.isEmpty && state.status == FetchStatus.success) Text('Нет Предложений'),
                 if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),

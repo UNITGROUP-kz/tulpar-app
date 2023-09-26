@@ -341,6 +341,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: PickerScreen(),
       );
     },
+    CustomCarRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CustomCarScreen(),
+      );
+    },
+    DetailsOfferStoreRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOfferStoreRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsOfferStoreScreen(
+          key: args.key,
+          offer: args.offer,
+        ),
+      );
+    },
   };
 }
 
@@ -515,7 +531,7 @@ class CreateOrderRoute extends PageRouteInfo<CreateOrderRouteArgs> {
   CreateOrderRoute({
     Key? key,
     required PartModel part,
-    required CarModel car,
+    required CarApiModel car,
     List<PageRouteInfo>? children,
   }) : super(
           CreateOrderRoute.name,
@@ -544,7 +560,7 @@ class CreateOrderRouteArgs {
 
   final PartModel part;
 
-  final CarModel car;
+  final CarApiModel car;
 
   @override
   String toString() {
@@ -723,7 +739,7 @@ class CreateCarRoute extends PageRouteInfo<void> {
 class DetailsCarRoute extends PageRouteInfo<DetailsCarRouteArgs> {
   DetailsCarRoute({
     Key? key,
-    required CarModel car,
+    required CarApiModel car,
     List<PageRouteInfo>? children,
   }) : super(
           DetailsCarRoute.name,
@@ -748,7 +764,7 @@ class DetailsCarRouteArgs {
 
   final Key? key;
 
-  final CarModel car;
+  final CarApiModel car;
 
   @override
   String toString() {
@@ -776,7 +792,7 @@ class DetailsGroupRoute extends PageRouteInfo<DetailsGroupRouteArgs> {
   DetailsGroupRoute({
     Key? key,
     required GroupModel group,
-    required CarModel car,
+    required CarApiModel car,
     List<PageRouteInfo>? children,
   }) : super(
           DetailsGroupRoute.name,
@@ -805,7 +821,7 @@ class DetailsGroupRouteArgs {
 
   final GroupModel group;
 
-  final CarModel car;
+  final CarApiModel car;
 
   @override
   String toString() {
@@ -1298,4 +1314,56 @@ class PickerRouter extends PageRouteInfo<void> {
   static const String name = 'PickerRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CustomCarScreen]
+class CustomCarRoute extends PageRouteInfo<void> {
+  const CustomCarRoute({List<PageRouteInfo>? children})
+      : super(
+          CustomCarRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CustomCarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DetailsOfferStoreScreen]
+class DetailsOfferStoreRoute extends PageRouteInfo<DetailsOfferStoreRouteArgs> {
+  DetailsOfferStoreRoute({
+    Key? key,
+    required OfferModel offer,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsOfferStoreRoute.name,
+          args: DetailsOfferStoreRouteArgs(
+            key: key,
+            offer: offer,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsOfferStoreRoute';
+
+  static const PageInfo<DetailsOfferStoreRouteArgs> page =
+      PageInfo<DetailsOfferStoreRouteArgs>(name);
+}
+
+class DetailsOfferStoreRouteArgs {
+  const DetailsOfferStoreRouteArgs({
+    this.key,
+    required this.offer,
+  });
+
+  final Key? key;
+
+  final OfferModel offer;
+
+  @override
+  String toString() {
+    return 'DetailsOfferStoreRouteArgs{key: $key, offer: $offer}';
+  }
 }

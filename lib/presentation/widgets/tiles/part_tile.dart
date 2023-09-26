@@ -19,7 +19,16 @@ class PartTile extends StatelessWidget {
           // padding: EdgeInsets.all(10),
           child: Row(
             children: [
-              Expanded(child: Text(part.name)),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${part.number}. ${part.name}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),),
+                    Text("${part.notice}", maxLines: 2),
+                  ],
+                ),
+              ),
+              SizedBox(width: 10),
               ElevatedButton(onPressed: callback, child: Text('Заказать'))
             ],
           ),

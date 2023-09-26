@@ -41,17 +41,14 @@ class _RateOrderScreenState extends State<RateOrderScreen> {
   }
 
   _rate() {
-    context.read<DetailsOrderCubit>().rate(widget.order.id, _starPickerController.value).then((value) {
-      _back();
-    }).catchError((error) {
-      _back();
+    context.read<DetailsOrderCubit>().rate(widget.order.id, _starPickerController.value).catchError((error) {
+      print(error);
       showErrorSnackBar(context, ErrorModel.parse(error).messages[0]);
+    }).whenComplete(() {
+      context.router.pop();
     });
   }
 
-  _back() {
-    context.router.pop();
-  }
 
   @override
   Widget build(BuildContext context) {

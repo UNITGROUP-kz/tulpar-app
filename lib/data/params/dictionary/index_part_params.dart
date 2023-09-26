@@ -44,7 +44,7 @@ class IndexPartParams extends IndexParams {
     Map<String, dynamic> data = {
       'sortBy': sortBy.name,
       'filter': filter,
-      'group_id': group.id
+      'group_id': group.apiId
     }..addAll(super.toData());
     print(data);
     return data;

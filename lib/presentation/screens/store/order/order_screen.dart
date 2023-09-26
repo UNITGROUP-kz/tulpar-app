@@ -54,7 +54,7 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
     if(_scrollController.position.maxScrollExtent < _scrollController.position.pixels + 200) {
       final state = context.read<StoreOrdersCubit>().state;
 
-      if(state.status != FetchStatus.loading) return;
+      if(state.status == FetchStatus.loading) return;
 
       final params = context.read<StoreOrdersCubit>().state.params;
       await context.read<StoreOrdersCubit>().fetch(params?.copyWith(
@@ -67,7 +67,7 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
     context.router.navigate(DetailsOrderStoreRoute(order: order));
   };
 
-  _geoPosition() {
+  _geoPosition(BuildContext context) => () {
     final state = context.read<StoreOrdersCubit>().state;
     LatLng? latLng;
 
@@ -82,23 +82,24 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        builder: (context) => MapSheet(callback: _searchPosition, latLng: latLng)
+        builder: (context) => MapSheet(callback: _searchPosition(context), latLng: latLng)
     );
-  }
+  };
 
-  _searchPosition(LatLng value) async {
-    final state = context.read<StoreOrdersCubit>().state;
+  _searchPosition(BuildContext context) => (LatLng latLng) async {
+    context.router.pop().then((value) async {
+      final state = context.read<StoreOrdersCubit>().state;
 
-    if(state.status != FetchStatus.loading) return;
+      if(state.status == FetchStatus.loading) return;
 
-    final params = context.read<StoreOrdersCubit>().state.params;
-    await context.read<StoreOrdersCubit>().fetch(params?.copyWith(
-        startRow: 0,
-        lat: value.latitude,
-        lon: value.longitude
-    ));
-    await context.router.pop();
-  }
+      final params = context.read<StoreOrdersCubit>().state.params;
+      await context.read<StoreOrdersCubit>().fetch(params?.copyWith(
+          startRow: 0,
+          lat: latLng.latitude,
+          lon: latLng.longitude
+      ));
+    });
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +111,7 @@ class _StoreOrdersScreenState extends State<StoreOrdersScreen> {
           title: 'Заказы',
           isBack: false,
           tril: GestureDetector(
-              onTap: _geoPosition,
+              onTap: _geoPosition(context),
               child: Icon(Icons.location_on)
           ),
         ),
@@ -149,20 +150,16 @@ class _MapSheetState extends State<MapSheet> {
 
   @override
   void initState() {
-
-    _controller = LatLonController(value: widget.latLng)..addListener(_listener);
+    _controller = LatLonController(value: widget.latLng);
     super.initState();
   }
 
-  _listener() {
-    if(_controller.value != null) {
-      widget.callback(_controller.value!);
-    }
+  _onTap() {
+    widget.callback(_controller.value!);
   }
 
   @override
   void dispose() {
-    _controller.removeListener(_listener);
     _controller.dispose();
     super.dispose();
   }
@@ -176,7 +173,13 @@ class _MapSheetState extends State<MapSheet> {
         children: [
           MapPicker(controller: _controller),
           SizedBox(height: 10),
-          ElevatedButtonWidget(child: Text('Искать'))
+
+          ValueListenableBuilder(
+              valueListenable: _controller,
+              builder: (context, value, child) {
+                return ElevatedButtonWidget(child: Text('Искать'), onPressed: value != null? _onTap: null);
+              }
+          ),
         ],
       ),
     );

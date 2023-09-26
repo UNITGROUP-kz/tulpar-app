@@ -9,19 +9,16 @@ import '../../routing/router.dart';
 
 class OfferCard extends StatelessWidget {
   final OfferModel offer;
+  final VoidCallback? callback;
 
-  const OfferCard({super.key, required this.offer});
-
-  _toDetails(BuildContext context) => () {
-    context.router.navigate(DetailsOfferRoute(offer: offer));
-  };
+  const OfferCard({super.key, required this.offer, this.callback});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: InkWell(
-        onTap: _toDetails(context),
+        onTap: callback,
         child: Container(
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
@@ -36,6 +33,12 @@ class OfferCard extends StatelessWidget {
               SizedBox(height: 10),
               DataTile(title: 'Производитель', data: offer.producer, isDivider: false),
               DataTile(title: 'Доставка', data: offer.delivery, isDivider: false),
+              if(offer.order != null) DataTile(
+                  title: 'Статус заказа',
+                  data: offer.order!.status.toString(),
+                  isDivider: false
+              ),
+
               Divider(thickness: 1),
               IntrinsicHeight(
                 child: Row(

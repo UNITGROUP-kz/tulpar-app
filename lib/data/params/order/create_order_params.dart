@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/data/models/dictionary/car_model.dart';
 import 'package:garage/data/models/dictionary/group_model.dart';
 
@@ -7,7 +8,7 @@ import '../../models/dictionary/part_model.dart';
 
 class CreateOrderParams {
   final String title;
-  final CarModel car;
+  final CarApiModel car;
   final PartModel part;
   final String? comment;
   final List<MultipartFile> photos;
@@ -25,7 +26,7 @@ class CreateOrderParams {
   FormData toData() {
     final data = FormData.fromMap({
       'title': title,
-      'car_id': car.id,
+      'car_id': car.apiId,
       'part_id': part.id,
       'city_id': city.id,
       'comment': comment

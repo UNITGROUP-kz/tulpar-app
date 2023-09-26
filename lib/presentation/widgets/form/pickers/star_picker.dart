@@ -24,7 +24,6 @@ class StarPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text('Rating2'.tr()),
         ValueListenableBuilder(
           builder: (context, int value, Widget? child) {
             return Row(
@@ -33,7 +32,7 @@ class StarPicker extends StatelessWidget {
                   onTap: _change(index + 1),
                   child: Icon(
                     Icons.star_rate_rounded,
-                    color: (value >= index + 1)? Theme.of(context).colorScheme.primary: Theme.of(context).colorScheme.secondary,
+                    color: (value >= index + 1)? Theme.of(context).colorScheme.primary: Colors.grey.shade500,
                     size: MediaQuery.of(context).size.width / 10,
                   ),
                 );

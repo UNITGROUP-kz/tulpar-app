@@ -38,4 +38,8 @@ class OrderOfferCubit extends Cubit<OrderOfferState> {
         offers: isReplace ? orders : [...state.offers, ...orders]
     ));
   }
+
+  Future acceptOffer(OfferModel offer) async {
+    return OfferUserRepository.accept(offer);
+  }
 }

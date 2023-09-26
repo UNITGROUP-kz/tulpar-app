@@ -13,6 +13,7 @@ import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:garage/presentation/widgets/tiles/setting_tile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../../../data/models/dictionary/car_api_model.dart';
 import '../../../../data/models/dictionary/car_model.dart';
 import '../../../routing/router.dart';
 import '../../../widgets/buttons/elevated_button.dart';
@@ -78,8 +79,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
     ));
   }
 
-  _toDetails(CarModel car) => () {
-
+  _toDetails(CarApiModel car) => () {
     context.router.navigate(SplashRouter(
         children: [
           UserRouter(
@@ -94,6 +94,22 @@ class _MyCarScreenState extends State<MyCarScreen> {
         ]
     ));
   };
+
+  _toCustom() {
+    context.router.navigate(const SplashRouter(
+        children: [
+          UserRouter(
+              children: [
+                UserCarRouter(
+                    children: [
+                      CustomCarRoute()
+                    ]
+                )
+              ]
+          )
+        ]
+    ));
+  }
 
   _showVin() {
     showModalBottomSheet(
@@ -124,8 +140,17 @@ class _MyCarScreenState extends State<MyCarScreen> {
                   child: Column(
                     children: [
                       Header(isBack: false, title: 'Гараж'),
-                      SettingsTile(label: 'Искать запчасти в ручную', icon: Icons.handyman),
-                      SettingsTile(label: 'Искать запчасти по VIN', icon: Icons.car_rental, backgroundIcon: Colors.blue, callback: _showVin,),
+                      SettingsTile(
+                          label: 'Искать запчасти в ручную',
+                          icon: Icons.handyman,
+                          callback: _toCustom,
+                      ),
+                      SettingsTile(
+                        label: 'Искать запчасти по VIN',
+                        icon: Icons.car_rental,
+                        backgroundIcon: Colors.blue,
+                        callback: _showVin,
+                      ),
                       SizedBox(height: 10),
                       Container(
                           width: double.infinity,
@@ -150,7 +175,7 @@ class _MyCarScreenState extends State<MyCarScreen> {
                   items: state.cars.map((car) {
                     return CarCard(
                       car: car.car,
-                      callback: _toDetails(car),
+                      callback: _toDetails(car.car),
                       isMy: true,
                     );
                   }).toList(),
@@ -199,6 +224,7 @@ class VinBottomSheet extends StatefulWidget {
 class _VinBottomSheetState extends State<VinBottomSheet> {
   late TextEditingController _textEditingController;
   bool isLoading = false;
+
   _showCar(BuildContext context) => () {
     setState(() {
       isLoading = false;
@@ -239,9 +265,9 @@ class _VinBottomSheetState extends State<VinBottomSheet> {
           TextFieldWidget(label: 'VIN-code', controller: _textEditingController),
           SizedBox(height: 20,),
           ElevatedButtonWidget(
+              onPressed: _showCar(context),
               child: !isLoading ? Text('Искать машину')
-                  : CircularProgressIndicator(color: Colors.black,),
-              onPressed: _showCar(context)
+                  : CircularProgressIndicator(color: Colors.black,)
           )
         ],
       ),
@@ -264,7 +290,7 @@ class _VinBottomSheetState extends State<VinBottomSheet> {
 
 class CarBottomSheet extends StatelessWidget {
 
-  final CarModel car;
+  final CarApiModel car;
 
   const CarBottomSheet({super.key, required this.car});
 
@@ -298,7 +324,7 @@ class CarBottomSheet extends StatelessWidget {
         children: [
           Text('Это ваша машина?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
           SizedBox(height: 20,),
-          CarCard(car: car.car),
+          CarCard(car: car),
           SizedBox(height: 20,),
           ElevatedButtonWidget(child: Text('Подтвердить'), onPressed: _toDetails(context),)
         ],

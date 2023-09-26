@@ -70,19 +70,19 @@ class _CreateOfferScreenState extends State<CreateOfferScreen> {
     if(state.status == FetchStatus.error) {
       showErrorSnackBar(context, state.error?.messages[0] ?? 'Неизвестная ошибка');
     } else if(state.status == FetchStatus.success) {
-      // context.router.navigate(SplashRouter(
-      //     children: [
-      //       StoreRouter(
-      //           children: [
-      //             UserOfferRouter(
-      //                 children: [
-      //                   OffersRoute()
-      //                 ]
-      //             )
-      //           ]
-      //       )
-      //     ]
-      // ));
+      context.router.navigate(SplashRouter(
+          children: [
+            StoreRouter(
+                children: [
+                  StoreOfferRouter(
+                      children: [
+                        MyOffersRoute()
+                      ]
+                  )
+                ]
+            )
+          ]
+      ));
     }
   }
 

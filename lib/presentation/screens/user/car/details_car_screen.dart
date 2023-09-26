@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:garage/presentation/routing/router.dart';
 import 'package:garage/presentation/widgets/form/pickers/group_picker.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';
-import '../../../../data/models/dictionary/car_model.dart';
+import '../../../../data/models/dictionary/car_api_model.dart';
 import '../../../widgets/navigation/header.dart';
 
 @RoutePage()
 class DetailsCarScreen extends StatefulWidget {
-  final CarModel car;
+  final CarApiModel car;
 
   const DetailsCarScreen({super.key, required this.car});
 
@@ -54,7 +54,7 @@ class _DetailsCarScreenState extends State<DetailsCarScreen> {
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
         children: [
-          Header(title: 'Машина'),
+          Header(title: widget.car.name),
           GroupPicker(controller: _groupController, isMulti: false, car: widget.car),
         ],
     );

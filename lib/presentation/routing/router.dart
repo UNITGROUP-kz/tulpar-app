@@ -36,6 +36,7 @@ import '../screens/picker/volume_picker_screen.dart';
 import '../screens/picker/year_picker_screen.dart';
 import '../screens/store/auth/login_screen.dart';
 import '../screens/store/offers/create_offer_screen.dart';
+import '../screens/store/offers/details_offer_screen.dart';
 import '../screens/store/order/order_screen.dart';
 import '../screens/store/profile/change_categories_screen.dart';
 import '../screens/store/profile/profile_screen.dart';
@@ -43,6 +44,7 @@ import '../screens/store/profile/change_store_screen.dart';
 import '../screens/store/store_splash_screen.dart';
 import '../screens/user/auth/login_screen.dart';
 import '../screens/user/auth/register_screen.dart';
+import '../screens/user/car/custom_car.dart';
 import '../screens/user/car/details_car_screen.dart';
 import '../screens/user/car/details_group.dart';
 import '../screens/user/offer/offers_screen.dart';
@@ -72,6 +74,7 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: UserCarRouter.page, path: '',
                 children:  [
                   AutoRoute(initial: true, path: '', page: MyCarRoute.page),
+                  AutoRoute(page: CustomCarRoute.page),
                   AutoRoute(page: DetailsCarRoute.page),
                   AutoRoute(page: DetailsGroupRoute.page)
                 ]
@@ -95,6 +98,8 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: CreateOrderRoute.page),
             AutoRoute(page: ChangeProfileRoute.page),
             AutoRoute(page: SupportRoute.page),
+            AutoRoute(page: RateOrderRoute.page),
+
 
           ],
           guards: [UserGuard(authCubit)]
@@ -123,6 +128,7 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: StoreOfferRouter.page,
                 children: [
                     AutoRoute(path: '', page: MyOffersRoute.page),
+                    AutoRoute(path: '', page: DetailsOfferStoreRoute.page),
                 ]
               ),
               AutoRoute(page: StoreProfileRoute.page),
@@ -134,7 +140,6 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: ChangeStoreRoute.page),
               AutoRoute(page: CreateOfferRoute.page),
               AutoRoute(page: ChangeCategoryRoute.page),
-
             ],
             guards: [StoreGuard(authStoreCubit)]
         ),

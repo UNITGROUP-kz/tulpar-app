@@ -1,6 +1,8 @@
 
 import 'package:garage/core/utils/parser.dart';
 
+import 'order_model.dart';
+
 enum ConditionOffer {
   news, used;
 
@@ -27,6 +29,7 @@ class OfferModel {
   final double price;
   final String? producer;
   final ConditionOffer condition;
+  final OrderModel? order;
 
   factory OfferModel.fromMap(Map<String, dynamic> map) {
     return OfferModel(
@@ -34,7 +37,8 @@ class OfferModel {
       delivery: map['delivery'],
       price: Parser.toDouble(map['price']),
       producer: map['producer'],
-      condition: ConditionOffer.parse(map['condition'])
+      condition: ConditionOffer.parse(map['condition']),
+      order: map['order'] != null ? OrderModel.fromMap(map['order']) : null
     );
   }
 
@@ -50,5 +54,6 @@ class OfferModel {
     required this.condition,
     this.delivery,
     this.producer,
+    this.order
   });
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:garage/data/models/dictionary/order_model.dart';
 import 'package:garage/data/params/order/index_order_params.dart';
@@ -21,7 +22,12 @@ class MyOrderCubit extends Cubit<MyOrderState> {
     return OrderUserRepository.indexMy(params ?? IndexOrderParams()).then((value) {
       replace(value, params ?? IndexOrderParams());
     }).catchError((error) {
-      print(error);
+      if(error is DioException) {
+        if(error.response?.statusCode == 403) {
+          authCubit.logout();
+          emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
+        }
+      }
       emit(state.copyWith(status: FetchStatus.error, error: ErrorModel.parse(error)));
     });
   }

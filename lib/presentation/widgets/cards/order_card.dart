@@ -31,7 +31,7 @@ class OrderCard extends StatelessWidget {
           child: Column(
             children: [
               DataTile(title: 'Заголовок', data: order.title, isDivider: false),
-              DataTile(title: 'Запчасть', data: order.group?.name ?? 'Неизвестно', isDivider: false),
+              DataTile(title: 'Запчасть', data: order.part?.name ?? 'Неизвестно', isDivider: false),
               if(order.store != null) DataTile(title: 'Магазин', data: order.store?.name ?? 'Нет магазина', isDivider: false),
               if(order.comment != null || order.comment?.isNotEmpty == true)...[
                 Divider(thickness: 1),

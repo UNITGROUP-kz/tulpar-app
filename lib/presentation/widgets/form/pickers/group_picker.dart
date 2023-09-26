@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/data/params/dictionary/index_group_params.dart';
 
 import '../../../../data/models/dictionary/car_model.dart';
@@ -48,7 +49,7 @@ class GroupController extends ValueNotifier<GroupControllerValue> {
 }
 
 class GroupPicker extends StatefulWidget {
-  final CarModel car;
+  final CarApiModel car;
   final bool isMulti;
   GroupController? controller;
 
