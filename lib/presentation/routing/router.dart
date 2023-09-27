@@ -18,6 +18,7 @@ import '../../data/models/auth/store_model.dart';
 import '../../data/models/dictionary/car_model.dart';
 import '../../data/models/dictionary/car_api_model.dart';
 import '../../data/models/dictionary/car_model_model.dart';
+import '../../data/models/dictionary/car_vin_model.dart';
 import '../../data/models/dictionary/city_model.dart';
 import '../../data/models/dictionary/offer_model.dart';
 import '../../data/models/dictionary/order_model.dart';

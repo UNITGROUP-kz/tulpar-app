@@ -20,6 +20,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../data/enums/fetch_status.dart';
 import '../../../../data/fform/forms/create_order_form.dart';
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../../data/models/dictionary/car_vin_model.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/form/fields/text_field.dart';
 import '../../../widgets/form/pickers/city_picker.dart';
@@ -29,9 +30,10 @@ import '../../../widgets/navigation/header.dart';
 class CreateOrderScreen extends StatefulWidget {
 
   final PartModel part;
-  final CarApiModel car;
+  final CarApiModel? car;
+  final CarVinModel? carVin;
 
-  const CreateOrderScreen({super.key, required this.part, required this.car});
+  const CreateOrderScreen({super.key, required this.part, this.car, this.carVin});
 
   @override
   State<CreateOrderScreen> createState() => _CreateOrderScreenState();
@@ -49,6 +51,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
           title: _titleController.value.text,
           comment: _commentController.value.text,
           car: widget.car,
+          carVin: widget.carVin,
           part: widget.part,
           city: _cityController.value!
       ));

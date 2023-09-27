@@ -15,7 +15,7 @@ class GroupPickerCubit extends Cubit<GroupPickerState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexGroups(params).then((value) {
-      replace(value, params);
+      emit(GroupPickerState(groups: value, status: FetchStatus.success));
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });

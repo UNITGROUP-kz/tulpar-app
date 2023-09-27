@@ -2,6 +2,7 @@ import 'package:garage/data/params/index.dart';
 
 import '../../models/dictionary/car_api_model.dart';
 import '../../models/dictionary/car_model.dart';
+import '../../models/dictionary/car_vin_model.dart';
 
 enum IndexGroupSortBy {
   id, name;
@@ -10,15 +11,18 @@ enum IndexGroupSortBy {
 class IndexGroupParams extends IndexParams {
   final IndexGroupSortBy sortBy;
   final String? filter;
-  final CarApiModel car;
+  final CarApiModel? car;
+  final CarVinModel? carVin;
 
   IndexGroupParams({
     super.descending,
-    super.rowsPerPage,
+    super.rowsPerPage = 1000,
     super.startRow,
     this.filter,
     this.sortBy = IndexGroupSortBy.id,
-    required this.car,
+    this.car,
+    this.carVin,
+
   });
 
   copyWith({
@@ -27,7 +31,8 @@ class IndexGroupParams extends IndexParams {
     bool? descending,
     String? filter,
     IndexGroupSortBy? sortBy,
-    CarApiModel? car
+    CarApiModel? car,
+    CarVinModel? carVin
   }) {
     return IndexGroupParams(
       rowsPerPage: rowsPerPage ?? this.rowsPerPage,
@@ -35,7 +40,8 @@ class IndexGroupParams extends IndexParams {
       descending: descending ?? this.descending,
       filter: filter ?? this.filter,
       sortBy: sortBy ?? this.sortBy,
-      car: car ?? this.car
+      car: car ?? this.car,
+      carVin: carVin ?? this.carVin
     );
   }
 
@@ -44,8 +50,14 @@ class IndexGroupParams extends IndexParams {
     Map<String, dynamic> data = {
       'sortBy': sortBy.name,
       'filter': filter,
-      'car_id': car.apiId
     }..addAll(super.toData());
+
+    if(car != null) {
+      data.addAll({'carId': car!.apiId});
+    } else if(carVin != null) {
+      data.addAll({'carId': carVin!.carId});
+    }
+
     print(data);
     return data;
   }

@@ -14,7 +14,7 @@ class IndexPartParams extends IndexParams {
 
   IndexPartParams({
     super.descending,
-    super.rowsPerPage,
+    super.rowsPerPage = 1000,
     super.startRow,
     this.filter,
     this.sortBy = IndexPartSortBy.id,

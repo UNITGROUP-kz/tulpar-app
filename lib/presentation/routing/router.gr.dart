@@ -80,6 +80,7 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           part: args.part,
           car: args.car,
+          carVin: args.carVin,
         ),
       );
     },
@@ -130,12 +131,14 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     DetailsCarRoute.name: (routeData) {
-      final args = routeData.argsAs<DetailsCarRouteArgs>();
+      final args = routeData.argsAs<DetailsCarRouteArgs>(
+          orElse: () => const DetailsCarRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: DetailsCarScreen(
           key: args.key,
           car: args.car,
+          carVin: args.carVin,
         ),
       );
     },
@@ -153,6 +156,7 @@ abstract class _$AppRouter extends RootStackRouter {
           key: args.key,
           group: args.group,
           car: args.car,
+          carVin: args.carVin,
         ),
       );
     },
@@ -531,7 +535,8 @@ class CreateOrderRoute extends PageRouteInfo<CreateOrderRouteArgs> {
   CreateOrderRoute({
     Key? key,
     required PartModel part,
-    required CarApiModel car,
+    CarApiModel? car,
+    CarVinModel? carVin,
     List<PageRouteInfo>? children,
   }) : super(
           CreateOrderRoute.name,
@@ -539,6 +544,7 @@ class CreateOrderRoute extends PageRouteInfo<CreateOrderRouteArgs> {
             key: key,
             part: part,
             car: car,
+            carVin: carVin,
           ),
           initialChildren: children,
         );
@@ -553,18 +559,21 @@ class CreateOrderRouteArgs {
   const CreateOrderRouteArgs({
     this.key,
     required this.part,
-    required this.car,
+    this.car,
+    this.carVin,
   });
 
   final Key? key;
 
   final PartModel part;
 
-  final CarApiModel car;
+  final CarApiModel? car;
+
+  final CarVinModel? carVin;
 
   @override
   String toString() {
-    return 'CreateOrderRouteArgs{key: $key, part: $part, car: $car}';
+    return 'CreateOrderRouteArgs{key: $key, part: $part, car: $car, carVin: $carVin}';
   }
 }
 
@@ -739,13 +748,15 @@ class CreateCarRoute extends PageRouteInfo<void> {
 class DetailsCarRoute extends PageRouteInfo<DetailsCarRouteArgs> {
   DetailsCarRoute({
     Key? key,
-    required CarApiModel car,
+    CarApiModel? car,
+    CarVinModel? carVin,
     List<PageRouteInfo>? children,
   }) : super(
           DetailsCarRoute.name,
           args: DetailsCarRouteArgs(
             key: key,
             car: car,
+            carVin: carVin,
           ),
           initialChildren: children,
         );
@@ -759,16 +770,19 @@ class DetailsCarRoute extends PageRouteInfo<DetailsCarRouteArgs> {
 class DetailsCarRouteArgs {
   const DetailsCarRouteArgs({
     this.key,
-    required this.car,
+    this.car,
+    this.carVin,
   });
 
   final Key? key;
 
-  final CarApiModel car;
+  final CarApiModel? car;
+
+  final CarVinModel? carVin;
 
   @override
   String toString() {
-    return 'DetailsCarRouteArgs{key: $key, car: $car}';
+    return 'DetailsCarRouteArgs{key: $key, car: $car, carVin: $carVin}';
   }
 }
 
@@ -792,7 +806,8 @@ class DetailsGroupRoute extends PageRouteInfo<DetailsGroupRouteArgs> {
   DetailsGroupRoute({
     Key? key,
     required GroupModel group,
-    required CarApiModel car,
+    CarApiModel? car,
+    CarVinModel? carVin,
     List<PageRouteInfo>? children,
   }) : super(
           DetailsGroupRoute.name,
@@ -800,6 +815,7 @@ class DetailsGroupRoute extends PageRouteInfo<DetailsGroupRouteArgs> {
             key: key,
             group: group,
             car: car,
+            carVin: carVin,
           ),
           initialChildren: children,
         );
@@ -814,18 +830,21 @@ class DetailsGroupRouteArgs {
   const DetailsGroupRouteArgs({
     this.key,
     required this.group,
-    required this.car,
+    this.car,
+    this.carVin,
   });
 
   final Key? key;
 
   final GroupModel group;
 
-  final CarApiModel car;
+  final CarApiModel? car;
+
+  final CarVinModel? carVin;
 
   @override
   String toString() {
-    return 'DetailsGroupRouteArgs{key: $key, group: $group, car: $car}';
+    return 'DetailsGroupRouteArgs{key: $key, group: $group, car: $car, carVin: $carVin}';
   }
 }
 

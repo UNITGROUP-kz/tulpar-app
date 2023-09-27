@@ -5,6 +5,7 @@ import 'package:garage/data/models/dictionary/car_api_model.dart';
 import 'package:garage/data/params/dictionary/index_group_params.dart';
 
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../../data/models/dictionary/car_vin_model.dart';
 import '../../../../data/models/dictionary/group_model.dart';
 import '../../../../logic/bloc/dictionary/group_picker/group_picker_cubit.dart';
 
@@ -49,11 +50,12 @@ class GroupController extends ValueNotifier<GroupControllerValue> {
 }
 
 class GroupPicker extends StatefulWidget {
-  final CarApiModel car;
+  final CarApiModel? car;
+  final CarVinModel? carVin;
   final bool isMulti;
   GroupController? controller;
 
-  GroupPicker({super.key, this.controller, this.isMulti = false, required this.car});
+  GroupPicker({super.key, this.controller, this.isMulti = false, this.car, this.carVin});
 
   @override
   State<GroupPicker> createState() => _GroupPickerState();
@@ -103,7 +105,7 @@ class _GroupPickerState extends State<GroupPicker> {
 
   @override
   void initState() {
-    context.read<GroupPickerCubit>().fetch(IndexGroupParams(car: widget.car));
+    context.read<GroupPickerCubit>().fetch(IndexGroupParams(car: widget.car, carVin: widget.carVin));
     widget.controller ??= GroupController();
     super.initState();
   }

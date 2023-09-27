@@ -15,6 +15,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import '../../../../data/models/dictionary/car_api_model.dart';
 import '../../../../data/models/dictionary/car_model.dart';
+import '../../../../data/models/dictionary/car_vin_model.dart';
 import '../../../routing/router.dart';
 import '../../../widgets/buttons/elevated_button.dart';
 import '../../../widgets/cards/car_card.dart';
@@ -230,6 +231,7 @@ class _VinBottomSheetState extends State<VinBottomSheet> {
       isLoading = false;
     });
     CarUserRepository.getByVIN(_textEditingController.value.text).then((value) {
+      print(value);
       showModalBottomSheet(
           useSafeArea: true,
           useRootNavigator: true,
@@ -237,17 +239,16 @@ class _VinBottomSheetState extends State<VinBottomSheet> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           context: context,
-          builder: (context) => CarBottomSheet(car: value)
+          builder: (context) => CarBottomSheet(cars: value)
       );
-      setState(() {
-        isLoading = false;
-      });
     }).catchError((value) {
+      print(value);
       if(value is DioException) {
         showErrorSnackBar(context, value.response?.data['message'] ?? 'Неизвестная ошибка');
       } else {
         showErrorSnackBar(context, 'Неизвестная ошибка');
       }
+    }).whenComplete(() {
       setState(() {
         isLoading = false;
       });
@@ -290,11 +291,11 @@ class _VinBottomSheetState extends State<VinBottomSheet> {
 
 class CarBottomSheet extends StatelessWidget {
 
-  final CarApiModel car;
+  final List<CarVinModel> cars;
 
-  const CarBottomSheet({super.key, required this.car});
+  const CarBottomSheet({super.key, required this.cars});
 
-  _toDetails(BuildContext context) => () async {
+  _toDetails(BuildContext context, CarVinModel car) => () async {
     context.router.pop().then((value) async {
       context.router.pop().then((value) {
         context.router.navigate(SplashRouter(
@@ -303,7 +304,7 @@ class CarBottomSheet extends StatelessWidget {
                   children: [
                     UserCarRouter(
                         children: [
-                          DetailsCarRoute(car: car)
+                          DetailsCarRoute(carVin: car)
                         ]
                     )
                   ]
@@ -322,11 +323,19 @@ class CarBottomSheet extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Это ваша машина?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
+          Text('Выберите машину', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),
           SizedBox(height: 20,),
-          CarCard(car: car),
-          SizedBox(height: 20,),
-          ElevatedButtonWidget(child: Text('Подтвердить'), onPressed: _toDetails(context),)
+          Column(
+            children: cars.map((e) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  CarCard(carVin: e, callback: _toDetails(context, e),),
+                  SizedBox(height: 10),
+                ],
+              );
+            }).toList(),
+          ),
         ],
       ),
     );

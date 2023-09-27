@@ -4,6 +4,7 @@ import 'package:garage/data/params/car/create_car_params.dart';
 import 'package:garage/data/params/car/index_car_params.dart';
 
 import '../../models/dictionary/car_api_model.dart';
+import '../../models/dictionary/car_vin_model.dart';
 
 
 class CarUserRepository {
@@ -15,7 +16,7 @@ class CarUserRepository {
       .post('/car', data: params.toData())
       .then((value) => CarModel.fromMap(value.data['car']));
 
-  static Future<CarApiModel> getByVIN(String vinCode) => ApiService.I
-      .get('/car', queryParameters: { 'q': vinCode})
-      .then((value) => CarApiModel.fromMap(value.data['car']));
+  static Future<List<CarVinModel>> getByVIN(String vinCode) => ApiService.I
+      .get('/car/vin', queryParameters: { 'q': vinCode})
+      .then((value) => CarVinModel.fromListMap(value.data['data']));
 }

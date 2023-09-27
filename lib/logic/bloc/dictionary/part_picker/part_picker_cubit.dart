@@ -15,7 +15,8 @@ class PartPickerCubit extends Cubit<PartPickerState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
     return DictionaryRepository.indexParts(params).then((value) {
-      replace(value, params);
+      // replace(value, params);
+      emit(PartPickerState(status: FetchStatus.success, parts: value));
     }).catchError((error) {
       emit(state.copyWith(status: FetchStatus.error));
     });
