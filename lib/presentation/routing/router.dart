@@ -13,6 +13,7 @@ import 'package:garage/presentation/screens/user/order/details_order_screen.dart
 import 'package:garage/presentation/screens/user/order/orders_screen.dart';
 import 'package:garage/presentation/screens/user/profile/profile_screen.dart';
 import 'package:garage/presentation/screens/user/user_splash_screen.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../data/models/auth/store_model.dart';
 import '../../data/models/dictionary/car_model.dart';
@@ -53,6 +54,7 @@ import '../screens/user/order/rate_order_screen.dart';
 import '../screens/user/profile/change_profile.dart';
 import '../screens/user/profile/support_screen.dart';
 import '../screens/user/store_screen.dart';
+import '../widgets/form/pickers/lat_lon_picker.dart';
 
 
 part 'router.gr.dart';
@@ -114,6 +116,7 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: YearPickerRoute.page),
               AutoRoute(page: VolumePickerRoute.page),
               AutoRoute(page: CarPickerRoute.page),
+              AutoRoute(page: MapPickerRoute.page),
 
             ]
         ),

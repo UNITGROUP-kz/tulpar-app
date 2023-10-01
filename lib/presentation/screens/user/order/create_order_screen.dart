@@ -10,7 +10,7 @@ import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/order/create_order_params.dart';
 import 'package:garage/logic/bloc/user/create_order/create_order_cubit.dart';
 import 'package:garage/presentation/routing/router.dart';
-import 'package:garage/presentation/screens/picker/lat_lon_picker.dart';
+import 'package:garage/presentation/widgets/form/pickers/lat_lon_picker.dart';
 import 'package:garage/presentation/widgets/builder/multi_value_listenable_builder.dart';
 import 'package:garage/presentation/widgets/form/fields/description_field.dart';
 import 'package:garage/presentation/widgets/screen_templates/screen_default_template.dart';

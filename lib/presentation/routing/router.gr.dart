@@ -361,6 +361,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    MapPickerRoute.name: (routeData) {
+      return AutoRoutePage<LatLng?>(
+        routeData: routeData,
+        child: MapPickerScreen(),
+      );
+    },
   };
 }
 
@@ -1385,4 +1391,18 @@ class DetailsOfferStoreRouteArgs {
   String toString() {
     return 'DetailsOfferStoreRouteArgs{key: $key, offer: $offer}';
   }
+}
+
+/// generated route for
+/// [MapPickerScreen]
+class MapPickerRoute extends PageRouteInfo<void> {
+  const MapPickerRoute({List<PageRouteInfo>? children})
+      : super(
+          MapPickerRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MapPickerRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }

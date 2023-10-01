@@ -1,7 +1,6 @@
 import 'package:garage/data/params/index.dart';
 
 import '../../models/dictionary/car_api_model.dart';
-import '../../models/dictionary/car_model.dart';
 import '../../models/dictionary/car_vin_model.dart';
 
 enum IndexGroupSortBy {
