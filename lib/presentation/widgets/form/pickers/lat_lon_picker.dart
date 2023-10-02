@@ -88,8 +88,10 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     });
   }
 
-  _goToTheLake() async {
-    _controllerMap?.animateCamera(CameraUpdate.newCameraPosition(await _getCurrentPosition()));
+  Future<void> _goToTheLake() async {
+    if(await _requestPermission()) {
+      _controllerMap?.animateCamera(CameraUpdate.newCameraPosition(await _getCurrentPosition()));
+    }
   }
 
   Future<CameraPosition> _getCurrentPosition() async {
@@ -106,7 +108,9 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
 
   _requestPermission() async {
     LocationPermission permission = await Geolocator.requestPermission();
-    return permission == LocationPermission.denied;
+    return permission == LocationPermission.denied
+        || permission == LocationPermission.whileInUse
+        || permission == LocationPermission.deniedForever;
   }
 
   _onMapCreated(GoogleMapController controller) async {

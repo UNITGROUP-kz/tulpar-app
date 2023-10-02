@@ -8,16 +8,14 @@ import 'city_model.dart';
 
 
 enum OrderStatus {
-  moderation, active, done, canceled, completed;
+  moderation, active, done;
 
   static parse(data) {
-    print(data);
     switch(data) {
       case 'moderation': return OrderStatus.moderation;
       case 'active': return OrderStatus.active;
       case 'done': return OrderStatus.done;
-      case 'canceled': return OrderStatus.canceled;
-      case 'completed': return OrderStatus.completed;
+      default: return OrderStatus.moderation;
     }
   }
 
@@ -26,9 +24,7 @@ enum OrderStatus {
     switch(this) {
       case OrderStatus.moderation: return 'На модерации';
       case OrderStatus.active: return 'Активный';
-      case OrderStatus.done: return 'Обрабатывается';
-      case OrderStatus.canceled: return 'Закрыт';
-      case OrderStatus.completed: return 'Закончен';
+      case OrderStatus.done: return 'Закрыт';
 
     }
   }

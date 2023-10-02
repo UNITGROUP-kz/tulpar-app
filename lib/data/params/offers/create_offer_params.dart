@@ -23,7 +23,7 @@ class CreateOfferParams {
       'price': price,
       'delivery': delivery,
       'producer': producer,
-      'condition': condition.name
+      'condition': condition.toName()
     };
   }
 }

@@ -21,6 +21,14 @@ enum ConditionOffer {
       case ConditionOffer.used: return 'Б/У';
     }
   }
+
+  String toName() {
+    switch(this) {
+      case ConditionOffer.news: return 'new';
+      case ConditionOffer.used: return 'used';
+    }
+  }
+
 }
 
 class OfferModel {
