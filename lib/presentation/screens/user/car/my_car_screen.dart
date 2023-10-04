@@ -1,9 +1,12 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:garage/data/enums/fetch_status.dart';
+import 'package:garage/data/models/auth/store_model.dart';
+import 'package:garage/data/repositories/dictionary/dictionary_repository.dart';
 import 'package:garage/data/repositories/user/car_user_repository.dart';
 import 'package:garage/logic/bloc/user/my_car/my_car_cubit.dart';
 import 'package:garage/presentation/widgets/form/fields/text_field.dart';
@@ -13,8 +16,8 @@ import 'package:garage/presentation/widgets/snackbars/error_snackbar.dart';
 import 'package:garage/presentation/widgets/tiles/setting_tile.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../../../data/models/dictionary/banner_model.dart';
 import '../../../../data/models/dictionary/car_api_model.dart';
-import '../../../../data/models/dictionary/car_model.dart';
 import '../../../../data/models/dictionary/car_vin_model.dart';
 import '../../../routing/router.dart';
 import '../../../widgets/buttons/elevated_button.dart';
@@ -124,6 +127,8 @@ class _MyCarScreenState extends State<MyCarScreen> {
     );
   }
 
+  final Future<List<BannerModel>> _banners = DictionaryRepository.indexBanner();
+
   @override
   Widget build(BuildContext context) {
     return ScreenDefaultTemplate(
@@ -141,6 +146,20 @@ class _MyCarScreenState extends State<MyCarScreen> {
                   child: Column(
                     children: [
                       Header(isBack: false, title: 'Гараж'),
+                      SizedBox(height: 10),
+                      FutureBuilder<List<BannerModel>>(
+                          future: _banners,
+                          builder: (context, snapshot) {
+                            print(snapshot);
+                            if(snapshot.connectionState == ConnectionState.done) {
+                              if((snapshot.data?.isEmpty ?? true) || snapshot.error != null) {
+                                return Container();
+                              }
+                              return CarouselBanner(banners: snapshot.data!);
+                            } return CupertinoActivityIndicator();
+                          }
+                      ),
+                      SizedBox(height: 10),
                       SettingsTile(
                           label: 'Искать запчасти в ручную',
                           icon: Icons.handyman,
@@ -196,21 +215,16 @@ class _MyCarScreenState extends State<MyCarScreen> {
                             if(state.cars.isEmpty && state.status == FetchStatus.success) Text('У вас нет Машин'),
                             if(state.status == FetchStatus.error) Text('Неизвестная ошибка'),
                             if(state.status == FetchStatus.loading) CupertinoActivityIndicator(),
-
                           ],
                         ),
                       )
-
                     ],
                   ),
                 )
-
               ]
             );
           },
         ),
-
-
       ],
     );
   }
@@ -341,4 +355,110 @@ class CarBottomSheet extends StatelessWidget {
     );
   }
 
+}
+
+class CarouselBanner extends StatefulWidget {
+  final List<BannerModel> banners;
+
+  const CarouselBanner({super.key, required this.banners});
+
+  @override
+  State<CarouselBanner> createState() => _CarouselBannerState();
+}
+
+class _CarouselBannerState extends State<CarouselBanner> {
+  late CarouselController _carouselController;
+  int indexCurrent = 0;
+
+  @override
+  void initState() {
+    _carouselController = CarouselController();
+    super.initState();
+  }
+
+  _changePage(BannerModel banner) => () {
+    int value = widget.banners.indexWhere((element) => element.id == banner.id);
+    _setIndex(value);
+    _carouselController.animateToPage(value);
+  };
+
+  _setIndex(int value) {
+    if(value == -1) return;
+    setState(() {
+      indexCurrent = value;
+    });
+  }
+
+  toStore(StoreModel store) => () {
+    context.router.navigate(SplashRouter(
+        children: [
+          UserRouter(
+              children: [
+                UserOrderRouter(
+                    children: [
+                      StoreRoute(store: store)
+                    ]
+                )
+              ]
+          )
+        ]
+    ));
+  };
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomRight,
+      children: [
+        CarouselSlider(
+            carouselController: _carouselController,
+            items: widget.banners.map((e) {
+              return GestureDetector(
+                onTap: toStore(e.store),
+                child: Container(
+                  width: double.infinity,
+                  color: Theme.of(context).colorScheme.primary,
+                  child: CachedNetworkImage(
+                    imageUrl: e.image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              );
+            }).toList(),
+            options: CarouselOptions(
+                viewportFraction: 1,
+                enableInfiniteScroll: false,
+                aspectRatio: 16 / 7.5
+            )
+        ),
+        Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+                padding: const EdgeInsets.all(10),
+                width: double.infinity,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: widget.banners.map((e) {
+                      return GestureDetector(
+                        onTap: _changePage(e),
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          width: 15,
+                          height: 15,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(
+                                  e.id == widget.banners[indexCurrent].id? 1: 0.5
+                              ),
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                        ),
+                      );
+                    }).toList()
+                )
+            )
+        )
+      ],
+    );
+  }
 }

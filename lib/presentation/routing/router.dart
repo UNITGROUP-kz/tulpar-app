@@ -102,8 +102,6 @@ class AppRouter extends _$AppRouter {
             AutoRoute(page: ChangeProfileRoute.page),
             AutoRoute(page: SupportRoute.page),
             AutoRoute(page: RateOrderRoute.page),
-
-
           ],
           guards: [UserGuard(authCubit)]
         ),
@@ -117,7 +115,6 @@ class AppRouter extends _$AppRouter {
               AutoRoute(page: VolumePickerRoute.page),
               AutoRoute(page: CarPickerRoute.page),
               AutoRoute(page: MapPickerRoute.page),
-
             ]
         ),
         AutoRoute(path: 'store', page: StoreRouter.page,
@@ -126,7 +123,6 @@ class AppRouter extends _$AppRouter {
                 children: [
                   AutoRoute(path: '', page: StoreOrdersRoute.page),
                   AutoRoute(path: '', page: DetailsOrderStoreRoute.page),
-
                 ]
               ),
               AutoRoute(page: StoreOfferRouter.page,
@@ -157,7 +153,6 @@ class AppRouter extends _$AppRouter {
           ], guards: [NotAuthGuard(authCubit, authStoreCubit)]
         ),
         // RedirectRoute(path: '*', redirectTo: '/')
-
       ]
     ),
 

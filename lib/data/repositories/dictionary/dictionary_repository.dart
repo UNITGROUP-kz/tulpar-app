@@ -1,3 +1,4 @@
+import 'package:garage/data/models/dictionary/banner_model.dart';
 import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 import 'package:garage/data/params/car/index_car_params.dart';
@@ -32,4 +33,8 @@ class DictionaryRepository {
   static Future<List<CarApiModel>> indexCar(GetCarParams params) => ApiService.I
       .get('/car', queryParameters: params.toData())
       .then((value) => CarApiModel.fromListMap(value.data['list']));
+
+  static Future<List<BannerModel>> indexBanner() => ApiService.I
+      .get('/banners')
+      .then((value) => BannerModel.fromListMap(value.data['list']));
 }
