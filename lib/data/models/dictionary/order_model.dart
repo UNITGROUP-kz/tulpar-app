@@ -1,6 +1,4 @@
 import 'package:garage/data/models/dictionary/car_api_model.dart';
-import 'package:garage/data/models/dictionary/car_model.dart';
-import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/auth/store_model.dart';
 import 'package:garage/data/models/dictionary/part_model.dart';
 
@@ -25,7 +23,6 @@ enum OrderStatus {
       case OrderStatus.moderation: return 'На модерации';
       case OrderStatus.active: return 'Активный';
       case OrderStatus.done: return 'Закрыт';
-
     }
   }
 }
