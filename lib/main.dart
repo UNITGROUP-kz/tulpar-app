@@ -45,7 +45,7 @@ import 'presentation/routing/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SPService.initialize();
-  await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
   await FBService.initialize();
   await FbNotification.initialize();
 

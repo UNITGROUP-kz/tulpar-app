@@ -8,7 +8,7 @@ class ApiService {
 
   ApiService.initialize() {
     _dio = Dio();
-    _dio.options.baseUrl = dotenv.env['BASE_URL']!;
+    // _dio.options.baseUrl = dotenv.env['BASE_URL']!;
     _dio.options.headers.addAll({
       'Accept': 'application/json',
     });
