@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:garage/logic/bloc/dictionary/car_picker/car_picker_cubit.dart';
 import 'package:garage/logic/bloc/dictionary/part_picker/part_picker_cubit.dart';
 import 'package:garage/logic/bloc/store/create_offer/create_offer_cubit.dart';
+import 'package:garage/logic/bloc/user/cart/cart_cubit.dart';
 
 import 'core/services/api/api_service.dart';
 import 'core/services/database/isar_service.dart';
@@ -24,6 +25,7 @@ import 'logic/bloc/store/login/login_store_cubit.dart';
 import 'logic/bloc/store/my_offers/my_offers_cubit.dart';
 import 'logic/bloc/store/orders/orders_cubit.dart';
 import 'logic/bloc/user/auth/auth_cubit.dart';
+import 'logic/bloc/user/cart/cart_counter_cubit.dart';
 import 'logic/bloc/user/change_image/change_image_cubit.dart';
 import 'logic/bloc/user/change_profile/change_profile_cubit.dart';
 import 'logic/bloc/user/create_car/create_car_cubit.dart';
@@ -45,12 +47,13 @@ import 'presentation/routing/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SPService.initialize();
-  // await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: ".env");
   await FBService.initialize();
   await FbNotification.initialize();
 
   FBAuthService.setInstance();
   ApiService.initialize();
+
   await IsarService.initialize();
 
   // if (shouldUseFirebaseEmulator) {
@@ -76,6 +79,7 @@ class _MyAppState extends State<MyApp> {
   late MyOrderCubit _myOrderCubit;
   late MyOffersCubit _myOfferCubit;
   late AppRouter _appRouter;
+  late CartCounterCubit _counterCart;
 
   @override
   void initState() {
@@ -86,6 +90,7 @@ class _MyAppState extends State<MyApp> {
     _myCarCubit = MyCarCubit(_authCubit);
     _myOrderCubit = MyOrderCubit(_authCubit);
     _myOfferCubit = MyOffersCubit(_authStoreCubit);
+    _counterCart = CartCounterCubit();
 
     _appRouter = AppRouter(_authCubit, _authStoreCubit);
     super.initState();
@@ -116,6 +121,12 @@ class _MyAppState extends State<MyApp> {
         //SCREEN WITH AUTH
         BlocProvider(
           create: (context) => _myCarCubit,
+        ),
+        BlocProvider(
+          create: (context) => CartCounterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CartCubit(_counterCart),
         ),
         BlocProvider(
           create: (context) => _myOrderCubit,

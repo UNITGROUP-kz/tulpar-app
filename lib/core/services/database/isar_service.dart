@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:garage/data/models/dictionary/car_model_model.dart';
+import 'package:garage/data/models/dictionary/cart_counter_model.dart';
 import 'package:garage/data/models/dictionary/group_model.dart';
 import 'package:garage/data/models/dictionary/producer_model.dart';
 import 'package:isar/isar.dart';
@@ -30,7 +31,7 @@ class IsarService {
       //DICTIONARY
       CityModelSchema,
       FavoriteModelSchema,
-
+      CartCounterModelSchema
 
     ], directory: dir.path);
   }

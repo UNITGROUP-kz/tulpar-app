@@ -18,6 +18,7 @@ class UserSplashScreen extends StatelessWidget {
       routes: const [
         UserCarRouter(),
         UserOrderRouter(),
+        CartRouter(),
         UserProfileRoute()
       ],
       transitionBuilder: (context, child, animation) => FadeTransition(
@@ -35,9 +36,9 @@ class UserSplashScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   BottomItem(icon: Icons.garage, index: 0),
-                  BottomItem(icon: Icons.shopping_cart, index: 1,),
-                  BottomItem(icon: Icons.person, index: 2,),
-
+                  BottomItem(icon: Icons.reorder_sharp, index: 1),
+                  BottomItem(icon: Icons.shopping_cart, index: 2),
+                  BottomItem(icon: Icons.person, index: 3),
                 ],
               ),
             )

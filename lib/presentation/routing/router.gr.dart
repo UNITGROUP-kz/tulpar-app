@@ -124,6 +124,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    CustomCarRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CustomCarScreen(),
+      );
+    },
     CreateCarRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -205,6 +211,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: SupportScreen(),
       );
     },
+    CartRouter.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CartScreen(),
+      );
+    },
     DocumentsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -271,6 +283,16 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: MyOffersScreen(),
+      );
+    },
+    DetailsOfferStoreRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailsOfferStoreRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: DetailsOfferStoreScreen(
+          key: args.key,
+          offer: args.offer,
+        ),
       );
     },
     StoreLoginRoute.name: (routeData) {
@@ -343,22 +365,6 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: PickerScreen(),
-      );
-    },
-    CustomCarRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: CustomCarScreen(),
-      );
-    },
-    DetailsOfferStoreRoute.name: (routeData) {
-      final args = routeData.argsAs<DetailsOfferStoreRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: DetailsOfferStoreScreen(
-          key: args.key,
-          offer: args.offer,
-        ),
       );
     },
     MapPickerRoute.name: (routeData) {
@@ -736,6 +742,20 @@ class DetailsOfferRouteArgs {
 }
 
 /// generated route for
+/// [CustomCarScreen]
+class CustomCarRoute extends PageRouteInfo<void> {
+  const CustomCarRoute({List<PageRouteInfo>? children})
+      : super(
+          CustomCarRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CustomCarRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [CreateCarScreen]
 class CreateCarRoute extends PageRouteInfo<void> {
   const CreateCarRoute({List<PageRouteInfo>? children})
@@ -986,6 +1006,20 @@ class SupportRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [CartScreen]
+class CartRouter extends PageRouteInfo<void> {
+  const CartRouter({List<PageRouteInfo>? children})
+      : super(
+          CartRouter.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'CartRouter';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [DocumentsScreen]
 class DocumentsRoute extends PageRouteInfo<void> {
   const DocumentsRoute({List<PageRouteInfo>? children})
@@ -1174,6 +1208,44 @@ class MyOffersRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [DetailsOfferStoreScreen]
+class DetailsOfferStoreRoute extends PageRouteInfo<DetailsOfferStoreRouteArgs> {
+  DetailsOfferStoreRoute({
+    Key? key,
+    required OfferModel offer,
+    List<PageRouteInfo>? children,
+  }) : super(
+          DetailsOfferStoreRoute.name,
+          args: DetailsOfferStoreRouteArgs(
+            key: key,
+            offer: offer,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'DetailsOfferStoreRoute';
+
+  static const PageInfo<DetailsOfferStoreRouteArgs> page =
+      PageInfo<DetailsOfferStoreRouteArgs>(name);
+}
+
+class DetailsOfferStoreRouteArgs {
+  const DetailsOfferStoreRouteArgs({
+    this.key,
+    required this.offer,
+  });
+
+  final Key? key;
+
+  final OfferModel offer;
+
+  @override
+  String toString() {
+    return 'DetailsOfferStoreRouteArgs{key: $key, offer: $offer}';
+  }
+}
+
+/// generated route for
 /// [StoreLoginScreen]
 class StoreLoginRoute extends PageRouteInfo<void> {
   const StoreLoginRoute({List<PageRouteInfo>? children})
@@ -1339,58 +1411,6 @@ class PickerRouter extends PageRouteInfo<void> {
   static const String name = 'PickerRouter';
 
   static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [CustomCarScreen]
-class CustomCarRoute extends PageRouteInfo<void> {
-  const CustomCarRoute({List<PageRouteInfo>? children})
-      : super(
-          CustomCarRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'CustomCarRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [DetailsOfferStoreScreen]
-class DetailsOfferStoreRoute extends PageRouteInfo<DetailsOfferStoreRouteArgs> {
-  DetailsOfferStoreRoute({
-    Key? key,
-    required OfferModel offer,
-    List<PageRouteInfo>? children,
-  }) : super(
-          DetailsOfferStoreRoute.name,
-          args: DetailsOfferStoreRouteArgs(
-            key: key,
-            offer: offer,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'DetailsOfferStoreRoute';
-
-  static const PageInfo<DetailsOfferStoreRouteArgs> page =
-      PageInfo<DetailsOfferStoreRouteArgs>(name);
-}
-
-class DetailsOfferStoreRouteArgs {
-  const DetailsOfferStoreRouteArgs({
-    this.key,
-    required this.offer,
-  });
-
-  final Key? key;
-
-  final OfferModel offer;
-
-  @override
-  String toString() {
-    return 'DetailsOfferStoreRouteArgs{key: $key, offer: $offer}';
-  }
 }
 
 /// generated route for

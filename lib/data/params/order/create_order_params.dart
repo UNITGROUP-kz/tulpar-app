@@ -31,7 +31,8 @@ class CreateOrderParams {
       'title': title,
       'part_id': part.id,
       'city_id': city.id,
-      'comment': comment
+      'comment': comment,
+      'payment_type': 'cash'
     });
     if(car != null) {
       data.fields.add(MapEntry('car_id', car!.apiId));

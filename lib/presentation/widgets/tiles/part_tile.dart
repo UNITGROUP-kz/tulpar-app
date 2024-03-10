@@ -1,6 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:garage/logic/bloc/user/cart/cart_cubit.dart';
 
 import '../../../data/models/dictionary/group_model.dart';
 import '../../../data/models/dictionary/part_model.dart';
@@ -10,6 +12,8 @@ class PartTile extends StatelessWidget {
   final VoidCallback? callback;
 
   const PartTile({super.key, required this.part, this.callback});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,16 @@ class PartTile extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10),
-              ElevatedButton(onPressed: callback, child: Text('Заказать'))
+              Column(
+                children: [
+                  ElevatedButton(onPressed: callback, child: Text('Заказать')),
+                  SizedBox(height: 5),
+                  ElevatedButton(onPressed: () {
+                    context.read<CartCubit>().add(part.id);
+                  }, child: Text('В корзину')),
+
+                ],
+              )
             ],
           ),
         ),

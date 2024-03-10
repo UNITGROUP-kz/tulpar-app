@@ -391,17 +391,17 @@ class _CarouselBannerState extends State<CarouselBanner> {
 
   toStore(StoreModel store) => () {
     context.router.navigate(SplashRouter(
-        children: [
-          UserRouter(
+      children: [
+        UserRouter(
+          children: [
+            UserOrderRouter(
               children: [
-                UserOrderRouter(
-                    children: [
-                      StoreRoute(store: store)
-                    ]
-                )
+                StoreRoute(store: store)
               ]
-          )
-        ]
+            )
+          ]
+        )
+      ]
     ));
   };
 

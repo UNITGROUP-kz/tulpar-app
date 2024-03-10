@@ -19,7 +19,7 @@ class DetailsCarCubit extends Cubit<DetailsCarState> {
     if(state.status == FetchStatus.loading) return;
     emit(state.copyWith(status: FetchStatus.loading));
 
-    print('params: ${params?.toData()}');
+    print('params: ${params.toData()}');
     return DictionaryRepository.indexGroups(params).then((value) {
       print(value);
       replace(value, params);

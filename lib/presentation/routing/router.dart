@@ -49,6 +49,7 @@ import '../screens/user/auth/register_screen.dart';
 import '../screens/user/car/custom_car.dart';
 import '../screens/user/car/details_car_screen.dart';
 import '../screens/user/car/details_group.dart';
+import '../screens/user/cart/cart_screen.dart';
 import '../screens/user/offer/offers_screen.dart';
 import '../screens/user/order/rate_order_screen.dart';
 import '../screens/user/profile/change_profile.dart';
@@ -86,6 +87,7 @@ class AppRouter extends _$AppRouter {
                 children: [
                   AutoRoute(path: '', page: OrdersRoute.page),
                   AutoRoute(page: DetailsOrderRoute.page),
+                  AutoRoute(page: CartRouter.page),
                   AutoRoute(page: OrderOffersRoute.page),
                   AutoRoute(page: DetailsOfferRoute.page),
                   AutoRoute(page: StoreRoute.page),

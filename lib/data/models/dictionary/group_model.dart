@@ -9,7 +9,6 @@ class GroupModel {
   final bool hasGroups;
   final bool hasParts;
 
-
   factory GroupModel.fromMap(map) {
     return GroupModel(
         id: map['id'],
